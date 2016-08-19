@@ -1,0 +1,8 @@
+# No Mac OS Finder layout files
+.DS_Store
+# No vi tempfiles
+*~
+# Skip dependencies and builds
+node_modules/
+dist/
+
