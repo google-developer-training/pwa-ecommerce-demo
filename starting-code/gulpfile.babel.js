@@ -26,6 +26,7 @@
 
 import path from 'path';
 import gulp from 'gulp';
+import qunit from 'gulp-qunit';
 import del from 'del';
 import runSequence from 'run-sequence';
 import browserSync from 'browser-sync';
@@ -152,6 +153,13 @@ gulp.task('html', () => {
 
 // Clean output directory
 gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
+
+// Run unit tests
+gulp.task('test', function() {
+    return gulp.src('app/test/cart-test.html')
+        .pipe(qunit());
+});
+
 
 // Watch files for changes & reload
 gulp.task('serve', ['scripts', 'styles'], () => {
