@@ -37,6 +37,8 @@ import pkg from './package.json';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
+const transpiled_scripts = '.tmp/scripts';
+const transpiled_tests = '.tmp/test';
 
 // Lint JavaScript
 gulp.task('lint', () =>
@@ -105,12 +107,31 @@ gulp.task('styles', () => {
 // Concatenate and minify JavaScript. Optionally transpiles ES2015 code to ES5.
 // to enable ES2015 support remove the line `"only": "gulpfile.babel.js",` in the
 // `.babelrc` file.
+
+gulp.task('transpile', () => {
+    gulp.src('app/scripts/**/*.js')
+    .pipe($.newer(transpiled_scripts))
+    .pipe($.sourcemaps.init())
+    .pipe($.babel())
+    .pipe($.sourcemaps.write())
+    .pipe(gulp.dest(transpiled_scripts))
+
+    gulp.src('app/test/**/*.js')
+    .pipe($.newer(transpiled_tests))
+    .pipe($.sourcemaps.init())
+    .pipe($.babel())
+    .pipe($.sourcemaps.write())
+    .pipe(gulp.dest(transpiled_tests))
+
+});
+
 gulp.task('scripts', () =>
     gulp.src([
       // Note: Since we are not using useref in the scripts build pipeline,
       //       you need to explicitly list your scripts here in the right order
       //       to be correctly concatenated
-      './app/scripts/main.js'
+      './app/scripts/main.js',
+      './app/scripts/cart.js'
       // Other scripts
     ])
       .pipe($.newer('.tmp/scripts'))
