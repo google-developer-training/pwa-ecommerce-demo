@@ -5,7 +5,11 @@ import { products, find } from 'modules/products';
 
 export default class Cart {
   constructor () {
-    this.purchases = [];
+    this.orders = [];
+  }
+
+  findOrder(sku) {
+    return this.orders.find(product => product.sku === sku);
   }
 
   // Add the product with the specified sku and quantity to the cart.
@@ -14,24 +18,29 @@ export default class Cart {
   add(sku, quantity=1) {
     let product = find(sku);
     if (quantity < 0 || !product) return null;
-    let lineItem = { sku: (sku),
-      quantity: (quantity),
-      title: (product.title),
-      price: (product.price),
-      total: (quantity * product.price), };
-    this.purchases.push(lineItem);
-    return lineItem;
+
+    let oldOrder = this.findOrder(sku);
+    let order = oldOrder ||
+      { sku: (sku),
+        quantity: 0,
+        title: (product.title),
+        price: (product.price),
+      };
+    order.quantity += quantity;
+    order.total = product.price * order.quantity;
+    if (!oldOrder) this.orders.push(order);
+    return order;
   }
 
   get length() {
-    return this.purchases.length;
+    return this.orders.length;
   }
 
   get total() {
     return 0;
   }
 
-  get orders() {
-    return this.purchases;
+  get cart() {
+    return this.orders;
   }
 }
