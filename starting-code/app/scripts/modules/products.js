@@ -22,7 +22,7 @@ let products = [
     description: 'PUT TEXT HERE', price: 100.00, },
 ];
 
-export function find(sku) {
+export function findProduct(sku) {
   return products.find(product => product.sku === sku);
 }
 

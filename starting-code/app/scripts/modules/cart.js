@@ -1,7 +1,7 @@
 
 //jshint esversion: 6
 
-import { products, find } from 'modules/products';
+import { products, findProduct } from 'modules/products';
 
 export default class Cart {
   constructor () {
@@ -16,20 +16,45 @@ export default class Cart {
   // sku must match one of the products, quantity must be > 0
   // Returns a cart entry if successful, null otherwise
   add(sku, quantity=1) {
-    let product = find(sku);
+    let product = findProduct(sku);
     if (quantity < 0 || !product) return null;
+    let probe = this.findOrder(sku);
+    if (probe) {
+      return this.change(sku, probe.quantity + quantity);
+    }
 
-    let oldOrder = this.findOrder(sku);
-    let order = oldOrder ||
-      { sku: (sku),
-        quantity: 0,
+    let order = {
+        sku: (sku),
+        quantity: (quantity),
         title: (product.title),
         price: (product.price),
+        total: (quantity * product.price)
       };
-    order.quantity += quantity;
-    order.total = product.price * order.quantity;
-    if (!oldOrder) this.orders.push(order);
+    this.orders.push(order);
     return order;
+  }
+
+  remove(sku) {
+    let index = this.orders.findIndex(product => product.sku === sku);
+    if (index >= 0) {
+      this.orders.splice(index, 1);
+    }
+  }
+
+  change(sku, quantity) {
+    if (quantity <= 0) {
+      this.remove(sku);
+      return null;
+    } else {
+      let order = this.findOrder(sku);
+      order.quantity = quantity;
+      order.total = order.price * order.quantity;
+      return order;
+    }
+  }
+
+  reset() {
+    this.orders = [];
   }
 
   get length() {

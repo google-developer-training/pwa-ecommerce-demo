@@ -55,3 +55,24 @@ QUnit.test('merging orders for the same SKU', assert => {
     assert.ok(entry.price, 'price');
     assert.equal(2 * entry.price, entry.total, 'total');
   });
+
+QUnit.test('resetting the order count', assert => {
+    const cart = new Cart();
+    cart.add('C10', 4);
+    cart.change('C10', 2);
+    assert.equal(cart.findOrder('C10').quantity, 2, 'removed');
+  });
+
+QUnit.test('removing an order', assert => {
+    const cart = new Cart();
+    cart.add('C10');
+    cart.remove('C10');
+    assert.equal(cart.findOrder('C10'), null, 'removed');
+  });
+
+QUnit.test('resetting the cart', assert => {
+    const cart = new Cart();
+    cart.add('C10');
+    cart.reset();
+    assert.equal(cart.length, 0, 'removed');
+  });
