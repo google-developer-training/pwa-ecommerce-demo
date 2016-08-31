@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Test runner</title>
+  <link rel="stylesheet" href="../../node_modules/qunitjs/qunit/qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+  <script src="../../node_modules/requirejs/require.js"></script>
+  <script>
+    require.config({
+            baseUrl: '../scripts',
+    });
+  </script>
+  <script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
+
+  <script>
+  (function() {
+    'use strict';
+
+    QUnit.config.autostart = false;
+
+    require(['./js/start.js'], function() {
+      QUnit.load();
+      QUnit.start();
+    });
+  }());
+</script>
+
+</body>
+</html>

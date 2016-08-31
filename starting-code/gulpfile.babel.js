@@ -17,6 +17,9 @@
  *
  */
 
+// jshint esversion: 6
+// jshint strict: global
+
 'use strict';
 
 // This gulpfile makes use of new JavaScript features.
@@ -37,8 +40,12 @@ import pkg from './package.json';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
-const transpiled_scripts = '.tmp/scripts';
-const transpiled_tests = '.tmp/test';
+const transpiledScripts = '.tmp/scripts';
+const transpiledTests = '.tmp/test';
+const babelOptions = {
+	presets: ['es2015'],
+	plugins: ['transform-es2015-modules-amd']
+};
 
 // Lint JavaScript
 gulp.task('lint', () =>
@@ -110,18 +117,18 @@ gulp.task('styles', () => {
 
 gulp.task('transpile', () => {
     gulp.src('app/scripts/**/*.js')
-    .pipe($.newer(transpiled_scripts))
+    .pipe($.newer(transpiledScripts))
     .pipe($.sourcemaps.init())
-    .pipe($.babel())
+    .pipe($.babel(babelOptions))
     .pipe($.sourcemaps.write())
-    .pipe(gulp.dest(transpiled_scripts))
+    .pipe(gulp.dest(transpiledScripts));
 
     gulp.src('app/test/**/*.js')
-    .pipe($.newer(transpiled_tests))
+    .pipe($.newer(transpiledTests))
     .pipe($.sourcemaps.init())
-    .pipe($.babel())
+    .pipe($.babel(babelOptions))
     .pipe($.sourcemaps.write())
-    .pipe(gulp.dest(transpiled_tests))
+    .pipe(gulp.dest(transpiledTests));
 
 });
 
@@ -176,9 +183,14 @@ gulp.task('html', () => {
 gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 
 // Run unit tests
-gulp.task('test', function() {
-    return gulp.src('app/test/cart-test.html')
-        .pipe(qunit());
+gulp.task('copy test harness', function() {
+  return gulp.src(['app/test/*.html'])
+      .pipe(gulp.dest('.tmp/test'));
+});
+
+gulp.task('test', ['transpile', 'copy test harness'], function() {
+  return gulp.src('.tmp/test/test-runner.html')
+      .pipe(qunit());
 });
 
 
