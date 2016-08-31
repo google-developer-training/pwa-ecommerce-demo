@@ -22,4 +22,8 @@ let products = [
     description: 'PUT TEXT HERE', price: 100.00, },
 ];
 
+export function find(sku) {
+  return products.find(product => product.sku === sku);
+}
+
 export default products;
