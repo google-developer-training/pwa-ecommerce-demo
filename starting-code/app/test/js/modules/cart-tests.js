@@ -1,10 +1,10 @@
 // jshint esversion: 6
-import cart from 'modules/cart';
+import Cart from 'modules/cart';
 
-QUnit.module('my example tests');
+QUnit.module('Cart tests');
 
-QUnit.test('will this work?', assert => {
-     const expected = 'hello foo';
-
-     assert.equal(cart.message, expected);
-});
+QUnit.test('new cart', assert => {
+    const cart = new Cart();
+    assert.equal(cart.length, 0, 'cart starts empty');
+    assert.equal(cart.total, 0, 'no price');
+  });
