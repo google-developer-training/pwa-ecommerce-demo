@@ -46,6 +46,8 @@ QUnit.test('finding a new order', assert => {
     assert.equal(entry.price, entry.total, 'total');
   });
 
+// TODO confirm that prices are being summed properly
+
 QUnit.test('merging orders for the same SKU', assert => {
     const cart = new Cart();
     cart.add(c10);
