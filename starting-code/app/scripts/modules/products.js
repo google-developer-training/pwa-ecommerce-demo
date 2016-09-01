@@ -1,25 +1,28 @@
 // jshint esversion:6
+import Product from 'modules/product';
+
+//   constructor (sku, title, price, image, description='') {
 
 // Normally you would get these from a server
 let products = [
-  { sku: 'BarrelChair', image: 'BarrelChair.jpg', title: 'Barrel Chair',
-    description: 'PUT TEXT HERE', price: 100.00, },
-  { sku: 'C10', image: 'C10.jpg', title: 'C10 Chair',
-    description: 'PUT TEXT HERE', price: 100.00, },
-  { sku: 'Cl2', image: 'Cl2.jpg', title: 'CL2 Chair',
-    description: 'PUT TEXT HERE', price: 100.00, },
-  { sku: 'CP03_blue', image: 'CP03_blue.jpg', title: 'CP03 Chair',
-    description: 'PUT TEXT HERE', price: 100.00, },
-  { sku: 'CPC_RECYCLED', image: 'CPC_RECYCLED.jpg', title: 'CPC Upcycled',
-    description: 'PUT TEXT HERE', price: 100.00, },
-  { sku: 'CPFS', image: 'CPFS.jpg', title: 'CPFS',
-    description: 'PUT TEXT HERE', price: 100.00, },
-  { sku: 'CPO2_red', image: 'CPO2_red.jpg', title: 'CPO2',
-    description: 'PUT TEXT HERE', price: 100.00, },
-  { sku: 'CPT', image: 'CPT.jpg', title: 'CPT Table',
-    description: 'PUT TEXT HERE', price: 100.00, },
-  { sku: 'CS1', image: 'CS1.jpg', title: 'CS1 Sofa',
-    description: 'PUT TEXT HERE', price: 100.00, },
+  new Product('BarrelChair', 'Barrel Chair', 100.00, 'BarrelChair.jpg', 
+    'A lovely chair made from upcycled barrel staves.'),
+  new Product('C10', 'C10 Chair', 100.00, 'C10.jpg',
+    'PUT TEXT HERE'),
+  new Product('Cl2', 'CL2 Chair', 100.00, 'Cl2.jpg',
+    'PUT TEXT HERE'),
+  new Product('CP03_blue', 'CP03 Chair', 100.00, 'CP03_blue.jpg',
+    'PUT TEXT HERE'),
+  new Product('CPC_RECYCLED', 'CPC Upcycled', 100.00, 'CPC_RECYCLED.jpg',
+    'PUT TEXT HERE'),
+  new Product('CPFS', 'CPFS', 100.00, 'CPFS.jpg',
+    'PUT TEXT HERE'),
+  new Product('CPO2_red', 'CPO2', 100.00, 'CPO2_red.jpg',
+    'PUT TEXT HERE'),
+  new Product('CPT', 'CPT Table', 100.00, 'CPT.jpg',
+    'PUT TEXT HERE'),
+  new Product('CS1', 'CS1 Sofa', 100.00, 'CS1.jpg',
+    'PUT TEXT HERE'),
 ];
 
 export function findProduct(sku) {
