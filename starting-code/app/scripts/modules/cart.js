@@ -5,60 +5,49 @@ import { products, findProduct } from 'modules/products';
 
 export default class Cart {
   constructor () {
-    this.orders = [];
+    this.items = [];
   }
 
-  findOrder(sku) {
-    return this.orders.find(product => product.sku === sku);
+  findItem(sku) {
+    return this.items.find(item => item.sku === sku);
   }
 
-  // Add the product with the specified sku and quantity to the cart.
-  // sku must match one of the products, quantity must be > 0
-  // Returns a cart entry if successful, null otherwise
-  add(sku, quantity=1) {
-    let product = findProduct(sku);
+  add(product, quantity=1) {
     if (quantity < 0 || !product) return null;
-    let probe = this.findOrder(sku);
-    if (probe) {
-      return this.change(sku, probe.quantity + quantity);
+    let item = this.findItem(product.sku);
+    if (item) {
+      item.quantity += quantity;
+    } else {
+      item = new LineItem(product, quantity);
+      this.items.push(item);
     }
-
-    let order = {
-        sku: (sku),
-        quantity: (quantity),
-        title: (product.title),
-        price: (product.price),
-        total: (quantity * product.price)
-      };
-    this.orders.push(order);
-    return order;
+    return item;
   }
 
-  remove(sku) {
-    let index = this.orders.findIndex(product => product.sku === sku);
+  remove(product) {
+    let index = this.items.findIndex(item => item.sku === product.sku);
     if (index >= 0) {
-      this.orders.splice(index, 1);
+      this.items.splice(index, 1);
     }
   }
 
-  change(sku, quantity) {
+  change(product, quantity) {
     if (quantity <= 0) {
       this.remove(sku);
       return null;
     } else {
-      let order = this.findOrder(sku);
-      order.quantity = quantity;
-      order.total = order.price * order.quantity;
-      return order;
+      let item = this.findItem(product.sku);
+      item.quantity = quantity;
+      return item;
     }
   }
 
   reset() {
-    this.orders = [];
+    this.items = [];
   }
 
   get length() {
-    return this.orders.length;
+    return this.items.length;
   }
 
   get total() {
@@ -66,6 +55,38 @@ export default class Cart {
   }
 
   get cart() {
-    return this.orders;
+    return this.items;
   }
+}
+
+export class LineItem {
+  constructor(product, quantity) {
+    this.product = product;
+    this._quantity = quantity;
+  }
+
+  get title() {
+    return this.product.title;
+  }
+
+  get sku() {
+    return this.product.sku;
+  }
+
+  get price() {
+    return this.product.price;
+  }
+
+  get total() {
+    return this._quantity * this.product.price;
+  }
+
+  get quantity() {
+    return this._quantity;
+  }
+
+  set quantity(value) {
+    this._quantity = value < 0 ? 0 : value;
+  }
+
 }

@@ -1,5 +1,8 @@
 // jshint esversion: 6
 import Cart from 'modules/cart';
+import Product from 'modules/product';
+
+const c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
 
 QUnit.module('Cart');
 
@@ -11,7 +14,7 @@ QUnit.test('default values', assert => {
 
 QUnit.test('adding a valid order', assert => {
     const cart = new Cart();
-    let entry = cart.add('C10');
+    let entry = cart.add(c10);
     assert.equal(cart.length, 1, 'order count');
     assert.equal(entry.sku, 'C10', 'sku');
     assert.equal(entry.quantity, 1, 'quantity');
@@ -22,7 +25,7 @@ QUnit.test('adding a valid order', assert => {
 
   QUnit.test('adding a valid order with quantity > 1', assert => {
       const cart = new Cart();
-      let entry = cart.add('C10', 3);
+      let entry = cart.add(c10, 3);
       assert.equal(cart.length, 1, 'order count');
       assert.equal(entry.sku, 'C10', 'sku');
       assert.equal(entry.quantity, 3, 'quantity');
@@ -33,8 +36,8 @@ QUnit.test('adding a valid order', assert => {
 
 QUnit.test('finding a new order', assert => {
     const cart = new Cart();
-    cart.add('C10');
-    let entry = cart.findOrder('C10');
+    cart.add(c10);
+    let entry = cart.findItem(c10.sku);
     assert.equal(cart.length, 1, 'order count');
     assert.equal(entry.sku, 'C10', 'sku');
     assert.equal(entry.quantity, 1, 'quantity');
@@ -45,9 +48,9 @@ QUnit.test('finding a new order', assert => {
 
 QUnit.test('merging orders for the same SKU', assert => {
     const cart = new Cart();
-    cart.add('C10');
-    cart.add('C10');
-    let entry = cart.findOrder('C10');
+    cart.add(c10);
+    cart.add(c10);
+    let entry = cart.findItem(c10.sku);
     assert.equal(cart.length, 1, 'order count');
     assert.equal(entry.sku, 'C10', 'sku');
     assert.equal(entry.quantity, 2, 'quantity');
@@ -58,21 +61,21 @@ QUnit.test('merging orders for the same SKU', assert => {
 
 QUnit.test('resetting the order count', assert => {
     const cart = new Cart();
-    cart.add('C10', 4);
-    cart.change('C10', 2);
-    assert.equal(cart.findOrder('C10').quantity, 2, 'removed');
+    cart.add(c10, 4);
+    cart.change(c10, 2);
+    assert.equal(cart.findItem(c10.sku).quantity, 2, 'removed');
   });
 
 QUnit.test('removing an order', assert => {
     const cart = new Cart();
-    cart.add('C10');
-    cart.remove('C10');
-    assert.equal(cart.findOrder('C10'), null, 'removed');
+    cart.add(c10);
+    cart.remove(c10);
+    assert.equal(cart.findItem(c10.sku), null, 'removed');
   });
 
 QUnit.test('resetting the cart', assert => {
     const cart = new Cart();
-    cart.add('C10');
+    cart.add(c10.sku);
     cart.reset();
     assert.equal(cart.length, 0, 'removed');
   });
