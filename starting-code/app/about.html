@@ -41,14 +41,14 @@
             <div class="mdl-layout__header-row portfolio-navigation-row mdl-layout--large-screen-only">
                 <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
                   <a class="mdl-navigation__link" href="index.html">Shop</a>
-                  <a class="mdl-navigation__link is-active" href="about.html">About</a>
+                  <a class="mdl-navigation__link is-active" href="about.html">Cart</a>
                 </nav>
             </div>
         </header>
         <div class="mdl-layout__drawer mdl-layout--small-screen-only">
             <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
               <a class="mdl-navigation__link" href="index.html">Shop</a>
-              <a class="mdl-navigation__link is-active" href="about.html">About</a>
+              <a class="mdl-navigation__link is-active" href="about.html">Cart</a>
             </nav>
         </div>
         <main class="mdl-layout__content">
@@ -60,6 +60,24 @@
                     <div class="mdl-card__media">
                         <img class="article-image" src=" images/about-hero-image.jpg" border="0" alt="">
                     </div>
+                    <main class="mdl-layout__content">
+                        <table class="mdl-data-table md-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-tabe__cell-non-numeric">Material</th>
+                                    <th>Quantity</th>
+                                    <th>Unit price</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cart">
+                                <tr>
+                                    <td class="mdl-data-table__cell-non-numeric">Test</td>
+                                    <td>10</td>
+                                    <td>$50.0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </main>
                     <div class="mdl-card__supporting-text">
                         <p>
                             Sample application for Google's Progressive Web Applications instructor-led training.
@@ -100,6 +118,7 @@
         </main>
     </div>
     <script src="https://code.getmdl.io/1.2.0/material.min.js"></script>
+    <script src="/scripts/checkout.min.js"></script>
 </body>
 
 </html>

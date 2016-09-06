@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 // jshint esversion:6
-import Product from 'modules/product';
+import Product from './product';
 
 //   constructor (sku, title, price, image, description='') {
 

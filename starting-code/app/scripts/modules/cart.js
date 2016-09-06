@@ -16,11 +16,22 @@ limitations under the License.
 
 //jshint esversion: 6
 
-import { products, findProduct } from 'modules/products';
+import { products, findProduct } from './products';
 
 export default class Cart {
   constructor () {
     this.items = [];
+
+    let items = localStorage.getItem('items');
+    try {
+      items = JSON.parse(items);
+      for (let item of items) {
+        let product = findProduct(item.product._sku);
+        this.add(product, item._quantity);
+      }
+    } catch (e) {
+      this.items = [];
+    }
   }
 
   findItem(sku) {
@@ -36,6 +47,7 @@ export default class Cart {
       item = new LineItem(product, quantity);
       this.items.push(item);
     }
+    this._store();
     return item;
   }
 
@@ -44,21 +56,25 @@ export default class Cart {
     if (index >= 0) {
       this.items.splice(index, 1);
     }
+    this._store();
   }
 
   change(product, quantity) {
     if (quantity <= 0) {
       this.remove(sku);
+      this._store();
       return null;
     } else {
       let item = this.findItem(product.sku);
       item.quantity = quantity;
+      this._store();
       return item;
     }
   }
 
   reset() {
     this.items = [];
+    this._store();
   }
 
   get length() {
@@ -66,11 +82,19 @@ export default class Cart {
   }
 
   get total() {
-    return 0;
+    let total = 0;
+    for (let item of this.items) {
+      total += item.quantity;
+    }
+    return total;
   }
 
   get cart() {
     return this.items;
+  }
+
+  _store() {
+    let items = localStorage.setItem('items', JSON.stringify(this.items));
   }
 }
 

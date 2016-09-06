@@ -32,6 +32,9 @@ import gulp from 'gulp';
 import qunit from 'gulp-qunit';
 import del from 'del';
 import runSequence from 'run-sequence';
+import browserify from 'browserify';
+import babelify from 'babelify';
+import source from 'vinyl-source-stream';
 import browserSync from 'browser-sync';
 import swPrecache from 'sw-precache';
 import gulpLoadPlugins from 'gulp-load-plugins';
@@ -132,27 +135,43 @@ gulp.task('transpile', () => {
 
 });
 
-gulp.task('scripts', () =>
-    gulp.src([
-      // Note: Since we are not using useref in the scripts build pipeline,
-      //       you need to explicitly list your scripts here in the right order
-      //       to be correctly concatenated
-      './app/scripts/main.js',
-      './app/scripts/cart.js'
-      // Other scripts
-    ])
-      .pipe($.newer('.tmp/scripts'))
-      .pipe($.sourcemaps.init())
-      .pipe($.babel())
-      .pipe($.sourcemaps.write())
-      .pipe(gulp.dest('.tmp/scripts'))
-      .pipe($.concat('main.min.js'))
-      .pipe($.uglify({preserveComments: 'some'}))
-      // Output files
-      .pipe($.size({title: 'scripts'}))
-      .pipe($.sourcemaps.write('.'))
-      .pipe(gulp.dest('dist/scripts'))
-);
+gulp.task('scripts', () => {
+  browserify([
+    './app/scripts/main.js',
+    './app/scripts/checkout.js'
+  ], { debug: true })
+    .transform(babelify, { presets: ['es2015'] })
+    .bundle()
+    .pipe(source('main.min.js'))
+    .on('error', err => { console.log('ERROR:', err.message); })
+    .pipe(gulp.dest('dist/scripts/'));
+})
+
+// gulp.task('scripts', () =>
+//     // gulp.src([
+//     //   // Note: Since we are not using useref in the scripts build pipeline,
+//     //   //       you need to explicitly list your scripts here in the right order
+//     //   //       to be correctly concatenated
+//     //   './app/scripts/main.js',
+//     //   './app/scripts/cart.js'
+//     //   // Other scripts
+//     // ])
+//     browserify('./app/scripts/main.js', { debug: true })
+//       .transform(babelify, babelOptions)
+//       .bundle()
+//       .pipe(source('bundle.js'))
+//       .pipe($.newer('.tmp/scripts'))
+//       .pipe($.sourcemaps.init())
+//       .pipe($.babel())
+//       .pipe($.sourcemaps.write())
+//       .pipe(gulp.dest('.tmp/scripts'))
+//       .pipe($.concat('main.min.js'))
+//       .pipe($.uglify({preserveComments: 'some'}))
+//       // Output files
+//       .pipe($.size({title: 'scripts'}))
+//       .pipe($.sourcemaps.write('.'))
+//       .pipe(gulp.dest('dist/scripts'))
+// );
 
 // Scan your HTML for assets & optimize them
 gulp.task('html', () => {
@@ -236,7 +255,8 @@ gulp.task('serve:dist', ['default'], () =>
 gulp.task('default', ['clean'], cb =>
   runSequence(
     'styles',
-    ['lint', 'html', 'scripts', 'images', 'copy'],
+    ['html', 'scripts', 'images', 'copy'],
+    // ['lint', 'html', 'scripts', 'images', 'copy'],
     'generate-service-worker',
     cb
   )
