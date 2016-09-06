@@ -79,28 +79,70 @@ import products from './modules/products';
 
   // Your custom JavaScript goes here
   document.addEventListener('DOMContentLoaded', e => {
-    let items = document.querySelector('#items');
-    for (let product of products) {
+    if (location.pathname == '/cart.html') {
+      let _cart = document.querySelector('#cart');
+      let total = 0;
+      for (let product of cart.cart) {
+        let item = document.createElement('template');
+        item.innerHTML = `<tr>
+  <td class="mdl-data-table__cell-non-numeric">${product.title}</td>
+  <td>${product.quantity}</td>
+  <td>$${product.price}</td>
+  <td><img class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent delete" src="images/delete.svg"></td>
+</tr>`;
+        item.content.querySelector('.delete').addEventListener('click', e => {
+          cart.remove(product);
+          location.reload();
+        });
+        _cart.appendChild(item.content);
+
+        total += product.price * product.quantity;
+      }
       let item = document.createElement('template');
-      item.innerHTML = `<div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
-    <div class="mdl-card__media">
-      <img class="article-image" src=" images/products/${product.image}" border="0" alt="">
-    </div>
-    <div class="mdl-card__title">
-      <h2 class="mdl-card__title-text">${product.title}</h2>
-    </div>
-    <div class="mdl-card__supporting-text">
-      Enim labore aliqua consequat ut quis ad occaecat aliquip incididunt.
-    </div>
-    <div class="mdl-card__actions mdl-card--border">
-      <span class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent add-to-cart">Add to Cart</span>
-    </div>
-    </div>`;
-      item.content.querySelector('.add-to-cart').addEventListener('click', e => {
-        cart.add(product);
-        alert('Added '+product.title+' to the cart.');
+      item.innerHTML = `<tr>
+  <td class="mdl-data-table__cell-non-numeric">Total</td>
+  <td></td>
+  <td>$${total}</td>
+  <td></td>
+</tr>`;
+      _cart.appendChild(item.content);
+
+      if (!window.PaymentRequest) {
+        document.querySelector('#checkout_form').style = 'display:block;';
+      }
+
+      document.querySelector('#checkout').addEventListener('click', e => {
+        console.log('test');
       });
-      items.appendChild(item.content);
+    } else {
+      let dialog = document.querySelector('#dialog');
+      document.querySelector('#close').addEventListener('click', e => {
+        dialog.close();
+      });
+
+      let items = document.querySelector('#items');
+      for (let product of products) {
+        let item = document.createElement('template');
+        item.innerHTML = `<div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+  <div class="mdl-card__media">
+    <img class="article-image" src=" images/products/${product.image}" border="0" alt="">
+  </div>
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">${product.title}</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    Enim labore aliqua consequat ut quis ad occaecat aliquip incididunt.
+  </div>
+  <div class="mdl-card__actions mdl-card--border">
+    <span class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent add-to-cart">Add to Cart</span>
+  </div>
+</div>`;
+        item.content.querySelector('.add-to-cart').addEventListener('click', e => {
+          cart.add(product);
+          dialog.showModal();
+        });
+        items.appendChild(item.content);
+      }
     }
   });
 })();

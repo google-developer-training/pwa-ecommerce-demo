@@ -137,8 +137,7 @@ gulp.task('transpile', () => {
 
 gulp.task('scripts', () => {
   browserify([
-    './app/scripts/main.js',
-    './app/scripts/checkout.js'
+    './app/scripts/main.js'
   ], { debug: true })
     .transform(babelify, { presets: ['es2015'] })
     .bundle()

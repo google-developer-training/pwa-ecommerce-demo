@@ -182,3 +182,11 @@ footer {
   background-image: url(../images/footer-background.png);
   background-size: cover;
 }
+
+img.delete {
+  height: 24px;
+}
+
+fieldset {
+  margin: 35px 0;
+}
