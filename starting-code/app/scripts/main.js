@@ -19,6 +19,7 @@
 /* eslint-env browser */
 import Cart from './modules/cart';
 import products from './modules/products';
+import processPayment from './modules/payment';
 
 (function() {
 'use strict';
@@ -79,6 +80,11 @@ import products from './modules/products';
 
   // Your custom JavaScript goes here
   document.addEventListener('DOMContentLoaded', e => {
+    let dialog = document.querySelector('#dialog');
+    document.querySelector('#close').addEventListener('click', e => {
+      dialog.close();
+    });
+
     if (location.pathname == '/cart.html') {
       let _cart = document.querySelector('#cart');
       let total = 0;
@@ -96,7 +102,7 @@ import products from './modules/products';
         });
         _cart.appendChild(item.content);
 
-        total += product.price * product.quantity;
+        total += product.total;
       }
       let item = document.createElement('template');
       item.innerHTML = `<tr>
@@ -108,18 +114,45 @@ import products from './modules/products';
       _cart.appendChild(item.content);
 
       if (!window.PaymentRequest) {
-        document.querySelector('#checkout_form').style = 'display:block;';
+        document.querySelector('#form').style = 'display:block;';
       }
 
-      document.querySelector('#checkout').addEventListener('click', e => {
-        console.log('test');
-      });
-    } else {
-      let dialog = document.querySelector('#dialog');
-      document.querySelector('#close').addEventListener('click', e => {
-        dialog.close();
+      let checkout_form = document.querySelector('#checkout_form');
+
+      checkout_form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        var data = new FormData(e.target);
+
+        if (!window.PaymentRequest) {
+          fetch('/checkout', {
+            method: 'POST',
+            credentials: 'include',
+            body: data
+          }).then(result => {
+            if (result.status === 200) {
+              return result.json();
+            } else {
+              throw 'Payment failure';
+            }
+          }).then(result => {
+            location.href = '/checkout.html';
+          }).catch(e => {
+            dialog.showModal();
+          });
+          return;
+        }
+
+        processPayment(cart)
+        .then(result => {
+          location.href = '/checkout.html';
+        }).catch(e => {
+          // TODO: failure notice
+          dialog.showModal();
+        });
       });
 
+    } else {
       let items = document.querySelector('#items');
       for (let product of products) {
         let item = document.createElement('template');

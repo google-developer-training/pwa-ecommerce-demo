@@ -89,6 +89,14 @@ export default class Cart {
     return total;
   }
 
+  get totalPrice() {
+    let total = 0;
+    for (let item of this.items) {
+      total += item.total;
+    }
+    return total;
+  }
+
   get cart() {
     return this.items;
   }
