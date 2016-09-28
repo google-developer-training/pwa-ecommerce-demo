@@ -46,8 +46,7 @@ const reload = browserSync.reload;
 const transpiledScripts = '.tmp/scripts';
 const transpiledTests = '.tmp/test';
 const babelOptions = {
-	presets: ['es2015'],
-	plugins: ['transform-es2015-modules-amd']
+	presets: ['es2015']
 };
 
 // Lint JavaScript
