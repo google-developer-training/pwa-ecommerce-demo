@@ -257,9 +257,9 @@ gulp.task('serve:dist', ['default'], () =>
     // https: true,
     server: 'dist',
     port: 3001,
-		middleware: function(req, res, next) {
-			var url = require('url');
-    	var urlObj = url.parse(req.url, true),
+		middleware: [(req, res, next) => {
+			const url = require('url');
+    	let urlObj = url.parse(req.url, true),
         method = req.method;
 		  if (method !== 'POST' || urlObj.path !== '/checkout' ) {
 				next();
@@ -268,7 +268,7 @@ gulp.task('serve:dist', ['default'], () =>
 				res.writeHead(200, {'Content-Type': 'text/html'});
 				res.end('<h1>Success</h1>');
 			}
-    }
+    }]
   })
 );
 
