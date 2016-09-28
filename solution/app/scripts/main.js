@@ -17,6 +17,8 @@
  *
  */
 /* eslint-env browser */
+// jshint esversion: 6
+
 import Cart from './modules/cart';
 import products from './modules/products';
 import processPayment from './modules/payment';

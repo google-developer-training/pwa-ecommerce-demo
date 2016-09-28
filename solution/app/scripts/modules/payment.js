@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-// jshint esversion: 6
+// jshint esversion: 6, sub:true
 import Cart from './cart';
 import Product from './product';
 
@@ -76,7 +76,7 @@ export default function processPayment(cart) {
     let shippingOptions = [
       toShippingOption(_shippingOptions['standard']),
       toShippingOption(_shippingOptions['express'])
-    ]
+    ];
     let total = cart.totalPrice;
 
     for (let item of cart.cart) {
