@@ -138,8 +138,10 @@ import processPayment from './modules/payment';
               throw 'Payment failure';
             }
           }).then(result => {
+            console.log('Payment response: ' + JSON.stringify(result));
             location.href = '/checkout.html';
           }).catch(e => {
+            console.log('Payment failed due to exception: ' + e);
             dialog.showModal();
           });
           return;

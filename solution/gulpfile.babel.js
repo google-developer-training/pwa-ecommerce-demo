@@ -208,16 +208,28 @@ gulp.task('serve', ['default'], () =>
     // https: true,
     server: 'dist',
     port: 3001,
+		// Implement a simple server running at /checkout.
+		// This logs the form data and returns a dummy payment response.
 		middleware: [(req, res, next) => {
 			const url = require('url');
+			const parseBody = require('body/form');
     	let urlObj = url.parse(req.url, true),
         method = req.method;
 		  if (method !== 'POST' || urlObj.path !== '/checkout' ) {
 				next();
 			} else {
-				// process POST /checkout
-				res.writeHead(200, {'Content-Type': 'text/html'});
-				res.end('<h1>Success</h1>');
+			  parseBody(req, (err, text) => {
+					if (err) {
+						res.status = 500;
+						res.end('Failed with error ' + err);
+					} else {
+						console.log(text);
+						res.writeHead(200, {'Content-Type': 'application/json'});
+						// A successful payment request always returns a provider-specific
+						// JSON object. We're looknig for "success" in the code later.
+						res.end('{"success": true, "id": 12345}');
+					}
+				});
 			}
     }]
   })
