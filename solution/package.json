@@ -32,6 +32,7 @@
     "gulp-useref": "^3.0.0",
     "psi": "^2.0.2",
     "qunit": "^0.9.1",
+    "qunitjs": "^2.0.1",
     "run-sequence": "^1.0.1",
     "sw-precache": "^3.2.0",
     "sw-toolbox": "^3.0.1",

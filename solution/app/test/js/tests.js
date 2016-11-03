@@ -14,5 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 //jshint esversion:6
+import QUnit from 'qunitjs';
 import {} from './modules/cart-tests.js';
 import {} from './modules/payment-tests.js';

@@ -24,28 +24,9 @@ limitations under the License.
 <body>
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
-  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+  <!-- TODO consider importing the babel polyfill in the test module directly -->
   <script src="../../node_modules/babel-polyfill/dist/polyfill.js"></script>
-  <script src="../../node_modules/requirejs/require.js"></script>
-  <script>
-    require.config({
-            baseUrl: '../scripts',
-    });
-  </script>
-  <script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
-
-  <script>
-  (function() {
-    'use strict';
-
-    QUnit.config.autostart = false;
-
-    require(['./js/start.js'], function() {
-      QUnit.load();
-      QUnit.start();
-    });
-  }());
-</script>
+  <script src="../../.tmp/test/tests.js"></script>
 
 </body>
 </html>

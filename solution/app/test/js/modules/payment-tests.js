@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 // jshint esversion: 6
-import Cart from 'modules/cart';
-import Product from 'modules/product';
-import pay from 'modules/payment';
+import Cart from 'cart';
+import Product from 'product';
+import pay from 'payment';
 
 QUnit.module('Payments');
 

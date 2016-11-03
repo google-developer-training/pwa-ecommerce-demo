@@ -43,8 +43,6 @@ import pkg from './package.json';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
-const transpiledScripts = '.tmp/scripts';
-const transpiledTests = '.tmp/test';
 const babelOptions = {
 	presets: ['es2015']
 };
@@ -123,36 +121,26 @@ gulp.task('styles', () => {
     .pipe(gulp.dest('dist/styles'));
 });
 
-// Concatenate and minify JavaScript. Optionally transpiles ES2015 code to ES5.
-// to enable ES2015 support remove the line `"only": "gulpfile.babel.js",` in the
-// `.babelrc` file.
-
-gulp.task('transpile', () => {
-    gulp.src('app/scripts/**/*.js')
-    .pipe($.newer(transpiledScripts))
-    .pipe($.sourcemaps.init())
-    .pipe($.babel(babelOptions))
-    .pipe($.sourcemaps.write())
-    .pipe(gulp.dest(transpiledScripts));
-
-    gulp.src('app/test/**/*.js')
-    .pipe($.newer(transpiledTests))
-    .pipe($.sourcemaps.init())
-    .pipe($.babel(babelOptions))
-    .pipe($.sourcemaps.write())
-    .pipe(gulp.dest(transpiledTests));
-
-});
-
 gulp.task('scripts', () => {
   browserify([
     './app/scripts/main.js'
   ], { debug: true })
-    .transform(babelify, { presets: ['es2015'] })
+    .transform(babelify, { presets: ['es2015']  })
     .bundle()
     .pipe(source('main.min.js'))
     .on('error', err => { console.log('ERROR:', err.message); })
     .pipe(gulp.dest('dist/scripts/'));
+});
+
+gulp.task('package tests', () => {
+  browserify([
+    './app/test/js/tests.js'
+  ], { paths:['app/scripts/modules', 'test/js/modules', 'node_modules/'] ,debug: true })
+    .transform(babelify, { presets: ['es2015']  })
+    .bundle()
+    .pipe(source('tests.js'))
+    .on('error', err => { console.log('ERROR:', err.message); })
+    .pipe(gulp.dest('.tmp/test/'));
 });
 
 // Scan your HTML for assets & optimize them
@@ -184,13 +172,8 @@ gulp.task('html', () => {
 gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 
 // Run unit tests
-gulp.task('copy test harness', function() {
-  return gulp.src(['app/test/*.html'])
-      .pipe(gulp.dest('.tmp/test'));
-});
-
-gulp.task('test', ['transpile', 'copy test harness'], function() {
-  return gulp.src('.tmp/test/test-runner.html')
+gulp.task('test', ['package tests'], function() {
+  return gulp.src('app/test/test-runner.html')
       .pipe(qunit());
 });
 

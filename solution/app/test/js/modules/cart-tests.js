@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 // jshint esversion: 6
-import Cart from 'modules/cart';
-import Product from 'modules/product';
+import Cart from 'cart';
+import Product from 'product';
 
 const c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
 
