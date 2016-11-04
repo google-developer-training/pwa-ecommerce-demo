@@ -62,8 +62,9 @@ export default class Cart {
   }
 
   change(product, quantity) {
+    let item = this.findItem(product.sku);
     if (quantity <= 0) {
-      this.remove(sku);
+      this.remove(item);
       this._store();
       return null;
     } else {
@@ -104,7 +105,7 @@ export default class Cart {
   }
 
   _store() {
-    let items = localStorage.setItem('items', JSON.stringify(this.items));
+//     let items = localStorage.setItem('items', JSON.stringify(this.items));
   }
 }
 

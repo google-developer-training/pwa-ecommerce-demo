@@ -90,6 +90,13 @@ QUnit.test('removing an order', assert => {
     assert.equal(cart.findItem(c10.sku), null, 'removed');
   });
 
+QUnit.test('setting quantity to 0 removes an item', assert => {
+    const cart = new Cart();
+    cart.add(c10, 3);
+    cart.change(c10, 0);
+    assert.equal(cart.findItem(c10.sku), null, 'removed');
+  });
+
 QUnit.test('resetting the cart', assert => {
     const cart = new Cart();
     cart.add(c10.sku);
