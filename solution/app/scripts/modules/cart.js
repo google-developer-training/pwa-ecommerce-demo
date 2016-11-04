@@ -21,18 +21,20 @@ import { products, findProduct } from './products';
 export default class Cart {
   constructor () {
     this.items = [];
-
-    let items = localStorage.getItem('items');
-    try {
-      items = JSON.parse(items);
-      for (let item of items) {
-        let product = findProduct(item.product._sku);
-        this.add(product, item._quantity);
-      }
-    } catch (e) {
-      this.items = [];
-    }
   }
+
+  /* TODO Need to incorporate the code for loading the cart as shown below
+  let items = localStorage.getItem('items');
+  try {
+    items = JSON.parse(items);
+    for (let item of items) {
+      let product = findProduct(item.product._sku);
+      this.add(product, item._quantity);
+    }
+  } catch (e) {
+    this.items = [];
+  }
+  */
 
   findItem(sku) {
     return this.items.find(item => item.sku === sku);
