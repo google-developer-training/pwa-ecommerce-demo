@@ -16,6 +16,8 @@ limitations under the License.
 // jshint esversion: 6
 import Cart from 'cart';
 import Product from 'product';
+import LocalStorage from 'local-storage';
+import sinon from 'sinon-es6';
 
 const c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
 
@@ -102,4 +104,15 @@ QUnit.test('resetting the cart', assert => {
     cart.add(c10.sku);
     cart.reset();
     assert.equal(cart.length, 0, 'removed');
+  });
+
+QUnit.module('Cart storage');
+
+QUnit.test('uses the adaptor to save', assert => {
+    const adaptor = new LocalStorage();
+    let saveStub = sinon.stub(adaptor, 'save');
+    const cart = new Cart(adaptor);
+    cart.add(c10.sku);
+    cart.save();
+    assert.ok(saveStub.called, 'value saved');
   });

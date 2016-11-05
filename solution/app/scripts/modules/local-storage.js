@@ -13,5 +13,28 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-//jshint esversion:6
-import {} from './modules/cart-tests';
+
+//jshint esversion: 6
+export default class LocalStorage {
+  constructor (id='mfs-cart-items') {
+    this._id = id;
+  }
+
+  get id() {
+    return _id;
+  }
+
+  /* Takes an array of items and writes JSON to local storage */
+  save(items) {
+    if (!items || !items.length) return;
+    let json = JSON.stringify(items);
+    localStorage[id] = json;
+  }
+
+  load() {
+    let json = localStorage[id];
+    if (!json) return [];
+    return JSON.parse(json);
+  }
+
+}

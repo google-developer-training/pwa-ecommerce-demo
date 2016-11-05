@@ -135,7 +135,7 @@ gulp.task('scripts', () => {
 gulp.task('package tests', () => {
   browserify([
     './app/test/tests.js'
-  ], { paths:['app/scripts/modules', 'test/modules', 'node_modules/'] ,debug: true })
+  ], { paths:['app/scripts/modules/', 'test/modules/', 'node_modules/sinon/pkg/', 'node_modules/'] ,debug: true })
     .transform(babelify, { presets: ['es2015']  })
     .bundle()
     .pipe(source('tests.js'))

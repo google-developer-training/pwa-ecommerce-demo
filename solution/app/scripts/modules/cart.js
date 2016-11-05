@@ -16,11 +16,12 @@ limitations under the License.
 
 //jshint esversion: 6
 
-import { products, findProduct } from './products';
+import { products, findProduct } from 'products';
 
 export default class Cart {
-  constructor () {
+  constructor (adaptor) {
     this.items = [];
+    this.adaptor = adaptor;
   }
 
   /* TODO Need to incorporate the code for loading the cart as shown below
@@ -49,7 +50,6 @@ export default class Cart {
       item = new LineItem(product, quantity);
       this.items.push(item);
     }
-    this._store();
     return item;
   }
 
@@ -58,26 +58,22 @@ export default class Cart {
     if (index >= 0) {
       this.items.splice(index, 1);
     }
-    this._store();
   }
 
   change(product, quantity) {
     let item = this.findItem(product.sku);
     if (quantity <= 0) {
       this.remove(item);
-      this._store();
       return null;
     } else {
       let item = this.findItem(product.sku);
       item.quantity = quantity;
-      this._store();
       return item;
     }
   }
 
   reset() {
     this.items = [];
-    this._store();
   }
 
   get length() {
@@ -104,8 +100,10 @@ export default class Cart {
     return this.items;
   }
 
-  _store() {
-//     let items = localStorage.setItem('items', JSON.stringify(this.items));
+  save() {
+    if (this.adaptor) {
+      this.adaptor.save(this.items);
+    }
   }
 }
 
