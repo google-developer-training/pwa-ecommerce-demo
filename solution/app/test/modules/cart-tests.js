@@ -114,5 +114,14 @@ QUnit.test('uses the adaptor to save', assert => {
     const cart = new Cart(adaptor);
     cart.add(c10.sku);
     cart.save();
-    assert.ok(saveStub.called, 'value saved');
+    assert.ok(saveStub.called, 'items saved');
   });
+
+  QUnit.test('uses the adaptor to load', assert => {
+      const adaptor = new LocalStorage();
+      let saveStub = sinon.stub(adaptor, 'load');
+      const cart = new Cart(adaptor);
+      cart.add(c10.sku);
+      cart.load();
+      assert.ok(saveStub.called, 'items loaded');
+    });
