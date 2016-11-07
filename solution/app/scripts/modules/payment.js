@@ -77,7 +77,7 @@ export default function processPayment(cart) {
       toShippingOption(_shippingOptions['standard']),
       toShippingOption(_shippingOptions['express'])
     ];
-    let total = cart.totalPrice;
+    let total = cart.total;
 
     for (let item of cart.cart) {
       displayItems.push({

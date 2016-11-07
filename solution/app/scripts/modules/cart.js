@@ -67,15 +67,15 @@ export default class Cart {
     return this.items.length;
   }
 
-  get total() {
-    let total = 0;
+  get count() {
+    let count = 0;
     for (let item of this.items) {
-      total += item.quantity;
+      count += item.quantity;
     }
-    return total;
+    return count;
   }
 
-  get totalPrice() {
+  get total() {
     let total = 0;
     for (let item of this.items) {
       total += item.total;
@@ -105,7 +105,7 @@ export default class Cart {
       this.items = [];
     }
   }
-  
+
 }
 
 export class LineItem {
