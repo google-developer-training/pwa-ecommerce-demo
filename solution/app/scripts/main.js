@@ -87,6 +87,7 @@ import processPayment from 'payment';
       dialog.close();
     });
 
+    // TODO replace with cart view
     if (location.pathname == '/cart.html') {
       let _cart = document.querySelector('#cart');
       let total = 0;
@@ -98,6 +99,7 @@ import processPayment from 'payment';
   <td>$${product.price}</td>
   <td><img class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent delete" src="images/delete.svg"></td>
 </tr>`;
+  // TODO cart view needs its click handler
         item.content.querySelector('.delete').addEventListener('click', e => {
           cart.remove(product);
           location.reload();
@@ -110,11 +112,12 @@ import processPayment from 'payment';
       item.innerHTML = `<tr>
   <td class="mdl-data-table__cell-non-numeric">Total</td>
   <td></td>
-  <td>$${total}</td>
+  <td id="cart-total">$${total}</td>
   <td></td>
 </tr>`;
       _cart.appendChild(item.content);
 
+      // TODO add payment form, logic
       if (!window.PaymentRequest) {
         document.querySelector('#form').style = 'display:block;';
       }
@@ -157,6 +160,7 @@ import processPayment from 'payment';
       });
 
     } else {
+      // TODO add product view / shop view
       let items = document.querySelector('#items');
       for (let product of products) {
         let item = document.createElement('template');
