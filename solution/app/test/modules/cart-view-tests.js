@@ -17,6 +17,7 @@ limitations under the License.
 import Cart from 'cart';
 import CartView from 'cart-view';
 import Product from 'product';
+import $ from 'jquery';
 
 QUnit.module('Cart-view', {beforeEach: () => {
   let fixture = document.getElementById('qunit-fixture');
@@ -38,28 +39,28 @@ QUnit.test('empty cart adds no items', assert => {
   assert.ok(!table.hasChildNodes(), 'cart template is empty after render');
   });
 
-  QUnit.test('single item renders a single row', assert => {
-    let cart = new Cart();
-    let c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
-    cart.add(c10);
+QUnit.test('single item renders a single row', assert => {
+  let cart = new Cart();
+  let c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
+  cart.add(c10);
 
-    let view = new CartView(cart, 'cart');
-    view.render();
-    let table = document.getElementById('cart');
-    let items = table.querySelectorAll(view.itemSelector);
-    assert.equal(items.length, 1, 'rows rendered');
-    });
+  let view = new CartView(cart, 'cart');
+  view.render();
+  let table = document.getElementById('cart');
+  let items = table.querySelectorAll(view.itemSelector);
+  assert.equal(items.length, 1, 'rows rendered');
+  });
 
-  QUnit.test('single item renders price', assert => {
-    let cart = new Cart();
-    let c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
-    cart.add(c10);
+QUnit.test('single item renders price', assert => {
+  let cart = new Cart();
+  let c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
+  cart.add(c10);
 
-    let view = new CartView(cart, 'cart');
-    view.render();
-    let total = document.getElementById('cart-total');
-    assert.equal(total.innerText, '$100', 'total');
-    });
+  let view = new CartView(cart, 'cart');
+  view.render();
+  let total = document.getElementById('cart-total');
+  assert.equal(total.innerText, '$100', 'total');
+  });
 
 QUnit.test('two items', assert => {
   let cart = new Cart();
@@ -87,3 +88,35 @@ QUnit.test('dual items render price', assert => {
   let total = document.getElementById('cart-total');
   assert.equal(total.innerText, '$250', 'total');
   });
+
+QUnit.test('click to delete item updates cart', assert => {
+  let cart = new Cart();
+  let c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
+  cart.add(c10);
+
+  let view = new CartView(cart, 'cart');
+  view.render();
+  let button = document.querySelector('button.mdl-button');
+  assert.equal(cart.count, 1, 'item exists prior to click');
+  assert.ok(button, "click target found");
+  $(button).trigger($.Event("click"));
+  assert.equal(cart.count, 0, 'item count after deletion');
+  });
+
+QUnit.test('click to delete item removes row', assert => {
+  let cart = new Cart();
+  let c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
+  let cl2 = new Product('Cl2', 'CL2 Chair', 150.00, 'Cl2.jpg', 'PUT TEXT HERE');
+  cart.add(c10);
+  cart.add(cl2);
+
+  let view = new CartView(cart, 'cart');
+  view.render();
+  let button = document.querySelector('button.mdl-button');
+  let c10row = document.querySelector('tr[data-sku=C10]');
+  assert.ok(document.querySelector('tr[data-sku=C10]'), 'c10 exists prior to click');
+  assert.ok(document.querySelector('tr[data-sku=Cl2]'), 'Cl2 exists prior to click');
+  $(button).trigger($.Event("click"));
+  assert.ok(!document.querySelector('tr[data-sku=C10]'), 'c10 removed');
+  assert.ok(document.querySelector('tr[data-sku=Cl2]'), 'Cl2 exists after click');
+});

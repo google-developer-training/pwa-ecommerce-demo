@@ -22,6 +22,7 @@ export default class CartView {
     this._containerId = containerId;
     this._element = 'tr';
     this._elementClass = 'product';
+    this._deleteHandler = this._handleDelete.bind(this);
   }
 
   render () {
@@ -29,19 +30,42 @@ export default class CartView {
     container.innerHTML = ''; // remove all children
     for (let product of this._cart.cart) {
       let placeholder = document.createElement('tbody');
+      // TODO add mdl "delete" icon
       placeholder.innerHTML = `<tr class="product" data-sku="${product.sku}">
         <td class="mdl-data-table__cell-non-numeric">${product.title}</td>
         <td>${product.quantity}</td>
         <td>$${product.price}</td>
-        <td><img class="mdl-button mdl-button--colored mdl-js-button
+        <td><button class="mdl-button mdl-button--colored mdl-js-button
               mdl-js-ripple-effect mdl-button--accent delete"
-              src="images/delete.svg"></td>
+              data-sku="${product.sku}">
+            </button>
+        </td>
       </tr>`;
       container.appendChild(placeholder.firstElementChild); // WARN: no ie8
     }
     // Add the total price
     document.getElementById('cart-total').innerText = `$${this._cart.total}`;
-    // TODO Attach a click handler for delete. Sat a data- attribute using setAttribute
+    // Capture delete events (clicks) as they bubble up
+    // N.B. Duplicate listeners will be discarded, so safe to call on each render
+    // (e.g. in case the container has been replaced)
+    container.addEventListener('click', this._deleteHandler, false);
+  }
+
+  removeFromView(sku) {
+    let container = document.getElementById(this._containerId);
+    let row = container.querySelector(`tr[data-sku=${sku}]`);
+    if (row) {
+      row.parentNode.removeChild(row);
+    }
+  }
+
+  _handleDelete(event) {
+    event.preventDefault();
+    var sku = event.target.dataset.sku;
+    if (!sku) throw new Error('could not find sku, data- attrs not supported?');
+    var product = this._cart.findItem(sku);
+    this._cart.remove(product);
+    this.removeFromView(sku);
   }
 
   get itemSelector() {
