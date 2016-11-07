@@ -35,7 +35,7 @@ module.exports = function(config) {
       debug: true,
       transform: [['babelify', {presets: ['es2015']}]],
       paths: ['app/scripts/modules/', 'test/modules/',
-              'node_modules/sinon/pkg/', 'node_modules/']
+              'node_modules/sinon/pkg/']
     },
 
     client: {

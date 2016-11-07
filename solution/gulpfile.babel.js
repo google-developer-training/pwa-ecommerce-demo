@@ -29,8 +29,8 @@
 
 import path from 'path';
 import gulp from 'gulp';
-import qunit from 'gulp-qunit';
 import del from 'del';
+import {Server} from 'karma';
 import runSequence from 'run-sequence';
 import browserify from 'browserify';
 import babelify from 'babelify';
@@ -132,17 +132,6 @@ gulp.task('scripts', () => {
     .pipe(gulp.dest('dist/scripts/'));
 });
 
-gulp.task('package tests', () => {
-  browserify([
-    './app/test/tests.js'
-  ], { paths:['app/scripts/modules/', 'test/modules/', 'node_modules/sinon/pkg/', 'node_modules/'] ,debug: true })
-    .transform(babelify, { presets: ['es2015']  })
-    .bundle()
-    .pipe(source('tests.js'))
-    .on('error', err => { console.log('ERROR:', err.message); })
-    .pipe(gulp.dest('.tmp/test/'));
-});
-
 // Scan your HTML for assets & optimize them
 gulp.task('html', () => {
   return gulp.src('app/**/*.html')
@@ -172,9 +161,11 @@ gulp.task('html', () => {
 gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 
 // Run unit tests
-gulp.task('test', ['package tests'], function() {
-  return gulp.src('app/test/test-runner.html')
-      .pipe(qunit());
+gulp.task('test', (done) => {
+  new Server({
+    configFile: __dirname + '/test-all.conf.js',
+    singleRun: true
+  }, done).start();
 });
 
 
