@@ -14,20 +14,52 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 // jshint esversion: 6
+import Cart from 'cart';
+import CartView from 'cart-view';
+import Product from 'product';
+
 QUnit.module('Cart-view', {beforeEach: () => {
   let fixture = document.getElementById('qunit-fixture');
   fixture.innerHTML = window.__html__['cart-fixture'];
 }});
 
-QUnit.test('has fixture data', assert => {
-  assert.ok(window.__html__, 'have __html__');
-  let keys = Object.keys(window.__html__).join(', ');
-  assert.ok(1, 'found keys: ' + keys);
-  assert.ok(window.__html__['cart-fixture'], 'cart fixture found');
-});
+QUnit.test('test environment is sane', assert => {
+  let fixture = document.getElementById('qunit-fixture');
+  assert.ok(fixture, 'qunit fixture exists');
+  let cart = document.getElementById('cart');
+  assert.ok(!cart.hasChildNodes(), 'cart template is empty');
+  });
 
-  QUnit.test('fixture injected', assert => {
-    let fixture = document.getElementById('qunit-fixture');
-    assert.ok(fixture, 'fixture exists');
-    assert.ok(fixture.innerHTML, 'innerHTML: ' + fixture.innerHTML);
+QUnit.test('empty cart adds no items', assert => {
+  let table = document.getElementById('cart');
+  let cart = new Cart();
+  let cartView = new CartView(cart, 'cart');
+  cartView.render();
+  assert.ok(!table.hasChildNodes(), 'cart template is empty after render');
+  });
+
+QUnit.test('single item', assert => {
+  let cart = new Cart();
+  let c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
+  cart.add(c10);
+
+  let view = new CartView(cart, 'cart');
+  view.render();
+  let table = document.getElementById('cart');
+  let items = table.querySelectorAll(view.itemSelector);
+  assert.equal(items.length, 1, 'number of items rendered');
+  });
+
+QUnit.test('two items', assert => {
+  let cart = new Cart();
+  let c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
+  let cl2 = new Product('Cl2', 'CL2 Chair', 100.00, 'Cl2.jpg', 'PUT TEXT HERE');
+  cart.add(c10);
+  cart.add(cl2);
+
+  let view = new CartView(cart, 'cart');
+  view.render();
+  let table = document.getElementById('cart');
+  let items = table.querySelectorAll(view.itemSelector);
+  assert.equal(items.length, 2, 'number of items rendered');
   });
