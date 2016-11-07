@@ -20,6 +20,7 @@ import LocalStorage from 'local-storage';
 import sinon from 'sinon-es6';
 
 const c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
+const cl2 = new Product('Cl2', 'CL2 Chair', 150.00, 'Cl2.jpg', 'PUT TEXT HERE');
 
 QUnit.module('Cart');
 
@@ -63,8 +64,6 @@ QUnit.test('finding a new order', assert => {
     assert.equal(entry.price, entry.total, 'total');
   });
 
-// TODO confirm that prices are being summed properly
-
 QUnit.test('merging orders for the same SKU', assert => {
     const cart = new Cart();
     cart.add(c10);
@@ -99,6 +98,16 @@ QUnit.test('setting quantity to 0 removes an item', assert => {
     assert.equal(cart.findItem(c10.sku), null, 'removed');
   });
 
+QUnit.test('computing the total', assert => {
+    const cart = new Cart();
+    cart.add(c10, 1);
+    assert.equal(cart.total, 100, 'single c10 price');
+    cart.add(c10, 2);
+    assert.equal(cart.total, 300, 'c10 price * 3');
+    cart.add(cl2, 1);
+    assert.equal(cart.total, 450, 'adding cl2 @ 150');
+});
+
 QUnit.test('resetting the cart', assert => {
     const cart = new Cart();
     cart.add(c10.sku);
@@ -117,11 +126,11 @@ QUnit.test('uses the adaptor to save', assert => {
     assert.ok(saveStub.called, 'items saved');
   });
 
-  QUnit.test('uses the adaptor to load', assert => {
-      const adaptor = new LocalStorage();
-      let saveStub = sinon.stub(adaptor, 'load');
-      const cart = new Cart(adaptor);
-      cart.add(c10.sku);
-      cart.load();
-      assert.ok(saveStub.called, 'items loaded');
-    });
+QUnit.test('uses the adaptor to load', assert => {
+    const adaptor = new LocalStorage();
+    let saveStub = sinon.stub(adaptor, 'load');
+    const cart = new Cart(adaptor);
+    cart.add(c10.sku);
+    cart.load();
+    assert.ok(saveStub.called, 'items loaded');
+  });
