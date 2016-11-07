@@ -40,8 +40,8 @@ let products = [
     'PUT TEXT HERE'),
 ];
 
-export function findProduct(sku) {
-  return products.find(product => product.sku === sku);
+export function findProduct(sku, searchRange=products) {
+  return searchRange.find(product => product.sku === sku);
 }
 
 export default products;

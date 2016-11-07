@@ -164,7 +164,7 @@ import processPayment from 'payment';
       let items = document.querySelector('#items');
       for (let product of products) {
         let item = document.createElement('template');
-        item.innerHTML = `<div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+        item.innerHTML = `<div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card product">
   <div class="mdl-card__media">
     <img class="article-image" src=" images/products/${product.image}" border="0" alt="">
   </div>
@@ -172,10 +172,14 @@ import processPayment from 'payment';
     <h2 class="mdl-card__title-text">${product.title}</h2>
   </div>
   <div class="mdl-card__supporting-text">
-    Enim labore aliqua consequat ut quis ad occaecat aliquip incididunt.
+    ${product.description}
   </div>
   <div class="mdl-card__actions mdl-card--border">
-    <span class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent add-to-cart">Add to Cart</span>
+    <button class="mdl-button mdl-button--colored mdl-js-button
+      mdl-js-ripple-effect mdl-button--accent add-to-cart"
+      data-sku="${product.sku}>
+      Add to Cart
+    </button>
   </div>
 </div>`;
         item.content.querySelector('.add-to-cart').addEventListener('click', e => {
