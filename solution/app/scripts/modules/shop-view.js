@@ -33,7 +33,7 @@ export default class ShopView {
     container.innerHTML = ''; // remove all children
     for (let product of this._products) {
       let placeholder = document.createElement('tbody');
-      // TODO add mdl "delete" icon
+      // TODO add mdl icon
       placeholder.innerHTML = `<div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card product">
         <div class="mdl-card__media">
           <img class="article-image" src=" images/products/${product.image}" border="0" alt="">
