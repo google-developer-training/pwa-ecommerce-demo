@@ -31,7 +31,7 @@
 
 <body>
     <dialog class="mdl-dialog" id="dialog">
-       <h4 class="mdl-dialog__title">Added to cart</h4> 
+       <h4 class="mdl-dialog__title">Added to cart</h4>
        <div class="mdl-dialog__content">
            <p>The item has been added to the cart.</p>
        </div>
@@ -39,39 +39,42 @@
            <button type="button" id="close" class="mdl-button">Close</button>
        </div>
     </dialog>
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-        <header class="mdl-layout__header mdl-layout__header--waterfall portfolio-header">
-            <div class="mdl-layout__header-row portfolio-logo-row">
-                <span class="mdl-layout__title">
-                    <div class="portfolio-logo"></div>
-                    <span class="mdl-layout__title">Modern Furniture Store</span>
-                </span>
-            </div>
-            <div class="mdl-layout__header-row portfolio-navigation-row mdl-layout--large-screen-only">
-                <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
-                  <a class="mdl-navigation__link is-active" href="index.html">Shop</a>
-                  <a class="mdl-navigation__link" href="cart.html">Cart</a>
-                </nav>
-            </div>
-        </header>
-        <div class="mdl-layout__drawer mdl-layout--small-screen-only">
-            <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
-              <a class="mdl-navigation__link is-active" href="index.html">Shop</a>
-              <a class="mdl-navigation__link" href="cart.html">Cart</a>
-            </nav>
-        </div>
-        <main class="mdl-layout__content">
-            <div class="mdl-grid portfolio-max-width" id="items"></div>
-            <footer class="mdl-mini-footer">
-                <div class="mdl-mini-footer__left-section">
-                    <div class="mdl-logo">Modern furniture store</div>
-                </div>
-                <div class="mdl-mini-footer__right-section">
-                    <div>Furniture names and images courtesy of <a href="http://www.yellowdiva.com/products/" target="_blank">Yellow Diva</a>. Used by permission.</div>
-                </div>
-            </footer>
-        </main>
+    <div class="headers">
+      <!-- TODO replace with header view -->
+      <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+          <header class="mdl-layout__header mdl-layout__header--waterfall portfolio-header">
+              <div class="mdl-layout__header-row portfolio-logo-row">
+                  <span class="mdl-layout__title">
+                      <div class="portfolio-logo"></div>
+                      <span class="mdl-layout__title">Modern Furniture Store</span>
+                  </span>
+              </div>
+              <div class="mdl-layout__header-row portfolio-navigation-row mdl-layout--large-screen-only">
+                  <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
+                    <a class="mdl-navigation__link is-active" href="index.html">Shop</a>
+                    <a class="mdl-navigation__link" href="cart.html">Cart</a>
+                  </nav>
+              </div>
+          </header>
+          <div class="mdl-layout__drawer mdl-layout--small-screen-only">
+              <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
+                <a class="mdl-navigation__link is-active" href="index.html">Shop</a>
+                <a class="mdl-navigation__link" href="cart.html">Cart</a>
+              </nav>
+          </div>
+      </div>
     </div>
+    <main class="mdl-layout__content">
+        <div class="mdl-grid portfolio-max-width" id="items"></div>
+        <footer class="mdl-mini-footer">
+            <div class="mdl-mini-footer__left-section">
+                <div class="mdl-logo">Modern furniture store</div>
+            </div>
+            <div class="mdl-mini-footer__right-section">
+                <div>Furniture names and images courtesy of <a href="http://www.yellowdiva.com/products/" target="_blank">Yellow Diva</a>. Used by permission.</div>
+            </div>
+        </footer>
+    </main>
     <script src="https://code.getmdl.io/1.2.0/material.min.js"></script>
     <script src="/scripts/main.min.js"></script>
 </body>
