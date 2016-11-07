@@ -38,22 +38,33 @@ QUnit.test('empty cart adds no items', assert => {
   assert.ok(!table.hasChildNodes(), 'cart template is empty after render');
   });
 
-QUnit.test('single item', assert => {
-  let cart = new Cart();
-  let c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
-  cart.add(c10);
+  QUnit.test('single item renders a single row', assert => {
+    let cart = new Cart();
+    let c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
+    cart.add(c10);
 
-  let view = new CartView(cart, 'cart');
-  view.render();
-  let table = document.getElementById('cart');
-  let items = table.querySelectorAll(view.itemSelector);
-  assert.equal(items.length, 1, 'number of items rendered');
-  });
+    let view = new CartView(cart, 'cart');
+    view.render();
+    let table = document.getElementById('cart');
+    let items = table.querySelectorAll(view.itemSelector);
+    assert.equal(items.length, 1, 'rows rendered');
+    });
+
+  QUnit.test('single item renders price', assert => {
+    let cart = new Cart();
+    let c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
+    cart.add(c10);
+
+    let view = new CartView(cart, 'cart');
+    view.render();
+    let total = document.getElementById('cart-total');
+    assert.equal(total.innerText, '$100', 'total');
+    });
 
 QUnit.test('two items', assert => {
   let cart = new Cart();
   let c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
-  let cl2 = new Product('Cl2', 'CL2 Chair', 100.00, 'Cl2.jpg', 'PUT TEXT HERE');
+  let cl2 = new Product('Cl2', 'CL2 Chair', 150.00, 'Cl2.jpg', 'PUT TEXT HERE');
   cart.add(c10);
   cart.add(cl2);
 
@@ -61,5 +72,18 @@ QUnit.test('two items', assert => {
   view.render();
   let table = document.getElementById('cart');
   let items = table.querySelectorAll(view.itemSelector);
-  assert.equal(items.length, 2, 'number of items rendered');
+  assert.equal(items.length, 2, 'rows rendered');
+  });
+
+QUnit.test('dual items render price', assert => {
+  let cart = new Cart();
+  let c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
+  let cl2 = new Product('Cl2', 'CL2 Chair', 150.00, 'Cl2.jpg', 'PUT TEXT HERE');
+  cart.add(c10);
+  cart.add(cl2);
+
+  let view = new CartView(cart, 'cart');
+  view.render();
+  let total = document.getElementById('cart-total');
+  assert.equal(total.innerText, '$250', 'total');
   });

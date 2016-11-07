@@ -39,6 +39,8 @@ export default class CartView {
       </tr>`;
       container.appendChild(placeholder.firstElementChild); // WARN: no ie8
     }
+    // Add the total price
+    document.getElementById('cart-total').innerText = `$${this._cart.total}`;
     // TODO Attach a click handler for delete. Sat a data- attribute using setAttribute
   }
 
