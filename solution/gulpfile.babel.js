@@ -124,7 +124,7 @@ gulp.task('styles', () => {
 gulp.task('scripts', () => {
   browserify([
     './app/scripts/main.js'
-  ], { debug: true })
+  ], { debug: true, paths: ['app/scripts/modules/'] })
     .transform(babelify, { presets: ['es2015']  })
     .bundle()
     .pipe(source('main.min.js'))
