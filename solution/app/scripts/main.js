@@ -19,9 +19,9 @@
 /* eslint-env browser */
 // jshint esversion: 6
 
-import Cart from './modules/cart';
-import products from './modules/products';
-import processPayment from './modules/payment';
+import Cart from 'cart';
+import products from 'product';
+import processPayment from 'payment';
 
 (function() {
 'use strict';
