@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 // jshint esversion:6
-import Product from './product';
+import Product from 'product';
 
 //   constructor (sku, title, price, image, description='') {
 
 // Normally you would get these from a server
 let products = [
-  new Product('BarrelChair', 'Barrel Chair', 100.00, 'BarrelChair.jpg', 
+  new Product('BarrelChair', 'Barrel Chair', 100.00, 'BarrelChair.jpg',
     'A lovely chair made from upcycled barrel staves.'),
   new Product('C10', 'C10 Chair', 100.00, 'C10.jpg',
     'PUT TEXT HERE'),
