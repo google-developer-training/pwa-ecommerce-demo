@@ -2,6 +2,7 @@
 // Generated on Sun Nov 06 2016 13:00:48 GMT-0800 (PST)
 
 module.exports = function(config) {
+  "use strict";
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -11,12 +12,14 @@ module.exports = function(config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['browserify', 'qunit'],
 
-    plugins: ['karma-qunit', 'karma-browserify', 'karma-chrome-launcher'],
+    plugins: ['karma-qunit', 'karma-browserify', 'karma-chrome-launcher',
+              'karma-html2js-preprocessor'],
 
     // list of files / patterns to load in the browser
     files: [
       'app/scripts/modules/*.js',
-      'app/test/modules/*.js'
+      'app/test/modules/*.js',
+      'app/test/fixtures/*.html',
     ],
 
     // list of files to exclude
@@ -28,7 +31,8 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'app/test/modules/*.js': ['browserify'],
-      'app/scripts/modules/*.js': ['browserify']
+      'app/scripts/modules/*.js': ['browserify'],
+      'app/test/fixtures/*.html': ['html2js']
     },
 
     browserify: {
@@ -38,6 +42,15 @@ module.exports = function(config) {
               'node_modules/sinon/pkg/']
     },
 
+    html2JsPreprocessor: {
+      processPath: function(filePath) {
+        let filename = filePath.replace(/app\/test\/fixtures\//, '');
+        // Drop the file extension
+        return filename.replace(/\.html$/, '-fixture');
+      }
+    },
+
+    // QUnit display setup
     client: {
       clearContext: false,
       qunit: {
