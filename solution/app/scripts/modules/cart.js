@@ -24,6 +24,7 @@ export default class Cart {
   constructor (adaptor) {
     this.items = [];
     this.adaptor = adaptor;
+    this._loading = false;
   }
 
   findItem(sku) {
@@ -48,22 +49,25 @@ export default class Cart {
     if (index >= 0) {
       this.items.splice(index, 1);
     }
+    this._sendEvent('remove', product);
   }
 
   change(product, quantity) {
     let item = this.findItem(product.sku);
     if (quantity <= 0) {
       this.remove(item);
+      this._sendEvent('remove', product);
       return null;
     } else {
-      let item = this.findItem(product.sku);
       item.quantity = quantity;
+      this._sendEvent('change', product, quantity);
       return item;
     }
   }
 
   reset() {
     this.items = [];
+    this._sendEvent('reset');
   }
 
   get length() {
@@ -98,6 +102,7 @@ export default class Cart {
 
   load() {
     if (!this.adaptor) return;
+    this._loading = true;
     try {
       let items = this.adaptor.load();
       for (let item of items) {
@@ -107,9 +112,12 @@ export default class Cart {
     } catch (e) {
       this.items = [];
     }
+    this._loading = false;
+    this._sendEvent('load');
   }
 
   _sendEvent(action, product, quantity) {
+    if (this._loading) return; // don't spam the app with events
     let details = {'action': (action), 'total': (this.total)};
     if (product) details.sku = product.sku;
     if (quantity) details.quantity = quantity;

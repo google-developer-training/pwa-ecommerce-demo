@@ -136,18 +136,20 @@ QUnit.test('uses the adaptor to load', assert => {
     assert.ok(saveStub.called, 'items loaded');
   });
 
-  QUnit.module('Cart event');
+QUnit.module('Cart event');
 
-  QUnit.test('sends an event on add', assert => {
-      var done = assert.async();
-      const cart = new Cart();
-      const listener = (event) => {
-        assert.equal(event.detail.action, 'add', 'action');
-        assert.equal(event.detail.sku, 'C10', 'sku');
-        assert.equal(event.detail.quantity, 1, 'quantity');
-        document.removeEventListener(CART_EVENT, listener);
-        done();
-      };
-      document.addEventListener(CART_EVENT, listener);
-      cart.add(c10);
-    });
+QUnit.test('sends cart event on add', assert => {
+    var done = assert.async();
+    const cart = new Cart();
+    const listener = (event) => {
+      assert.equal(event.detail.action, 'add', 'action');
+      assert.equal(event.detail.sku, 'C10', 'sku');
+      assert.equal(event.detail.quantity, 1, 'quantity');
+      document.removeEventListener(CART_EVENT, listener);
+      done();
+    };
+    document.addEventListener(CART_EVENT, listener);
+    cart.add(c10);
+  });
+
+  // Not testing the other events for now as it would be a hassle!
