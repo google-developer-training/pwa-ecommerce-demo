@@ -27,7 +27,7 @@ QUnit.module('App', {beforeEach: () => {
 }});
 
 
-QUnit.test('relays hashChange events (shop)', assert => {
+QUnit.test('relays hashChange events', assert => {
   let app = new App();
   let controller = new HeaderController();
   controller.selection = 'cart';
@@ -37,4 +37,22 @@ QUnit.test('relays hashChange events (shop)', assert => {
   let event = {oldURL: (window.location), newURL: (window.location+'#shop')};
   app._handleHashChange(event);
   assert.equal(controller.selection, 'shop', 'set selection');
+  });
+
+QUnit.test('selection == shop makes only shop visible', assert => {
+  let app = new App();
+  app.selection = 'shop';
+  let shop = document.getElementById('shop');
+  let cart = document.getElementById('cart');
+  assert.ok(!shop.hidden, 'shop visible');
+  assert.ok(cart.hidden, 'cart hidden');
+  });
+
+QUnit.test('selection == cart makes only cart visible', assert => {
+  let app = new App();
+  app.selection = 'shop';
+  let shop = document.getElementById('shop');
+  let cart = document.getElementById('cart');
+  assert.ok(!shop.hidden, 'shop visible');
+  assert.ok(cart.hidden, 'cart hidden');
   });

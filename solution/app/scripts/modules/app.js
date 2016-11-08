@@ -41,6 +41,13 @@ export default class App {
   uninstall() {
     window.removeEventListener('hashchange', this._hashChangeListener);
   }
+  
+  // Manage element visibility (hide the cart when store is selected and vice versa)
+  set selection(sel) {
+    this._header.selection = sel;
+    document.getElementById('shop').hidden = sel != 'shop';
+    document.getElementById('cart').hidden = sel != 'cart';
+  }
 
   run() {
     this.selection = 'shop';
@@ -50,15 +57,12 @@ export default class App {
     this._cartView.render();
 
     // *** The following changes are meant to make this a single-page app ***
-    // TODO manage element visibility (hide the cart when store is selected and vice versa)
     // TODO merge payment dialog into index.html, handle payment flow
+    // TODO Clicking "Add to cart" on an item should update the cart. Doesn't seem to be working.
     // TODO add a 'cart' event listener on document. All values of event.detail.action
     // should trigger cart.save() EXCEPT event.detail.action==='load'
   }
-  
-  set selection(sel) {
-    this._header.selection = sel;
-  }
+
 
   // Handle hashChange, manage history (#store or #cart, maybe #pay)
   _handleHashChange(event) {
