@@ -31,15 +31,25 @@ QUnit.test('default selection is "shop"', assert => {
   assert.equal(header.selection, 'shop', 'selection');
   });
 
-QUnit.test('default selection activates shop links only', assert => {
+  QUnit.test('default selection is shop links only', assert => {
+    let hrefs = getActiveLinks();
+    assert.deepEqual(hrefs, ['#shop', '#shop'], 'default selection');
+    });
+
+  QUnit.test('can select cart', assert => {
+    let header = new HeaderController();
+    header.selection = 'cart';
+    assert.equal(header.selection, 'cart', 'new selection');
+    let hrefs = getActiveLinks();
+    assert.deepEqual(hrefs, ['#cart', '#cart'], 'changed selection');
+    });
+
+function getActiveLinks() {
   let container = document.getElementById(containerID);
-  let header = new HeaderController();
   let activeLinks = container.querySelectorAll('a.is-active');
   activeLinks = Array.prototype.slice.call(activeLinks); // make array
-  let hrefs = activeLinks.map((node) => node.getAttribute('href'));
-  assert.deepEqual(hrefs, ['#shop', '#shop'], 'current selection');
-  });
-
+  return activeLinks.map((node) => node.getAttribute('href'));
+}
 /*
 QUnit.test('single item renders a single row', assert => {
   let container = document.getElementById(containerID);

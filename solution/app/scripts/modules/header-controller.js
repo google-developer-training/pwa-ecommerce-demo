@@ -19,8 +19,6 @@ export default class HeaderController {
 
   constructor (containerId='headers') {
     this._containerId = containerId;
-    this._element = 'div';
-    this._elementClass = 'product';
     this._selection = 'shop';
 //    this._addHandler = this._handleProductClick.bind(this);
 //    container.addEventListener('click', this._addHandler, false);
@@ -40,5 +38,19 @@ export default class HeaderController {
 
   get selection () {
     return this._selection;
+  }
+
+  set selection(newValue) {
+    if (newValue != 'shop' && newValue != 'cart') return;
+    if (newValue == this.selection) return;
+    this._selection = newValue;
+
+    // Now update the UI
+    let container = document.getElementById(this._containerId);
+    // Only two kinds of links, so flip active
+    let links = container.querySelectorAll('a.mdl-navigation__link');
+    for (let i=0; i < links.length; i++) {
+      links[i].classList.toggle('is-active');
+    }
   }
 }
