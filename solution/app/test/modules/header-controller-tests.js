@@ -14,26 +14,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 // jshint esversion: 6
-import HeaderView from 'header-view';
+import HeaderController from 'header-controller';
 import sinon from 'sinon-es6';
 import $ from 'jquery';
 
 const containerID = 'headers';
 
-QUnit.module('Header-view', {beforeEach: () => {
+QUnit.module('Header controller', {beforeEach: () => {
   let fixture = document.getElementById('qunit-fixture');
   fixture.innerHTML = window.__html__['headers-fixture'];
 }});
 
 QUnit.test('default selection is "shop"', assert => {
   let container = document.getElementById(containerID);
-  let header = new HeaderView();
+  let header = new HeaderController();
   assert.equal(header.selection, 'shop', 'selection');
   });
 
 QUnit.test('default selection activates shop links only', assert => {
   let container = document.getElementById(containerID);
-  let header = new HeaderView();
+  let header = new HeaderController();
   let activeLinks = container.querySelectorAll('a.is-active');
   activeLinks = Array.prototype.slice.call(activeLinks); // make array
   let hrefs = activeLinks.map((node) => node.getAttribute('href'));

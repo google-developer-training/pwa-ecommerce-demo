@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 //jshint esversion: 6
-export default class HeaderView {
+export default class HeaderController {
 
   constructor (containerId='headers') {
     this._containerId = containerId;
