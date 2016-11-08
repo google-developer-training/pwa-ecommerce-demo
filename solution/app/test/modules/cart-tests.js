@@ -15,6 +15,7 @@ limitations under the License.
 */
 // jshint esversion: 6
 import Cart from 'cart';
+import {CART_EVENT} from 'cart';
 import Product from 'product';
 import LocalStorage from 'local-storage';
 import sinon from 'sinon-es6';
@@ -110,7 +111,7 @@ QUnit.test('computing the total', assert => {
 
 QUnit.test('resetting the cart', assert => {
     const cart = new Cart();
-    cart.add(c10.sku);
+    cart.add(c10);
     cart.reset();
     assert.equal(cart.length, 0, 'removed');
   });
@@ -121,7 +122,7 @@ QUnit.test('uses the adaptor to save', assert => {
     const adaptor = new LocalStorage();
     let saveStub = sinon.stub(adaptor, 'save');
     const cart = new Cart(adaptor);
-    cart.add(c10.sku);
+    cart.add(c10);
     cart.save();
     assert.ok(saveStub.called, 'items saved');
   });
@@ -130,7 +131,23 @@ QUnit.test('uses the adaptor to load', assert => {
     const adaptor = new LocalStorage();
     let saveStub = sinon.stub(adaptor, 'load');
     const cart = new Cart(adaptor);
-    cart.add(c10.sku);
+    cart.add(c10);
     cart.load();
     assert.ok(saveStub.called, 'items loaded');
   });
+
+  QUnit.module('Cart event');
+
+  QUnit.test('sends an event on add', assert => {
+      var done = assert.async();
+      const cart = new Cart();
+      const listener = (event) => {
+        assert.equal(event.detail.action, 'add', 'action');
+        assert.equal(event.detail.sku, 'C10', 'sku');
+        assert.equal(event.detail.quantity, 1, 'quantity');
+        document.removeEventListener(CART_EVENT, listener);
+        done();
+      };
+      document.addEventListener(CART_EVENT, listener);
+      cart.add(c10);
+    });

@@ -18,6 +18,8 @@ limitations under the License.
 
 import { products, findProduct } from 'products';
 
+export const CART_EVENT = "cart";
+
 export default class Cart {
   constructor (adaptor) {
     this.items = [];
@@ -37,6 +39,7 @@ export default class Cart {
       item = new LineItem(product, quantity);
       this.items.push(item);
     }
+    this._sendEvent('add', product, quantity);
     return item;
   }
 
@@ -106,6 +109,13 @@ export default class Cart {
     }
   }
 
+  _sendEvent(action, product, quantity) {
+    let details = {'action': (action), 'total': (this.total)};
+    if (product) details.sku = product.sku;
+    if (quantity) details.quantity = quantity;
+    var event = new CustomEvent(CART_EVENT, { 'detail': (details) });
+    document.dispatchEvent(event);
+  }
 }
 
 export class LineItem {
