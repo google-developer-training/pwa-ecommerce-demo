@@ -27,12 +27,12 @@ QUnit.module('Cart-view', {beforeEach: () => {
 QUnit.test('test environment is sane', assert => {
   let fixture = document.getElementById('qunit-fixture');
   assert.ok(fixture, 'qunit fixture exists');
-  let cart = document.getElementById('cart');
+  let cart = document.querySelector('tbody');
   assert.ok(!cart.hasChildNodes(), 'cart template is empty');
   });
 
 QUnit.test('empty cart adds no items', assert => {
-  let table = document.getElementById('cart');
+  let table = document.querySelector('tbody');
   let cart = new Cart();
   let cartView = new CartView(cart, 'cart');
   cartView.render();
@@ -46,7 +46,7 @@ QUnit.test('single item renders a single row', assert => {
 
   let view = new CartView(cart, 'cart');
   view.render();
-  let table = document.getElementById('cart');
+  let table = document.querySelector('tbody');
   let items = table.querySelectorAll(view.itemSelector);
   assert.equal(items.length, 1, 'rows rendered');
   });
@@ -71,7 +71,7 @@ QUnit.test('two items', assert => {
 
   let view = new CartView(cart, 'cart');
   view.render();
-  let table = document.getElementById('cart');
+  let table = document.querySelector('tbody');
   let items = table.querySelectorAll(view.itemSelector);
   assert.equal(items.length, 2, 'rows rendered');
   });

@@ -26,7 +26,7 @@ export default class CartView {
   }
 
   render () {
-    let container = document.getElementById(this._containerId);
+    let container = document.querySelector(`#${this._containerId} tbody`);
     container.innerHTML = ''; // remove all children
     for (let product of this._cart.cart) {
       let placeholder = document.createElement('tbody');
