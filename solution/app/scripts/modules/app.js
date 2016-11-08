@@ -26,7 +26,7 @@ export default class App {
 
   constructor() {
     this._cart = new Cart();
-    this._cartView = new CartView(this._cart, products);
+    this._cartView = new CartView(this._cart);
     this._shop = new ShopView(this._cart);
     this._header = new HeaderController();
   }

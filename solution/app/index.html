@@ -65,7 +65,29 @@
         </div>
         <!-- Lower body -->
         <main class="mdl-layout__content">
+            <!-- shop container -->
             <div class="mdl-grid portfolio-max-width" id="shop"></div>
+            <!-- cart container -->
+            <div class="mdl-grid portfolio-max-width portfolio-contact">
+              <div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+                  <div class="mdl-card__title">
+                      <h2 class="mdl-card__title-text">Checkout</h2>
+                  </div>
+                  <table class="mdl-data-table md-js-data-table mdl-shadow--2dp" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-tabe__cell-non-numeric">Item</th>
+                            <th>Quantity</th>
+                            <th>Unit price</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                  <tbody id="cart"></tbody>
+                </table>
+                <div id="cart-total"></div>
+              </div>
+            </div>
+            <!-- Common bottom of screen -->
             <footer class="mdl-mini-footer">
                 <div class="mdl-mini-footer__left-section">
                     <div class="mdl-logo">Modern furniture store</div>
