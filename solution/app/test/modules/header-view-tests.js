@@ -25,21 +25,22 @@ QUnit.module('Header-view', {beforeEach: () => {
   fixture.innerHTML = window.__html__['headers-fixture'];
 }});
 
-QUnit.test('test environment is sane', assert => {
-  let fixture = document.getElementById(containerID);
-  assert.ok(fixture, 'qunit fixture exists');
+QUnit.test('default selection is "shop"', assert => {
   let container = document.getElementById(containerID);
-  assert.ok(!container.hasChildNodes(), 'display template is empty');
+  let header = new HeaderView();
+  assert.equal(header.selection, 'shop', 'selection');
+  });
+
+QUnit.test('default selection activates shop links only', assert => {
+  let container = document.getElementById(containerID);
+  let header = new HeaderView();
+  let activeLinks = container.querySelectorAll('a.is-active');
+  activeLinks = Array.prototype.slice.call(activeLinks); // make array
+  let hrefs = activeLinks.map((node) => node.getAttribute('href'));
+  assert.deepEqual(hrefs, ['#shop', '#shop'], 'current selection');
   });
 
 /*
-QUnit.test('empty product list adds no items', assert => {
-  let container = document.getElementById(containerID);
-  let view = new ShopView(noCart, []);
-  view.render();
-  assert.ok(!container.hasChildNodes(), 'cart template is empty after render');
-  });
-
 QUnit.test('single item renders a single row', assert => {
   let container = document.getElementById(containerID);
   let view = new ShopView(noCart, [products[0]]);
