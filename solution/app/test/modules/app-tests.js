@@ -35,6 +35,6 @@ QUnit.test('relays hashChange events (shop)', assert => {
 
   // Falsify an event
   let event = {oldURL: (window.location), newURL: (window.location+'#shop')};
-  app.handleHashChange(event);
+  app._handleHashChange(event);
   assert.equal(controller.selection, 'shop', 'set selection');
   });

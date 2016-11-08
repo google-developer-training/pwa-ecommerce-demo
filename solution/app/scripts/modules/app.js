@@ -31,30 +31,42 @@ export default class App {
     this._cartView = new CartView(this._cart);
     this._shop = new ShopView(this._cart);
     this._header = new HeaderController();
-    this._hashChangeListener = this.handleHashChange.bind(this);
+    this._hashChangeListener = this._handleHashChange.bind(this);
   }
 
-  // Handle hashChange, manage history (#store or #cart, maybe #pay)
-  handleHashChange(event) {
-    if (!event.newURL) return;
-    let index = event.newURL.lastIndexOf('#');
-    if (index < 0) return;
-    let sel = event.newURL.substr(index+1);
-    this._header.selection = sel;
+  install() {
+    window.addEventListener('hashchange', this._hashChangeListener);
+  }
+
+  uninstall() {
+    window.removeEventListener('hashchange', this._hashChangeListener);
   }
 
   run() {
+    this.selection = 'shop';
+    this._header.replaceURLState(); // window.location == index.html#shop
     this._cart.load();
-    this._header.replaceURLState(); // window.location == index.html#store
     this._shop.render();
     this._cartView.render();
-    window.addEventListener('hashchange', this._hashChangeListener);
 
     // *** The following changes are meant to make this a single-page app ***
     // TODO manage element visibility (hide the cart when store is selected and vice versa)
     // TODO merge payment dialog into index.html, handle payment flow
     // TODO add a 'cart' event listener on document. All values of event.detail.action
     // should trigger cart.save() EXCEPT event.detail.action==='load'
+  }
+  
+  set selection(sel) {
+    this._header.selection = sel;
+  }
+
+  // Handle hashChange, manage history (#store or #cart, maybe #pay)
+  _handleHashChange(event) {
+    if (!event.newURL) return;
+    let index = event.newURL.lastIndexOf('#');
+    if (index < 0) return;
+    let sel = event.newURL.substr(index+1);
+    this.selection = sel;
   }
 
   // Testing hooks
