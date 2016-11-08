@@ -16,7 +16,7 @@ limitations under the License.
 // jshint esversion: 6
 import Cart from 'cart';
 import ShopView from 'shop-view';
-import products from 'products';
+import {products} from 'products';
 import sinon from 'sinon-es6';
 import $ from 'jquery';
 

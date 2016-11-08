@@ -19,7 +19,7 @@ import Product from 'product';
 //   constructor (sku, title, price, image, description='') {
 
 // Normally you would get these from a server
-let products = [
+export const products = [
   new Product('BarrelChair', 'Barrel Chair', 100.00, 'BarrelChair.jpg',
     'A lovely chair made from upcycled barrel staves.'),
   new Product('C10', 'C10 Chair', 100.00, 'C10.jpg',
@@ -43,5 +43,3 @@ let products = [
 export function findProduct(sku, searchRange=products) {
   return searchRange.find(product => product.sku === sku);
 }
-
-export default products;
