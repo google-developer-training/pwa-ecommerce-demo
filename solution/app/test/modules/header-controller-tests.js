@@ -36,6 +36,13 @@ QUnit.test('default selection is shop links only', assert => {
   assert.deepEqual(hrefs, ['#shop', '#shop'], 'default selection');
   });
 
+QUnit.test('can install selection to URL', assert => {
+  let controller = new HeaderController();
+  assert.equal(controller.selection, 'shop', 'selection is default');
+  controller.replaceURLState();
+  assert.equal(window.location.hash, '#shop');
+  });
+
 QUnit.test('can select cart', assert => {
   let header = new HeaderController();
   header.selection = 'cart';
