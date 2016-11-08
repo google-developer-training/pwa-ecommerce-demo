@@ -20,6 +20,7 @@ export default class HeaderController {
   constructor (containerId='headers') {
     this._containerId = containerId;
     this._selection = 'shop';
+    this._count = 0;
 //    this._addHandler = this._handleProductClick.bind(this);
 //    container.addEventListener('click', this._addHandler, false);
   }
@@ -51,6 +52,20 @@ export default class HeaderController {
     let links = container.querySelectorAll('a.mdl-navigation__link');
     for (let i=0; i < links.length; i++) {
       links[i].classList.toggle('is-active');
+    }
+  }
+
+  get count() {
+    return this._count;
+  }
+
+  set count(newCount) {
+    if (this._count == newCount) return;
+    var label = newCount === 0 ? '' : ` ($newCount)`;
+    this._count = newCount;
+    let spans = document.querySelectorAll('span.cart-count');
+    for (let i=0; i < spans.length; i++) {
+      spans[i].innerText = label;
     }
   }
 }

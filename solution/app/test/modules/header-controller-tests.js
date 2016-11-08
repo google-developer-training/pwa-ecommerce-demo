@@ -31,18 +31,25 @@ QUnit.test('default selection is "shop"', assert => {
   assert.equal(header.selection, 'shop', 'selection');
   });
 
-  QUnit.test('default selection is shop links only', assert => {
-    let hrefs = getActiveLinks();
-    assert.deepEqual(hrefs, ['#shop', '#shop'], 'default selection');
-    });
+QUnit.test('default selection is shop links only', assert => {
+  let hrefs = getActiveLinks();
+  assert.deepEqual(hrefs, ['#shop', '#shop'], 'default selection');
+  });
 
-  QUnit.test('can select cart', assert => {
-    let header = new HeaderController();
-    header.selection = 'cart';
-    assert.equal(header.selection, 'cart', 'new selection');
-    let hrefs = getActiveLinks();
-    assert.deepEqual(hrefs, ['#cart', '#cart'], 'changed selection');
-    });
+QUnit.test('can select cart', assert => {
+  let header = new HeaderController();
+  header.selection = 'cart';
+  assert.equal(header.selection, 'cart', 'new selection');
+  let hrefs = getActiveLinks();
+  assert.deepEqual(hrefs, ['#cart', '#cart'], 'changed selection');
+  });
+
+QUnit.test('default cart count is 0 (empty)', assert => {
+  let header = new HeaderController();
+  assert.equal(header.count, 0, 'default count');
+  let counts = getCartCounts();
+  assert.deepEqual(counts, ['', ''], 'no label');
+  });
 
 function getActiveLinks() {
   let container = document.getElementById(containerID);
@@ -50,34 +57,10 @@ function getActiveLinks() {
   activeLinks = Array.prototype.slice.call(activeLinks); // make array
   return activeLinks.map((node) => node.getAttribute('href'));
 }
-/*
-QUnit.test('single item renders a single row', assert => {
-  let container = document.getElementById(containerID);
-  let view = new ShopView(noCart, [products[0]]);
-  view.render();
-  let items = container.querySelectorAll(view.itemSelector);
-  assert.equal(items.length, 1, 'rows rendered');
-  });
 
-QUnit.test('two items', assert => {
+function getCartCounts() {
   let container = document.getElementById(containerID);
-  let view = new ShopView(noCart, products.slice(0, 2));
-  view.render();
-  let items = container.querySelectorAll(view.itemSelector);
-  assert.equal(items.length, 2, 'rows rendered');
-  });
-
-QUnit.test('click to buy item updates cart', assert => {
-  let cart = new Cart();
-  let addStub = sinon.stub(cart, 'add');
-
-  let container = document.getElementById(containerID);
-  let view = new ShopView(cart, products.slice(0, 2));
-  view.render();
-  let button = container.querySelector('button.mdl-button');
-  assert.ok(button, "click target found");
-  $(button).trigger($.Event("click"));
-  assert.ok(addStub.called, 'called add');
-  assert.ok(addStub.calledWith(products[0]), 'called with product');
-  });
-*/
+  let counts = container.querySelectorAll('span.cart-count');
+  counts = Array.prototype.slice.call(counts);
+  return counts.map((node) => node.innerText.trim());
+}
