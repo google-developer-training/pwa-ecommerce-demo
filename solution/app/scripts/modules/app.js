@@ -19,12 +19,24 @@ limitations under the License.
 import Cart from 'cart';
 import CartView from 'cart-view';
 import ShopView from 'shop-view';
+import HeaderController from 'header-controller';
+import {products} from 'products';
 
 export default class App {
 
   constructor() {
     this._cart = new Cart();
+    this._cartView = new CartView(this._cart, products);
+    this._shop = new ShopView(this._cart);
+    this._header = new HeaderController();
   }
 
-
+  run() {
+    this._shop.render();
+    this._cartView.render();
+    // TODO set initial window.location
+    // TODO handle hashChange, manage history
+    // TODO manage element visibility
+    // TODO handle payment flow
+  }
 }

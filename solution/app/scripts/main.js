@@ -19,9 +19,7 @@
 /* eslint-env browser */
 // jshint esversion: 6
 
-import Cart from 'cart';
-import products from 'product';
-import processPayment from 'payment';
+import App from 'app';
 
 (function() {
 'use strict';
@@ -78,116 +76,11 @@ import processPayment from 'payment';
     });
   }
 
-  let cart = new Cart();
 
   // Your custom JavaScript goes here
+  let app = new App();
   document.addEventListener('DOMContentLoaded', e => {
-    let dialog = document.querySelector('#dialog');
-    document.querySelector('#close').addEventListener('click', e => {
-      dialog.close();
-    });
-
-    // TODO replace with cart view
-    if (location.pathname == '/cart.html') {
-      let _cart = document.querySelector('#cart');
-      let total = 0;
-      for (let product of cart.cart) {
-        let item = document.createElement('template');
-        item.innerHTML = `<tr>
-  <td class="mdl-data-table__cell-non-numeric">${product.title}</td>
-  <td>${product.quantity}</td>
-  <td>$${product.price}</td>
-  <td><img class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent delete" src="images/delete.svg"></td>
-</tr>`;
-  // TODO cart view needs its click handler
-        item.content.querySelector('.delete').addEventListener('click', e => {
-          cart.remove(product);
-          location.reload();
-        });
-        _cart.appendChild(item.content);
-
-        total += product.total;
-      }
-      let item = document.createElement('template');
-      item.innerHTML = `<tr>
-  <td class="mdl-data-table__cell-non-numeric">Total</td>
-  <td></td>
-  <td id="cart-total">$${total}</td>
-  <td></td>
-</tr>`;
-      _cart.appendChild(item.content);
-
-      // TODO add payment form, logic
-      if (!window.PaymentRequest) {
-        document.querySelector('#form').style = 'display:block;';
-      }
-
-      let checkout_form = document.querySelector('#checkout_form');
-
-      checkout_form.addEventListener('submit', e => {
-        e.preventDefault();
-
-        var data = new FormData(e.target);
-
-        if (!window.PaymentRequest) {
-          fetch('/checkout', {
-            method: 'POST',
-            credentials: 'include',
-            body: data
-          }).then(result => {
-            if (result.status === 200) {
-              return result.json();
-            } else {
-              throw 'Payment failure';
-            }
-          }).then(result => {
-            console.log('Payment response: ' + JSON.stringify(result));
-            location.href = '/checkout.html';
-          }).catch(e => {
-            console.log('Payment failed due to exception: ' + e);
-            dialog.showModal();
-          });
-          return;
-        }
-
-        processPayment(cart)
-        .then(result => {
-          location.href = '/checkout.html';
-        }).catch(e => {
-          // TODO: failure notice
-          dialog.showModal();
-        });
-      });
-
-    } else {
-      // TODO add product view / shop view
-      let items = document.querySelector('#items');
-      for (let product of products) {
-        let item = document.createElement('template');
-        item.innerHTML = `<div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card product">
-  <div class="mdl-card__media">
-    <img class="article-image" src=" images/products/${product.image}" border="0" alt="">
-  </div>
-  <div class="mdl-card__title">
-    <h2 class="mdl-card__title-text">${product.title}</h2>
-  </div>
-  <div class="mdl-card__supporting-text">
-    ${product.description}
-  </div>
-  <div class="mdl-card__actions mdl-card--border">
-    <button class="mdl-button mdl-button--colored mdl-js-button
-      mdl-js-ripple-effect mdl-button--accent add-to-cart"
-      data-sku="${product.sku}>
-      Add to Cart
-    </button>
-  </div>
-</div>`;
-        item.content.querySelector('.add-to-cart').addEventListener('click', e => {
-          cart.add(product);
-          dialog.showModal();
-        });
-        items.appendChild(item.content);
-      }
-    }
+    app.run();
   });
+
 })();
