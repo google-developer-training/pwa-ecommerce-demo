@@ -27,17 +27,15 @@ export default class App {
 
   constructor() {
     this._storage = new LocalStorage();
-    this._cart = new Cart(this._storage);
+    this._cart = new Cart(this._storage, this._cartChanged.bind(this));
     this._cartView = new CartView(this._cart);
     this._shopView = new ShopView(this._cart);
     this._header = new HeaderController();
     this._hashChangeListener = this._handleHashChange.bind(this);
-    this._cartChangeListener = this._handleHashChange.bind(this);
   }
 
   install() {
     window.addEventListener('hashchange', this._hashChangeListener);
-    window.addEventListener('cartchange', this._cartChangeListener);
   }
 
   uninstall() {
@@ -61,6 +59,7 @@ export default class App {
     // *** The following changes are meant to make this a single-page app ***
     // TODO merge payment dialog into index.html, handle payment flow
     // TODO Fix the shop not rendering on first load.
+    // TODO Fix the formatting of the total in the cart
     // TODO pick up delete icon, possible add icon
     // TODO confirm item added to cart w/ animation or toast
   }
@@ -75,9 +74,9 @@ export default class App {
     this.selection = sel;
   }
 
-  _handleCartChange(event) {
-    if (!event.detail.action == 'load') return; // save would be redundant
-    this._carte.save();
+  _cartChanged(details) {
+    if (details.action == 'load') return; // save would be redundant
+    this._cart.save();
   }
 
   // Testing hooks

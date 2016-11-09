@@ -21,10 +21,11 @@ import { products, findProduct } from 'products';
 export const CART_EVENT = "cartchange";
 
 export default class Cart {
-  constructor (adaptor) {
+  constructor (adaptor, changeCallback) {
     this.items = [];
     this.adaptor = adaptor;
     this._loading = false;
+    this._callback = changeCallback; // used to report changes back to the app
   }
 
   findItem(sku) {
@@ -40,7 +41,7 @@ export default class Cart {
       item = new LineItem(product, quantity);
       this.items.push(item);
     }
-    this._sendEvent('add', product, quantity);
+    this._reportChange('add', product, quantity);
     return item;
   }
 
@@ -49,25 +50,25 @@ export default class Cart {
     if (index >= 0) {
       this.items.splice(index, 1);
     }
-    this._sendEvent('remove', product);
+    this._reportChange('remove', product);
   }
 
   change(product, quantity) {
     let item = this.findItem(product.sku);
     if (quantity <= 0) {
       this.remove(item);
-      this._sendEvent('remove', product);
+      this._reportChange('remove', product);
       return null;
     } else {
       item.quantity = quantity;
-      this._sendEvent('change', product, quantity);
+      this._reportChange('change', product, quantity);
       return item;
     }
   }
 
   reset() {
     this.items = [];
-    this._sendEvent('reset');
+    this._reportChange('reset');
   }
 
   get length() {
@@ -113,16 +114,15 @@ export default class Cart {
       this.items = [];
     }
     this._loading = false;
-    this._sendEvent('load');
+    this._reportChange('load');
   }
 
-  _sendEvent(action, product, quantity) {
+  _reportChange(action, product, quantity) {
     if (this._loading) return; // don't spam the app with events
     let details = {'action': (action), 'total': (this.total)};
     if (product) details.sku = product.sku;
     if (quantity) details.quantity = quantity;
-    var event = new CustomEvent(CART_EVENT, { 'detail': (details) });
-    document.dispatchEvent(event);
+    if (this._callback) this._callback(details);
   }
 }
 
