@@ -96,7 +96,7 @@ export default class CartView {
 
   // utility for unit testing (used in counting the number of elements)
   get itemSelector() {
-    return `${this._element}.${this._elementClass}`;
+    return `${this._element}.${this._elementClass}[data-sku]`;
   }
 
 }

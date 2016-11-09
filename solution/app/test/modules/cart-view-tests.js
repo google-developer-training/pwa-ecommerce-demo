@@ -27,16 +27,19 @@ QUnit.module('Cart-view', {beforeEach: () => {
 QUnit.test('test environment is sane', assert => {
   let fixture = document.getElementById('qunit-fixture');
   assert.ok(fixture, 'qunit fixture exists');
-  let cart = document.querySelector('tbody');
-  assert.ok(!cart.hasChildNodes(), 'cart template is empty');
+  let table = document.querySelector('tbody');
+  let view = new CartView(cart, 'cart');
+  let items = table.querySelectorAll(view.itemSelector);
+  assert.equal(items.length, 0, 'table is empty of items');
   });
 
 QUnit.test('empty cart adds no items', assert => {
   let table = document.querySelector('tbody');
   let cart = new Cart();
-  let cartView = new CartView(cart, 'cart');
-  cartView.render();
-  assert.ok(!table.hasChildNodes(), 'cart template is empty after render');
+  let view = new CartView(cart, 'cart');
+  view.render();
+  let items = table.querySelectorAll(view.itemSelector);
+  assert.equal(items.length, 0, 'empty after render');
   });
 
 QUnit.test('single item renders a single row', assert => {
