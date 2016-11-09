@@ -26,11 +26,11 @@ export default class ShopView {
     this._element = 'div';
     this._elementClass = 'product';
     this._addHandler = null;
+    this._container = document.getElementById(this._containerId);
   }
 
   render () {
-    let container = document.getElementById(this._containerId);
-    container.innerHTML = ''; // remove all children
+    this._container.innerHTML = ''; // remove all children
     for (let product of this._products) {
       let placeholder = document.createElement('div');
       // TODO add mdl icon
@@ -52,13 +52,24 @@ export default class ShopView {
           </button>
         </div>
       </div>`;
-      container.appendChild(placeholder.firstElementChild); // WARN: no ie8
+      this._container.appendChild(placeholder.firstElementChild); // WARN: no ie8
     }
     // Capture add events (clicks) as they bubble up. Only add once.
     if (!this._addHandler) {
       this._addHandler = this._handleProductClick.bind(this);
-      container.addEventListener('click', this._addHandler, true);
+      this._container.addEventListener('click', this._addHandler, false);
     }
+  }
+
+  set visible(vis) {
+    if (vis && !this.visible) {
+      this.render(); // redraw before reveal
+    }
+    this._container.style.display = vis ? 'block' : 'none';
+  }
+
+  get visible () {
+    return this._container.style.display == 'block';
   }
 
   _handleProductClick(event) {
@@ -66,6 +77,7 @@ export default class ShopView {
     // MDL inserts an animated span as a child of the button; it gets the click.
     // We may need to look at the parent to find the button.
     let target = event.target;
+    if (target == this._container) return;
     while (target.nodeName != 'BUTTON') {
       target = target.parentNode;
     }
@@ -74,13 +86,13 @@ export default class ShopView {
     var product = findProduct(sku, this._products);
     this._cart.add(product);
     this._showConfirmation(product);
-    // TODO trigger a cart count display update
   }
 
   _showConfirmation(product) {
     // TODO implement. e.g. using #dialog (see main.js)
   }
 
+  // utility for unit testing (used in counting the number of elements)
   get itemSelector() {
     return `${this._element}.${this._elementClass}`;
   }

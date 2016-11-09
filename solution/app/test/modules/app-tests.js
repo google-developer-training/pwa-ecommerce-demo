@@ -44,15 +44,19 @@ QUnit.test('selection == shop makes only shop visible', assert => {
   app.selection = 'shop';
   let shop = document.getElementById('shop');
   let cart = document.getElementById('cart');
-  assert.ok(!shop.hidden, 'shop visible');
-  assert.ok(cart.hidden, 'cart hidden');
+  assert.ok(isVisible(shop), 'shop visible');
+  assert.ok(!isVisible(cart), 'cart hidden');
   });
 
 QUnit.test('selection == cart makes only cart visible', assert => {
   let app = new App();
-  app.selection = 'shop';
+  app.selection = 'cart';
   let shop = document.getElementById('shop');
   let cart = document.getElementById('cart');
-  assert.ok(!shop.hidden, 'shop visible');
-  assert.ok(cart.hidden, 'cart hidden');
+  assert.ok(!isVisible(shop), 'none', 'shop hidden');
+  assert.ok(isVisible(cart), 'block', 'cart visible');
   });
+
+  function isVisible(elt) {
+    return elt.style.display === '' || elt.style.display === 'block';
+  }

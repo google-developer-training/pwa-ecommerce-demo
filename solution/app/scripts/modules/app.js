@@ -29,7 +29,7 @@ export default class App {
     this._storage = new LocalStorage();
     this._cart = new Cart(this._storage);
     this._cartView = new CartView(this._cart);
-    this._shop = new ShopView(this._cart);
+    this._shopView = new ShopView(this._cart);
     this._header = new HeaderController();
     this._hashChangeListener = this._handleHashChange.bind(this);
   }
@@ -45,15 +45,15 @@ export default class App {
   // Manage element visibility (hide the cart when store is selected and vice versa)
   set selection(sel) {
     this._header.selection = sel;
-    document.getElementById('shop').hidden = sel != 'shop';
-    document.getElementById('cart').hidden = sel != 'cart';
+    this._shopView.visible = sel == 'shop';
+    this._cartView.visible = (sel == 'cart' || sel == 'pay');
   }
 
   run() {
     this.selection = 'shop';
     this._header.replaceURLState(); // window.location == index.html#shop
     this._cart.load();
-    this._shop.render();
+    this._shopView.render();
     this._cartView.render();
 
     // *** The following changes are meant to make this a single-page app ***
