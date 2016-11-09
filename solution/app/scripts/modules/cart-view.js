@@ -64,11 +64,15 @@ export default class CartView {
     if (vis && !this.visible) {
       this.render(); // redraw before reveal
     }
-    this._container.style.display = vis ? 'block' : 'none';
+    if (vis) {
+      this._container.removeAttribute('hidden');
+    } else {
+      this._container.setAttribute('hidden', true);
+    }
   }
 
   get visible () {
-    return this._container.style.display == 'block';
+    return !this._container.hasAttribute('hidden');
   }
 
   _handleClick(event) {

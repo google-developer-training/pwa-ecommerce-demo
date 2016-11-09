@@ -53,10 +53,10 @@ QUnit.test('selection == cart makes only cart visible', assert => {
   app.selection = 'cart';
   let shop = document.getElementById('shop');
   let cart = document.getElementById('cart');
-  assert.ok(!isVisible(shop), 'none', 'shop hidden');
-  assert.ok(isVisible(cart), 'block', 'cart visible');
+  assert.ok(!isVisible(shop), 'shop hidden');
+  assert.ok(isVisible(cart), 'cart visible');
   });
 
   function isVisible(elt) {
-    return elt.style.display === '' || elt.style.display === 'block';
+    return !elt.hasAttribute('hidden');
   }
