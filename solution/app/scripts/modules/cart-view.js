@@ -45,7 +45,7 @@ export default class CartView {
       this._tbody.appendChild(placeholder.firstElementChild); // WARN: no ie8
     }
     // Add the total price
-    document.getElementById('cart-total').innerText = `$${this._cart.total}`;
+    this.updateTotal();
     // Capture delete events (clicks) as they bubble up. Added only once
     if (!this._clickHandler) {
       this._clickHandler = this._handleClick.bind(this);
@@ -53,11 +53,16 @@ export default class CartView {
     }
   }
 
+  updateTotal() {
+    document.getElementById('cart-total').innerText = `$${this._cart.total}`;
+  }
+
   removeFromView(sku) {
     let row = this._tbody.querySelector(`tr[data-sku=${sku}]`);
     if (row) {
       row.parentNode.removeChild(row);
     }
+    this.updateTotal();
   }
 
   set visible(vis) {
