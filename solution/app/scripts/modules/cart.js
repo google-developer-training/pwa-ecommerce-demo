@@ -18,7 +18,7 @@ limitations under the License.
 
 import { products, findProduct } from 'products';
 
-export const CART_EVENT = "cart";
+export const CART_EVENT = "cartchange";
 
 export default class Cart {
   constructor (adaptor) {

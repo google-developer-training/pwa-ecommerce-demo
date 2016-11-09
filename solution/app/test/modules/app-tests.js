@@ -16,6 +16,7 @@ limitations under the License.
 // jshint esversion: 6
 import App from 'app';
 import HeaderController from 'header-controller';
+import Product from 'product';
 // import sinon from 'sinon-es6';
 // import $ from 'jquery';
 
@@ -39,6 +40,18 @@ QUnit.test('relays hashChange events', assert => {
   assert.equal(controller.selection, 'shop', 'set selection');
   });
 
+QUnit.test('detects cart changes and triggers save', assert => {
+  let app = new App();
+  let cart = app.cart;
+  let storage = app.storage;
+  const c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
+  app.install();
+  storage.key = 'test-cart-storage';
+  storage.delete();
+  cart.add(c10);
+  assert.ok(storage.load(), 'cart saved');
+  });
+
 QUnit.test('selection == shop makes only shop visible', assert => {
   let app = new App();
   app.selection = 'shop';
@@ -57,6 +70,6 @@ QUnit.test('selection == cart makes only cart visible', assert => {
   assert.ok(isVisible(cart), 'cart visible');
   });
 
-  function isVisible(elt) {
-    return !elt.hasAttribute('hidden');
-  }
+function isVisible(elt) {
+  return !elt.hasAttribute('hidden');
+}

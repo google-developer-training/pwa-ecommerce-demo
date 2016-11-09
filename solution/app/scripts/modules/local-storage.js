@@ -14,27 +14,35 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//jshint esversion: 6
+//jshint esversion:6
 export default class LocalStorage {
   constructor (id='mfs-cart-items') {
     this._id = id;
-  }
-
-  get id() {
-    return _id;
   }
 
   /* Takes an array of items and writes JSON to local storage */
   save(items) {
     if (!items || !items.length) return;
     let json = JSON.stringify(items);
-    localStorage[id] = json;
+    localStorage[this._id] = json;
   }
 
   load() {
-    let json = localStorage[id];
+    let json = localStorage[this._id];
     if (!json) return [];
     return JSON.parse(json);
   }
 
+  delete() {
+    localStorage.removeItem(this._id);
+  }
+
+  // testing hooks so we can test w/o wrecking the stored data
+  set key(value) {
+    this._id = value;
+  }
+
+  get key() {
+    return this._id;
+  }
 }
