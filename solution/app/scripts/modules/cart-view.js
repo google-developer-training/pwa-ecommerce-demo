@@ -22,12 +22,13 @@ export default class CartView {
     this._containerId = containerId;
     this._element = 'tr';
     this._elementClass = 'product';
-    this._deleteHandler = this._handleDelete.bind(this);
+    this._clickHandler = null;
+    this._container = document.getElementById(this._containerId);
+    this._tbody = this._container.querySelector('tbody');
   }
 
   render () {
-    let container = document.getElementById(this._containerId);
-    container.innerHTML = ''; // remove all children
+    this._tbody.innerHTML = ''; // remove all children
     for (let product of this._cart.cart) {
       let placeholder = document.createElement('tbody');
       // TODO add mdl "delete" icon
@@ -37,37 +38,54 @@ export default class CartView {
         <td>$${product.price}</td>
         <td><button class="mdl-button mdl-button--colored mdl-js-button
               mdl-js-ripple-effect mdl-button--accent delete"
-              data-sku="${product.sku}">
+              data-sku="${product.sku}" data-action="remove">
             </button>
         </td>
       </tr>`;
-      container.appendChild(placeholder.firstElementChild); // WARN: no ie8
+      this._tbody.appendChild(placeholder.firstElementChild); // WARN: no ie8
     }
     // Add the total price
     document.getElementById('cart-total').innerText = `$${this._cart.total}`;
-    // Capture delete events (clicks) as they bubble up
-    // N.B. Duplicate listeners will be discarded, so safe to call on each render
-    // (e.g. in case the container has been replaced)
-    container.addEventListener('click', this._deleteHandler, false);
+    // Capture delete events (clicks) as they bubble up. Added only once
+    if (!this._clickHandler) {
+      this._clickHandler = this._handleClick.bind(this);
+      this._container.addEventListener('click', this._clickHandler, true);
+    }
   }
 
   removeFromView(sku) {
-    let container = document.getElementById(this._containerId);
-    let row = container.querySelector(`tr[data-sku=${sku}]`);
+    let row = this._tbody.querySelector(`tr[data-sku=${sku}]`);
     if (row) {
       row.parentNode.removeChild(row);
     }
   }
 
-  _handleDelete(event) {
-    event.preventDefault();
-    var sku = event.target.dataset.sku;
-    if (!sku) throw new Error('could not find sku, data- attrs not supported?');
-    var product = this._cart.findItem(sku);
-    this._cart.remove(product);
-    this.removeFromView(sku);
+  set visible(vis) {
+    if (vis && !this.visible) {
+      this.render(); // redraw before reveal
+    }
+    this._container.style.display = vis ? 'block' : 'none';
   }
 
+  get visible () {
+    return this._container.style.display == 'block';
+  }
+
+  _handleClick(event) {
+    event.preventDefault();
+    var sku = event.target.dataset.sku;
+    var action = event.target.dataset.action;
+    if (!sku) throw new Error('could not find sku, data- attrs not supported?');
+    switch(action) {
+      case 'remove':
+        var product = this._cart.findItem(sku);
+        this._cart.remove(product);
+        this.removeFromView(sku);
+        break;
+    }
+  }
+
+  // utility for unit testing (used in counting the number of elements)
   get itemSelector() {
     return `${this._element}.${this._elementClass}`;
   }

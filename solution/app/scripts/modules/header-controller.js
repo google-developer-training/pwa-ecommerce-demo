@@ -37,6 +37,11 @@ export default class HeaderController {
   }
 */
 
+  replaceURLState() {
+    let url = this._urlWithSelection();
+    history.replaceState({}, "", url);
+  }
+
   get selection () {
     return this._selection;
   }
@@ -67,5 +72,12 @@ export default class HeaderController {
     for (let i=0; i < spans.length; i++) {
       spans[i].innerText = label;
     }
+  }
+
+  _urlWithSelection() {
+    let url = window.location.toString();
+    let index = url.indexOf('#');
+    if (index >= 0) url = url.substring(0, index);
+    return url +  '#' + this._selection;
   }
 }

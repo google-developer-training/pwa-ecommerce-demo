@@ -80,6 +80,7 @@ import App from 'app';
   // Your custom JavaScript goes here
   let app = new App();
   document.addEventListener('DOMContentLoaded', e => {
+    app.install();
     app.run();
   });
 

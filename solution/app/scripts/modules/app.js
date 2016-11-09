@@ -29,20 +29,55 @@ export default class App {
     this._storage = new LocalStorage();
     this._cart = new Cart(this._storage);
     this._cartView = new CartView(this._cart);
-    this._shop = new ShopView(this._cart);
+    this._shopView = new ShopView(this._cart);
     this._header = new HeaderController();
+    this._hashChangeListener = this._handleHashChange.bind(this);
+  }
+
+  install() {
+    window.addEventListener('hashchange', this._hashChangeListener);
+  }
+
+  uninstall() {
+    window.removeEventListener('hashchange', this._hashChangeListener);
+  }
+
+  // Manage element visibility (hide the cart when store is selected and vice versa)
+  set selection(sel) {
+    this._header.selection = sel;
+    this._shopView.visible = sel == 'shop';
+    this._cartView.visible = (sel == 'cart' || sel == 'pay');
   }
 
   run() {
+    this.selection = 'shop';
+    this._header.replaceURLState(); // window.location == index.html#shop
     this._cart.load();
-    this._shop.render();
+    this._shopView.render();
     this._cartView.render();
+
     // *** The following changes are meant to make this a single-page app ***
-    // TODO set initial window.location to index.html#store
-    // TODO handle hashChange, manage history (#store or #cart, maybe #pay)
-    // TODO manage element visibility (hide the cart when store is selected and vice versa)
     // TODO merge payment dialog into index.html, handle payment flow
+    // TODO Fix the shop not rendering on first load.
     // TODO add a 'cart' event listener on document. All values of event.detail.action
     // should trigger cart.save() EXCEPT event.detail.action==='load'
+    // TODO pick up delete icon, possible add icon
+    // TODO confirm item added to cart w/ animation or toast
   }
+
+
+  // Handle hashChange, manage history (#store or #cart, maybe #pay)
+  _handleHashChange(event) {
+    if (!event.newURL) return;
+    let index = event.newURL.lastIndexOf('#');
+    if (index < 0) return;
+    let sel = event.newURL.substr(index+1);
+    this.selection = sel;
+  }
+
+  // Testing hooks
+  set headerController(obj) {
+    this._header = obj;
+  }
+
 }
