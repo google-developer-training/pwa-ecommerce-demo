@@ -66,8 +66,11 @@ export default class App {
 
   // Pop up a user notification
   showToast(message) {
-    var notification = document.querySelector('.mdl-js-snackbar');
-    notification.MaterialSnackbar.showSnackbar({message: (message)});
+    var notification = document.getElementById('snackbar');
+    // This depends on the MDL script which he unit tests don't have
+    if (notification && notification.MaterialSnackbar) {
+      notification.MaterialSnackbar.showSnackbar({message: (message)});
+    }
   }
 
   // Handle hashChange, manage history (#store or #cart, maybe #pay)
@@ -83,7 +86,7 @@ export default class App {
     if (details.action == 'load') return; // save would be redundant
     if (details.action == 'add' || details.action == 'change') {
       this._cartView.total =
-      this.showToast("Cart updated");
+      this.showToast('Cart updated');
     }
     this._updateCartCountDisplay();
     this._cart.save();

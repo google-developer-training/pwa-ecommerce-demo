@@ -72,22 +72,24 @@
                   <div class="mdl-card__title">
                       <h2 class="mdl-card__title-text">Checkout</h2>
                   </div>
-                  <table class="mdl-data-table md-js-data-table mdl-shadow--2dp" style="width:100%;">
-                    <thead>
-                        <tr>
-                            <th class="mdl-data-tabe__cell-non-numeric">Item</th>
-                            <th>Quantity</th>
-                            <th>Unit price</th>
-                            <th>Remove</th>
-                        </tr>
-                    </thead>
-                  <tbody></tbody>
-                </table>
+                  <div class="mdl-card__media">
+                    <table class="mdl-data-table md-js-data-table mdl-shadow--2dp" style="width:100%;">
+                      <thead>
+                          <tr>
+                              <th class="mdl-data-table__cell-non-numeric">Item</th>
+                              <th>Quantity</th>
+                              <th>Unit price</th>
+                              <th>Remove</th>
+                          </tr>
+                      </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
                 <div id="cart-total"></div>
               </div>
             </div>
             <!-- Message pop-ups -->
-            <div aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
+            <div id="snackbar" aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
               <div class="mdl-snackbar__text"></div>
               <button type="button" class="mdl-snackbar__action"></button>
             </div>
