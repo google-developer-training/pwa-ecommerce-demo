@@ -21,21 +21,7 @@ export default class HeaderController {
     this._containerId = containerId;
     this._selection = 'shop';
     this._count = 0;
-//    this._addHandler = this._handleProductClick.bind(this);
-//    container.addEventListener('click', this._addHandler, false);
   }
-
-/*
-  _handleProductClick(event) {
-    event.preventDefault();
-    var sku = event.target.dataset.sku;
-    if (!sku) throw new Error('could not find sku, data- attrs not supported?');
-    var product = findProduct(sku, this._products);
-    this._cart.add(product);
-    this._showConfirmation(product);
-    // TODO trigger a cart count display update
-  }
-*/
 
   replaceURLState() {
     let url = this._urlWithSelection();
@@ -66,11 +52,11 @@ export default class HeaderController {
 
   set count(newCount) {
     if (this._count == newCount) return;
-    var label = newCount === 0 ? '' : ` ($newCount)`;
+    var label = newCount === 0 ? '' : ` (${newCount} items)`;
     this._count = newCount;
-    let spans = document.querySelectorAll('span.cart-count');
+    let spans = document.querySelectorAll(`#${this._containerId} a[href="#cart"]`);
     for (let i=0; i < spans.length; i++) {
-      spans[i].innerText = label;
+      spans[i].innerText = `Cart${label}`;
     }
   }
 
