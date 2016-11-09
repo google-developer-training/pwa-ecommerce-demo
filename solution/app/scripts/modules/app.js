@@ -59,11 +59,17 @@ export default class App {
     // *** The following changes are meant to make this a single-page app ***
     // TODO merge payment dialog into index.html, handle payment flow
     // TODO Fix the shop not rendering on first load.
+    // TODO Display cart count on cart change
     // TODO Fix the formatting of the total in the cart
     // TODO pick up delete icon, possible add icon
     // TODO confirm item added to cart w/ animation or toast
   }
 
+  // Pop up a user notification
+  showToast(message) {
+    var notification = document.querySelector('.mdl-js-snackbar');
+    notification.MaterialSnackbar.showSnackbar({message: (message)});
+  }
 
   // Handle hashChange, manage history (#store or #cart, maybe #pay)
   _handleHashChange(event) {
@@ -76,6 +82,10 @@ export default class App {
 
   _cartChanged(details) {
     if (details.action == 'load') return; // save would be redundant
+    if (details.action == 'add' || details.action == 'change') {
+      this.showToast("Cart updated");
+    }
+    this._header.count = this._cart.count;
     this._cart.save();
   }
 
