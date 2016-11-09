@@ -22,7 +22,7 @@ export default class CartView {
     this._containerId = containerId;
     this._element = 'tr';
     this._elementClass = 'product';
-    this._deleteHandler = this._handleDelete.bind(this);
+    this._clickHandler = this._handleClick.bind(this);
   }
 
   render () {
@@ -37,7 +37,7 @@ export default class CartView {
         <td>$${product.price}</td>
         <td><button class="mdl-button mdl-button--colored mdl-js-button
               mdl-js-ripple-effect mdl-button--accent delete"
-              data-sku="${product.sku}">
+              data-sku="${product.sku}" data-action="remove">
             </button>
         </td>
       </tr>`;
@@ -48,7 +48,7 @@ export default class CartView {
     // Capture delete events (clicks) as they bubble up
     // N.B. Duplicate listeners will be discarded, so safe to call on each render
     // (e.g. in case the container has been replaced)
-    container.addEventListener('click', this._deleteHandler, false);
+    container.addEventListener('click', this._clickHandler, false);
   }
 
   removeFromView(sku) {
@@ -59,13 +59,18 @@ export default class CartView {
     }
   }
 
-  _handleDelete(event) {
+  _handleClick(event) {
     event.preventDefault();
     var sku = event.target.dataset.sku;
+    var action = event.target.dataset.action;
     if (!sku) throw new Error('could not find sku, data- attrs not supported?');
-    var product = this._cart.findItem(sku);
-    this._cart.remove(product);
-    this.removeFromView(sku);
+    switch(action) {
+      case 'remove':
+        var product = this._cart.findItem(sku);
+        this._cart.remove(product);
+        this.removeFromView(sku);
+        break;
+    }
   }
 
   get itemSelector() {
