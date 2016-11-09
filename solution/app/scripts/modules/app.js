@@ -41,7 +41,7 @@ export default class App {
   uninstall() {
     window.removeEventListener('hashchange', this._hashChangeListener);
   }
-  
+
   // Manage element visibility (hide the cart when store is selected and vice versa)
   set selection(sel) {
     this._header.selection = sel;
@@ -58,9 +58,11 @@ export default class App {
 
     // *** The following changes are meant to make this a single-page app ***
     // TODO merge payment dialog into index.html, handle payment flow
-    // TODO Clicking "Add to cart" on an item should update the cart. Doesn't seem to be working.
+    // TODO Fix the shop not rendering on first load.
     // TODO add a 'cart' event listener on document. All values of event.detail.action
     // should trigger cart.save() EXCEPT event.detail.action==='load'
+    // TODO pick up delete icon, possible add icon
+    // TODO confirm item added to cart w/ animation or toast
   }
 
 

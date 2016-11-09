@@ -25,7 +25,7 @@ export default class ShopView {
     this._containerId = containerId;
     this._element = 'div';
     this._elementClass = 'product';
-    this._addHandler = this._handleProductClick.bind(this);
+    this._addHandler = null;
   }
 
   render () {
@@ -54,15 +54,22 @@ export default class ShopView {
       </div>`;
       container.appendChild(placeholder.firstElementChild); // WARN: no ie8
     }
-    // Capture add events (clicks) as they bubble up
-    // N.B. Duplicate listeners will be discarded, so safe to call on each render
-    // (e.g. in case the container has been replaced)
-    container.addEventListener('click', this._addHandler, false);
+    // Capture add events (clicks) as they bubble up. Only add once.
+    if (!this._addHandler) {
+      this._addHandler = this._handleProductClick.bind(this);
+      container.addEventListener('click', this._addHandler, true);
+    }
   }
 
   _handleProductClick(event) {
     event.preventDefault();
-    var sku = event.target.dataset.sku;
+    // MDL inserts an animated span as a child of the button; it gets the click.
+    // We may need to look at the parent to find the button.
+    let target = event.target;
+    while (target.nodeName != 'BUTTON') {
+      target = target.parentNode;
+    }
+    var sku = target.dataset.sku;
     if (!sku) throw new Error('could not find sku, data- attrs not supported?');
     var product = findProduct(sku, this._products);
     this._cart.add(product);
