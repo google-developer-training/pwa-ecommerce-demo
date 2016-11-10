@@ -95,6 +95,89 @@
                   </button>
                 </div>
               </div>
+              <!-- Payment form, pay button -->
+              <div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp" hidden>
+                  <div class="mdl-card__title">
+                      <h2 class="mdl-card__title-text">Checkout</h2>
+                  </div>
+                  <div class="mdl-card__supporting-text">
+                    <form action="checkout.html" method="post" id="checkout_form">
+                      <div id="form">
+                          <fieldset form="checkout_form">
+                              <legend>Personal Information</legend>
+                              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                  <input class="mdl-textfield__input" pattern="[A-Z,a-z, ]*" type="text" id="name" autocomplete="name">
+                                  <label class="mdl-textfield__label" for="name">Name</label>
+                                  <span class="mdl-textfield__error">Letters and spaces only</span>
+                              </div>
+                              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                  <input class="mdl-textfield__input" type="text" id="email" autocomplete="email">
+                                  <label class="mdl-textfield__label" for="email">Email</label>
+                              </div>
+                              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                  <input class="mdl-textfield__input" pattern="[0-9,+]*" type="text" id="tel" autocomplete="tel">
+                                  <label class="mdl-textfield__label" for="tel">Phone number</label>
+                                  <span class="mdl-textfield__error">`+` and Numbers only</span>
+                              </div>
+                          </fieldset>
+                          <fieldset form="checkout_form">
+                              <legend>Shipping Address</legend>
+                              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                  <input class="mdl-textfield__input" type="text" id="street-address" autocomplete="home address-level3">
+                                  <label class="mdl-textfield__label" for="street-address">Street Address</label>
+                                  <span class="mdl-textfield__error">Letters and spaces only</span>
+                              </div>
+                              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                  <input class="mdl-textfield__input" type="text" id="city" autocomplete="home address-level2">
+                                  <label class="mdl-textfield__label" for="city">City</label>
+                              </div>
+                              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                  <input class="mdl-textfield__input" pattern="[A-Z,a-z, ]*" type="text" id="state-province" autocomplete="home address-level1">
+                                  <label class="mdl-textfield__label" for="state-province">State/Province</label>
+                                  <span class="mdl-textfield__error">Letters and spaces only</span>
+                              </div>
+                              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                  <input class="mdl-textfield__input" pattern="[A-Z,a-z, ]*" type="text" id="zip-postal-code" autocomplete="home postal-code">
+                                  <label class="mdl-textfield__label" for="zip-postal-code">Zip/Postal Code</label>
+                                  <span class="mdl-textfield__error">Letters and spaces only</span>
+                              </div>
+                              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                  <input class="mdl-textfield__input" pattern="[A-Z,a-z, ]*" type="text" id="country" autocomplete="home country-name">
+                                  <label class="mdl-textfield__label" for="country">Country</label>
+                                  <span class="mdl-textfield__error">Letters and spaces only</span>
+                              </div>
+                          </fieldset>
+                          <fieldset form="checkout_form">
+                              <legend>Credit Card</legend>
+                              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                  <input class="mdl-textfield__input" pattern="[A-Z,a-z, ]*" type="text" id="cardholder-name" autocomplete="cc-name">
+                                  <label class="mdl-textfield__label" for="cardholder-name">Cardholder Name</label>
+                                  <span class="mdl-textfield__error">Letters and spaces only</span>
+                              </div>
+                              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                  <input class="mdl-textfield__input" pattern="[0-9]{16}" type="text" id="card-number" autocomplete="cc-number">
+                                  <label class="mdl-textfield__label" for="card-number">Card Number</label>
+                                  <span class="mdl-textfield__error">16 chars number</span>
+                              </div>
+                              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                  <input class="mdl-textfield__input" pattern="[0-9,/]*" type="text" id="expiry-date" autocomplete="cc-exp">
+                                  <label class="mdl-textfield__label" for="expiry-date">Expiry Date</label>
+                                  <span class="mdl-textfield__error">Date only</span>
+                              </div>
+                              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                  <input class="mdl-textfield__input" pattern="[0-9]{3,4}" type="text" id="cvc-number" autocomplete="cc-csc">
+                                  <label class="mdl-textfield__label" for="cvc-number">CVC Number</label>
+                                  <span class="mdl-textfield__error">3 - 4 numbers only</span>
+                              </div>
+                          </fieldset>
+                      </div>
+                      <div class="mdl-dialog__actions">
+                          <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit">
+                              Place Order
+                          </button>
+                      </div>
+                  </form>
+                </div>
             </div>
             <!-- Message pop-ups -->
             <div id="snackbar" aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
