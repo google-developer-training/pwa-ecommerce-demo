@@ -70,7 +70,7 @@
             <div class="mdl-grid portfolio-max-width portfolio-contact" id="cart">
               <div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
                   <div class="mdl-card__title">
-                      <h2 class="mdl-card__title-text">Checkout</h2>
+                      <h2 class="mdl-card__title-text">Cart</h2>
                   </div>
                   <div class="mdl-card__media">
                     <table class="mdl-data-table md-js-data-table mdl-shadow--2dp" style="width:100%;">
@@ -79,10 +79,13 @@
                               <th class="mdl-data-table__cell-non-numeric">Item</th>
                               <th>Quantity</th>
                               <th>Unit price</th>
-                              <th>Remove</th>
+                              <th></th>
                           </tr>
                       </thead>
                     <tbody></tbody>
+                    <tfoot>
+                      <tr id="cart-total-row"><td/><td class="mdl-data-table__cell-non-numeric">Total</td><td id="cart-total"></td><td/></tr>
+                    </tfoot>
                   </table>
                 </div>
                 <div id="cart-total"></div>

@@ -60,7 +60,6 @@ export default class App {
     // *** The following changes are meant to make this a single-page app ***
     // TODO merge payment dialog into index.html, handle payment flow
     // TODO Fix the shop not rendering on first load.
-    // TODO Fix the formatting of the total in the cart
     // TODO pick up delete icon, possible add icon
   }
 

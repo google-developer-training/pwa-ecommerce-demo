@@ -28,7 +28,11 @@ export default class CartView {
   }
 
   render () {
-    this._tbody.innerHTML = ''; // remove all children
+    // Remove existing products
+    let itemRows = this._tbody.querySelectorAll(this.itemSelector);
+    for (var i=0; i < itemRows.length; i++) {
+      this._tbody.removeChild(itemRows[i]);
+    }
     for (let product of this._cart.cart) {
       let placeholder = document.createElement('tbody');
       // TODO add mdl "delete" icon
@@ -38,8 +42,7 @@ export default class CartView {
         <td>$${product.price}</td>
         <td><button class="mdl-button mdl-button--colored mdl-js-button
               mdl-js-ripple-effect mdl-button--accent delete"
-              data-sku="${product.sku}" data-action="remove">
-            </button>
+              data-sku="${product.sku}" data-action="remove">remove</button>
         </td>
       </tr>`;
       this._tbody.appendChild(placeholder.firstElementChild); // WARN: no ie8
