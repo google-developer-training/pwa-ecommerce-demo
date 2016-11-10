@@ -85,16 +85,16 @@ export default class CartView {
 
   _handleClick(event) {
     event.preventDefault();
-    var sku = event.target.dataset.sku;
-    var action = event.target.dataset.action;
-    if (!sku) throw new Error('could not find sku, data- attrs not supported?');
-    switch(action) {
-      case 'remove':
+    if (event.target.dataset) {
+      var sku = event.target.dataset.sku;
+      var action = event.target.dataset.action;
+      if (sku && action == 'remove') {
         var product = this._cart.findItem(sku);
         this._cart.remove(product);
         this.removeFromView(sku);
-        break;
+      }
     }
+    // TODO otherwise, handle checkout button
   }
 
   // utility for unit testing (used in counting the number of elements)
