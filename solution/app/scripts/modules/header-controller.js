@@ -23,18 +23,13 @@ export default class HeaderController {
     this._count = 0;
   }
 
-  replaceURLState() {
-    let url = this._urlWithSelection();
-    history.replaceState({}, "", url);
-  }
-
   get selection () {
     return this._selection;
   }
 
   set selection(newValue) {
     if (newValue != 'shop' && newValue != 'cart') return;
-    if (newValue == this.selection) return;
+    if (newValue == this._selection) return;
     this._selection = newValue;
 
     // Now update the UI
@@ -60,10 +55,4 @@ export default class HeaderController {
     }
   }
 
-  _urlWithSelection() {
-    let url = window.location.toString();
-    let index = url.indexOf('#');
-    if (index >= 0) url = url.substring(0, index);
-    return url +  '#' + this._selection;
-  }
 }

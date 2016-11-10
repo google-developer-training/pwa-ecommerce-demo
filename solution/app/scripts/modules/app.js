@@ -22,6 +22,7 @@ import CartView from 'cart-view';
 import ShopView from 'shop-view';
 import HeaderController from 'header-controller';
 import {products} from 'products';
+import {replaceLocationHash} from 'url-tools';
 
 export default class App {
 
@@ -44,21 +45,24 @@ export default class App {
 
   // Manage element visibility (hide the cart when store is selected and vice versa)
   set selection(sel) {
+    // TODO States: shop|cart, checkout, pay, confirmation
     this._header.selection = sel;
     this._shopView.visible = sel == 'shop';
-    this._cartView.visible = (sel == 'cart' || sel == 'pay');
+    this._cartView.visible = sel != 'shop';
+    // add cases for checkout form, payment status, confirmation display
   }
 
   run() {
-    this.selection = 'shop';
-    this._header.replaceURLState(); // window.location == index.html#shop
+    replaceLocationHash('shop'); // Set window.location to end in #shop
     this._cart.load();
     this._shopView.render();
     this._cartView.render();
     this._updateCartCountDisplay();
+    this.selection = 'shop';
 
     // *** The following changes are meant to make this a single-page app ***
-    // TODO merge payment dialog into index.html, handle payment flow
+    // TODO add controller for payment form, handle payment flow
+    // TODO add hash states for payment (#checkout -> #pay [w/ spinner] -> #confirmation (replace))
     // TODO Fix the shop not rendering on first load.
     // TODO pick up delete icon, possible add icon
   }
