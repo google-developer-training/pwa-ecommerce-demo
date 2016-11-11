@@ -98,6 +98,7 @@ QUnit.test('click to delete item updates cart', assert => {
   cart.add(c10);
 
   let view = new CartView(cart, 'cart');
+  view.install();
   view.render();
   let button = document.querySelector('button.mdl-button');
   assert.equal(cart.count, 1, 'item exists prior to click');
@@ -114,6 +115,7 @@ QUnit.test('click to delete item removes row', assert => {
   cart.add(cl2);
 
   let view = new CartView(cart, 'cart');
+  view.install();
   view.render();
   let button = document.querySelector('button.mdl-button');
   let c10row = document.querySelector('tr[data-sku=C10]');

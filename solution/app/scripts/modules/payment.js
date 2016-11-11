@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 // jshint esversion: 6, sub:true
-import Cart from './cart';
-import Product from './product';
+import Cart from 'cart';
+import Product from 'product';
 
 /*
 * Given a cart set up with an order, gets payment authorization.

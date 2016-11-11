@@ -15,6 +15,8 @@ limitations under the License.
 */
 
 //jshint esversion: 6
+import {pushLocationHash} from 'url-tools';
+
 export default class CartView {
 
   constructor (cart, containerId='cart') {
@@ -25,6 +27,14 @@ export default class CartView {
     this._clickHandler = null;
     this._container = document.getElementById(this._containerId);
     this._tbody = this._container.querySelector('tbody');
+    this._checkoutBtn = document.getElementById('checkoutBtn');
+  }
+
+  install() {
+    this._clickHandler = this._handleClick.bind(this);
+    this._container.addEventListener('click', this._clickHandler, true);
+    // Checkout button switches hash to "pay", will cause the form to open
+    this._checkoutBtn.addEventListener('click', this._goToPayment.bind(this));
   }
 
   render () {
@@ -49,11 +59,6 @@ export default class CartView {
     }
     // Add the total price
     this.updateTotal();
-    // Capture delete events (clicks) as they bubble up. Added only once
-    if (!this._clickHandler) {
-      this._clickHandler = this._handleClick.bind(this);
-      this._container.addEventListener('click', this._clickHandler, true);
-    }
   }
 
   updateTotal() {
@@ -81,6 +86,10 @@ export default class CartView {
 
   get visible () {
     return !this._container.hasAttribute('hidden');
+  }
+
+  _goToPayment() {
+    pushLocationHash('pay');
   }
 
   _handleClick(event) {
