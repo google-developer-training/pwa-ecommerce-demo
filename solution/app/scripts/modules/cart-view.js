@@ -93,7 +93,6 @@ export default class CartView {
   }
 
   _handleClick(event) {
-    event.preventDefault();
     if (event.target.dataset) {
       var sku = event.target.dataset.sku;
       var action = event.target.dataset.action;

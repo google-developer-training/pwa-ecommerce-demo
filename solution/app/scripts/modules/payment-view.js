@@ -22,7 +22,7 @@ export default class PaymentView {
   constructor (cart, containerId='payment') {
     this._containerId = containerId;
     this._container = document.getElementById(this._containerId);
-    this._checkout_form = document.querySelector('#checkout_form');
+    this._checkout_form = document.getElementById('checkout_form');
     this._cart = cart;
   }
 
@@ -31,7 +31,6 @@ export default class PaymentView {
   }
 
   handleCheckout(event) {
-    e.preventDefault();
     var data = new FormData(e.target);
 
     if (!'PaymentRequest' in window) {
