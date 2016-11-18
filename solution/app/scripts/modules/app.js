@@ -20,7 +20,7 @@ import Cart from 'cart';
 import LocalStorage from 'local-storage';
 import CartView from 'cart-view';
 import ShopView from 'shop-view';
-import PaymentView from 'Payment-view';
+import PaymentView from 'payment-view';
 import HeaderController from 'header-controller';
 import {products} from 'products';
 import {replaceLocationHash} from 'url-tools';
