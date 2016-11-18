@@ -122,7 +122,7 @@ gulp.task('styles', () => {
 });
 
 gulp.task('scripts', () => {
-  browserify([
+  return browserify([
     './app/scripts/main.js'
   ], { debug: true, paths: ['app/scripts/modules/'] })
     .transform(babelify, { presets: ['es2015']  })
