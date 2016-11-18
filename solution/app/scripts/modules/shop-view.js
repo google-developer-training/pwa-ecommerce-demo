@@ -81,7 +81,7 @@ export default class ShopView {
     // MDL inserts an animated span as a child of the button; it gets the click.
     // We may need to look at the parent to find the button.
     let target = event.target;
-    if (target == this._container) return;
+    if (!target || target == this._container) return;
     while (target.nodeName != 'BUTTON') {
       target = target.parentNode;
     }
