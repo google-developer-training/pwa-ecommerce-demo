@@ -42,7 +42,7 @@ import {output as pagespeed} from 'psi';
 import pkg from './package.json';
 
 const $ = gulpLoadPlugins();
-const reload = browserSync.reload;
+const bs = browserSync.create();
 const babelOptions = {
 	presets: ['es2015']
 };
@@ -52,7 +52,7 @@ gulp.task('lint', () =>
   gulp.src('app/scripts/**/*.js')
     .pipe($.eslint())
     .pipe($.eslint.format())
-    .pipe($.if(!browserSync.active, $.eslint.failOnError()))
+    .pipe($.if(!bs.active, $.eslint.failOnError()))
 );
 
 // Optimize images
@@ -171,7 +171,7 @@ gulp.task('test', (done) => {
 
 // Build and serve the output from the dist build
 gulp.task('serve', ['default'], () =>
-  browserSync({
+  bs.init({
     notify: false,
     logPrefix: 'WSK',
     // Allow scroll syncing across breakpoints
