@@ -30,6 +30,7 @@
 </head>
 
 <body>
+    <!-- TODO Trim this dialog to only what's needed -->
     <dialog class="mdl-dialog" id="dialog">
        <h4 class="mdl-dialog__title">Added to cart</h4>
        <div class="mdl-dialog__content">
@@ -41,7 +42,8 @@
     </dialog>
     <!-- Top of the page -->
     <div id="headers" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-        <header class="mdl-layout__header mdl-layout__header--waterfall portfolio-header">
+        <header class="mdl-layout__header mdl-layout__header--waterfall
+                       mdl-layout__header--waterfall-hide-top	portfolio-header">
             <div class="mdl-layout__header-row portfolio-logo-row">
                 <span class="mdl-layout__title">
                     <div class="portfolio-logo"></div>
@@ -177,16 +179,16 @@
               <div class="mdl-snackbar__text"></div>
               <button type="button" class="mdl-snackbar__action"></button>
             </div>
-            <!-- Common bottom of screen -->
-            <footer class="mdl-mini-footer">
-                <div class="mdl-mini-footer__left-section">
-                    <div class="mdl-logo">Modern furniture store</div>
-                </div>
-                <div class="mdl-mini-footer__right-section">
-                    <div>Furniture names and images courtesy of <a href="http://www.yellowdiva.com/products/" target="_blank">Yellow Diva</a>. Used by permission.</div>
-                </div>
-            </footer>
         </main>
+        <!-- Common bottom of screen -->
+        <footer class="mdl-mini-footer">
+            <div class="mdl-mini-footer__left-section">
+                <div class="mdl-logo">Furniture names and images courtesy of
+                  <a href="http://www.yellowdiva.com/products/" target="_blank">Yellow Diva</a>.
+                  Used by permission.
+                </div>
+            </div>
+        </footer>
     </div>
     <script src="https://code.getmdl.io/1.2.0/material.min.js"></script>
     <script src="/scripts/main.min.js"></script>

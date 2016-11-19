@@ -52,13 +52,10 @@ limitations under the License.
 }
 
 .is-compact .portfolio-logo {
-  height: 50px;
-  width: 50px;
-  margin-top: 7px;
+  display: none;
 }
 
 .portfolio-navigation-row {
-  background-color: rgba(0, 0, 0, 0.08);
   text-transform: uppercase;
   height: 45px;
 }
@@ -181,6 +178,7 @@ img.article-image {
 footer {
   background-image: url(../images/footer-background.png);
   background-size: cover;
+  font-size: 0.75em;
 }
 
 img.delete {
