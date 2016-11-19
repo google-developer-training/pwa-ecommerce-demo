@@ -47,6 +47,7 @@ export default class HeaderController {
 
   set count(newCount) {
     if (this._count == newCount) return;
+    // TODO use a badge instead
     var label = newCount === 0 ? '' : ` (${newCount} items)`;
     this._count = newCount;
     let spans = document.querySelectorAll(`#${this._containerId} a[href="#cart"]`);
