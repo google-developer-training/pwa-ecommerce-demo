@@ -264,7 +264,13 @@ gulp.task('generate-service-worker', ['copy-sw-scripts'], () => {
     // Translates a static file path to the relative URL that it's served from.
     // This is '/' rather than path.sep because the paths returned from
     // glob always use '/'.
-    stripPrefix: rootDir + '/'
+    stripPrefix: rootDir + '/',
+		// Escape to sw-toolbox to handle non-local files
+		runtimeCaching: [{
+  		urlPattern: /^https:\/\/code\.getmdl\.io\//,
+  		handler: 'networkFirst'
+		}],
+
   });
 });
 
