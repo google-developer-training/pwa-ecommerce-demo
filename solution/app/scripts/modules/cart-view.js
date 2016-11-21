@@ -102,7 +102,6 @@ export default class CartView {
         this.removeFromView(sku);
       }
     }
-    // TODO otherwise, handle checkout button
   }
 
   // utility for unit testing (used in counting the number of elements)

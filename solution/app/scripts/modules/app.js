@@ -49,7 +49,6 @@ export default class App {
 
   // Manage element visibility (hide the cart when store is selected and vice versa)
   set selection(sel) {
-    // TODO States: shop|cart, checkout, pay, confirmation
     switch(sel) {
       case 'shop':
       case 'cart':
@@ -65,7 +64,7 @@ export default class App {
         this._paymentView.visible = true;
         break;
     }
-    // add cases for payment status, confirmation display
+    // TODO Do we need a case for the confirmation display?
   }
 
   run() {
@@ -76,12 +75,7 @@ export default class App {
     this._updateCartCountDisplay();
     this.selection = 'shop';
 
-    // *** The following changes are meant to make this a single-page app ***
-    // TODO add controller for payment form, handle payment flow
-    // TODO add hash states for payment (#checkout -> #pay [w/ spinner] -> #confirmation (replace))
-    // TODO Fix the shop not rendering on first load.
     // TODO pick up delete icon, possible add icon
-    // TODO Refactor out visibility code into a base class or utility package
   }
 
   // Pop up a user notification

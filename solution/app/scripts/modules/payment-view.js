@@ -38,7 +38,7 @@ export default class PaymentView {
       .then(result => {
         location.href = '/checkout.html';
       }).catch(e => {
-        // TODO: failure notice
+        // TODO add failure notice
         dialog.showModal();
       });
     } else {
