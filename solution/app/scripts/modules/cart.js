@@ -16,7 +16,7 @@ limitations under the License.
 
 //jshint esversion: 6
 
-import { products, findProduct } from 'products';
+import { findProduct } from 'products';
 
 export const CART_EVENT = "cartchange";
 
