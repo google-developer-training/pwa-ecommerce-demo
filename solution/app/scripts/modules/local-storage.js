@@ -16,6 +16,8 @@ limitations under the License.
 
 //jshint esversion:6
 export default class LocalStorage {
+
+  // TODO Build a storage module using IndexedDB
   constructor (id='mfs-cart-items') {
     this._id = id;
   }
