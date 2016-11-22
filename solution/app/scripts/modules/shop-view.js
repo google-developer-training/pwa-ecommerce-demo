@@ -29,7 +29,6 @@ export default class ShopView {
     this._container = document.getElementById(this._containerId);
   }
 
-  // TODO refactor to provide an install method
   install() {
     // Capture add events (clicks) as they bubble up. Only add once.
     this._addHandler = this._handleProductClick.bind(this);
