@@ -64,6 +64,7 @@ QUnit.test('click to buy item updates cart', assert => {
 
   let container = document.getElementById(containerID);
   let view = new ShopView(cart, products.slice(0, 2));
+  view.install();
   view.render();
   let button = container.querySelector('button.mdl-button');
   assert.ok(button, "click target found");

@@ -29,6 +29,13 @@ export default class ShopView {
     this._container = document.getElementById(this._containerId);
   }
 
+  // TODO refactor to provide an install method
+  install() {
+    // Capture add events (clicks) as they bubble up. Only add once.
+    this._addHandler = this._handleProductClick.bind(this);
+    this._container.addEventListener('click', this._addHandler, false);
+  }
+
   render () {
     this._container.innerHTML = ''; // remove all children
     for (let product of this._products) {
@@ -53,11 +60,6 @@ export default class ShopView {
         </div>
       </div>`;
       this._container.appendChild(placeholder.firstElementChild); // WARN: no ie8
-    }
-    // Capture add events (clicks) as they bubble up. Only add once.
-    if (!this._addHandler) {
-      this._addHandler = this._handleProductClick.bind(this);
-      this._container.addEventListener('click', this._addHandler, false);
     }
   }
 

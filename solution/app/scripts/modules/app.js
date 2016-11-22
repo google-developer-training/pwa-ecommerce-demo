@@ -40,6 +40,7 @@ export default class App {
   install() {
     window.addEventListener('hashchange', this._hashChangeListener);
     this._cartView.install();
+    this._shopView.install();
     this._paymentView.install();
   }
 
