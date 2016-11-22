@@ -39,8 +39,8 @@ export default class App {
 
   install() {
     window.addEventListener('hashchange', this._hashChangeListener);
-    this._cartView.install();
     this._shopView.install();
+    this._cartView.install();
     this._paymentView.install();
   }
 
@@ -100,7 +100,6 @@ export default class App {
   _cartChanged(details) {
     if (details.action == 'load') return; // save would be redundant
     if (details.action == 'add' || details.action == 'change') {
-      this._cartView.total =
       this.showToast('Cart updated');
     }
     this._updateCartCountDisplay();
