@@ -40,6 +40,11 @@
            <button type="button" id="close" class="mdl-button">Close</button>
        </div>
     </dialog>
+    <!-- Message pop-ups -->
+    <div id="snackbar" aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
+      <div class="mdl-snackbar__text"></div>
+      <button type="button" class="mdl-snackbar__action"></button>
+    </div>
     <!-- Top of the page -->
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
         <header id="headers" class="mdl-layout__header mdl-layout__header--waterfall
@@ -173,11 +178,6 @@
                       </div>
                   </form>
                 </div>
-            </div>
-            <!-- Message pop-ups -->
-            <div id="snackbar" aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
-              <div class="mdl-snackbar__text"></div>
-              <button type="button" class="mdl-snackbar__action"></button>
             </div>
         </main>
         <!-- Common bottom of screen -->
