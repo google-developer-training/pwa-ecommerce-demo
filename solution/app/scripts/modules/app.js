@@ -89,10 +89,7 @@ export default class App {
   }
 
   _cartChanged(details) {
-    if (details.action == 'load') return; // save would be redundant
-    if (details.action == 'add' || details.action == 'change') {
-      showToast('Cart updated'); // TODO let the shop view show this
-    }
+    if (details.action === 'load') return;
     this._updateCartCountDisplay();
     this._cart.save();
   }

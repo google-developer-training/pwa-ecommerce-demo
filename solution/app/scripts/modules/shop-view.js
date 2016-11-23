@@ -16,6 +16,7 @@ limitations under the License.
 
 //jshint esversion: 6
 import {products, findProduct} from 'products';
+import showToast from 'snackbar';
 
 export default class ShopView {
 
@@ -94,7 +95,7 @@ export default class ShopView {
   }
 
   _showConfirmation(product) {
-    // TODO implement. e.g. using #dialog (see main.js)
+    showToast(`${product.sku} added to cart`);
   }
 
   // utility for unit testing (used in counting the number of elements)
