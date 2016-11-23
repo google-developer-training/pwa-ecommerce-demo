@@ -1,5 +1,6 @@
 // Karma configuration
 // Generated on Sun Nov 06 2016 13:00:48 GMT-0800 (PST)
+// TODO Put karma config files in their own folder
 
 module.exports = function(config) {
   "use strict";

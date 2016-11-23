@@ -1,3 +1,5 @@
+# TODO Audit docs folder, remove unneeded, edit rest
+
 ## Using Material Design Lite's Sass in Web Starter Kit
 
 If you would like to swap out the CSS version of [Material Design Lite](http://getmdl.io) for the more customisable [Sass](http://sass-lang.com/) version, there are a few steps you can take to get this setup with Web Starter Kit.
@@ -33,7 +35,7 @@ The `src` directory above contains MDL's Sass files and the JavaScript sources f
 └── src
 ```
 
-Next we have some changes to make to Web Starter Kit's `app/index.html`. By default it includes the CDN-hosted production builds of Material Design Lite (e.g `https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css`) We will need to swap these out for references to our local files instead. 
+Next we have some changes to make to Web Starter Kit's `app/index.html`. By default it includes the CDN-hosted production builds of Material Design Lite (e.g `https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css`) We will need to swap these out for references to our local files instead.
 
 5. First, we'll switch the CDN-hosted stylesheets to our local version.
 
@@ -49,7 +51,7 @@ with:
 <link rel="stylesheet" href="styles/main.css">
 ```
 
-If you navigate to "app/styles/main.css" in your Text Editor (e.g Sublime Text), you will notice that it already contains some styles. These are for the default template that ships with Web Starter Kit. 
+If you navigate to "app/styles/main.css" in your Text Editor (e.g Sublime Text), you will notice that it already contains some styles. These are for the default template that ships with Web Starter Kit.
 
 We're going to rename our `app/styles/main.css` file to `app/styles/main.scss` so that Web Starter Kit treats it as a Sass file. No further changes are required to our `app/index.html`.
 
@@ -144,9 +146,9 @@ gulp.task('scripts', () =>
 ```
 
 
-> Note: We are aware that it can feel a little suboptimal to reference the same set of source files twice in the above pipeline. We wil be looking at simplifying this workflow in a future release. 
+> Note: We are aware that it can feel a little suboptimal to reference the same set of source files twice in the above pipeline. We wil be looking at simplifying this workflow in a future release.
 
-Similar to styles, you can comment out what you don't need here if you decide to only use a smaller set of components. 
+Similar to styles, you can comment out what you don't need here if you decide to only use a smaller set of components.
 
 7. Finally, we can run `gulp serve` to preview our site or `gulp` to build a production version. Yay!
 
@@ -154,15 +156,15 @@ Similar to styles, you can comment out what you don't need here if you decide to
 
 ### Configuring colors
 
-You will probably want to configure the color theme used in MDL. 
+You will probably want to configure the color theme used in MDL.
 
-MDL supports Material Design's [color palette](https://www.google.com/design/spec/style/color.html#color-color-palette) through Sass variables. 
+MDL supports Material Design's [color palette](https://www.google.com/design/spec/style/color.html#color-color-palette) through Sass variables.
 
 If you find a color in the palette spec you would like to use e.g color name `Pink` with fill `500`, MDL exposes this as `$palette-pink-500`. Let's walk through customising the primary and accent colors for your theme.
 
 This can be done using your setup as follows:
 
-1. Run `gulp serve` to preview your site. 
+1. Run `gulp serve` to preview your site.
 2. Open `app/styles/src/_variables.scss` in your Text Editor.
 3. Find `$color-primary`. It should be in the same block as two other color variables we can use for theming - `$color-primary-dark` and `$color-accent`.
 
@@ -172,7 +174,7 @@ $color-primary-dark: $palette-indigo-700 !default;
 $color-accent: $palette-pink-A200 !default;
 ```
 
-We can change out the default theme for a custom one by consulting `app/styles/src/_color-definitions.scss` for [Material Design color themes](https://www.google.com/design/spec/style/color.html) available. 
+We can change out the default theme for a custom one by consulting `app/styles/src/_color-definitions.scss` for [Material Design color themes](https://www.google.com/design/spec/style/color.html) available.
 
 For this example, we're going to change out `palette-indigo-500` for `palette-purple-500` and `palette-indigo-700` for `palette-deep-purple-700`.
 
@@ -182,10 +184,6 @@ $color-primary-dark: $palette-deep-purple-700 !default;
 $color-accent: $palette-pink-A200 !default;
 ```
 
-Make the above change and hit save. The page should refresh, now showing you your customised theme in action. 
+Make the above change and hit save. The page should refresh, now showing you your customised theme in action.
 
 For complete Material Design theming, you need to set two other colours: `$color-primary-contrast` and `$color-accent-contrast` in the same `app/styles/src/_variables.scss` file. These are the colours for text that is rendered on top of a solid block of primary or accent, respectively. You should set them to `$color-dark-contrast` if you've chosen a dark primary/accent, and `$color-light-contrast` if you've chosen a light primary/accent.
-
-
-
-
