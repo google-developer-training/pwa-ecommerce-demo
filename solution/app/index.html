@@ -30,16 +30,6 @@
 </head>
 
 <body>
-    <!-- TODO Trim this dialog to only what's needed -->
-    <dialog class="mdl-dialog" id="dialog">
-       <h4 class="mdl-dialog__title">Added to cart</h4>
-       <div class="mdl-dialog__content">
-           <p>The item has been added to the cart.</p>
-       </div>
-       <div class="mdl-dialog__actions">
-           <button type="button" id="close" class="mdl-button">Close</button>
-       </div>
-    </dialog>
     <!-- Message pop-ups -->
     <div id="snackbar" aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
       <div class="mdl-snackbar__text"></div>
@@ -171,7 +161,7 @@
                               </div>
                           </fieldset>
                       </div>
-                      <div class="mdl-dialog__actions">
+                      <div class="mdl-dialog__actions"> <!-- TODO make sure this is the right class -->
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit">
                           Place Order">
                         </button>

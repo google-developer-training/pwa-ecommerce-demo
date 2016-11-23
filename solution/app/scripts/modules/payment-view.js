@@ -16,6 +16,7 @@ limitations under the License.
 
 //jshint esversion: 6
 import processPayment from 'payment';
+import showToast from 'snackbar';
 
 export default class PaymentView {
 
@@ -38,8 +39,8 @@ export default class PaymentView {
       .then(result => {
         location.href = '/checkout.html';
       }).catch(e => {
-        // TODO add failure notice
-        dialog.showModal();
+        console.log('Payment failed due to exception: ' + e);
+        showToast('Payment failed (see console)');
       });
     } else {
       this.processOnServer();
@@ -65,7 +66,7 @@ export default class PaymentView {
       location.href = '/checkout.html';
     }).catch(e => {
       console.log('Payment failed due to exception: ' + e);
-      dialog.showModal();
+      showToast('Payment failed (see console)');
     });
   }
 

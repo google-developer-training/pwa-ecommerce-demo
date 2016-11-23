@@ -91,7 +91,7 @@ export default class App {
   _cartChanged(details) {
     if (details.action == 'load') return; // save would be redundant
     if (details.action == 'add' || details.action == 'change') {
-      showToast('Cart updated'); // TODO show that the item was added
+      showToast('Cart updated'); // TODO let the shop view show this
     }
     this._updateCartCountDisplay();
     this._cart.save();
