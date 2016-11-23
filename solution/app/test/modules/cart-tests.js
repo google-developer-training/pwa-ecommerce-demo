@@ -38,7 +38,6 @@ describe('Cart', () => {
       assert.equal(cart.length, 1, 'order count');
       assert.equal(entry.sku, 'C10', 'sku');
       assert.equal(entry.quantity, 1, 'quantity');
-      assert.ok(entry.title, 'title');
       assert.ok(entry.price, 'price');
       assert.equal(entry.price, entry.total, 'total');
     });

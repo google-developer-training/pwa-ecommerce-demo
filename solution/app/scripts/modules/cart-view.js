@@ -16,6 +16,7 @@ limitations under the License.
 
 //jshint esversion: 6
 import {pushLocationHash} from 'url-tools';
+import {findProduct} from 'products';
 
 export default class CartView {
 
@@ -43,12 +44,13 @@ export default class CartView {
     for (var i=0; i < itemRows.length; i++) {
       this._tbody.removeChild(itemRows[i]);
     }
-    for (let product of this._cart.cart) {
+    for (let item of this._cart.cart) {
+      let product = findProduct(item.sku);
       let placeholder = document.createElement('tbody');
       // TODO add mdl "delete" icon
       placeholder.innerHTML = `<tr class="product" data-sku="${product.sku}">
         <td class="mdl-data-table__cell-non-numeric">${product.title}</td>
-        <td>${product.quantity}</td>
+        <td>${item.quantity}</td>
         <td>$${product.price}</td>
         <td><button class="mdl-button mdl-button--colored mdl-js-button
               mdl-js-ripple-effect mdl-button--accent delete"

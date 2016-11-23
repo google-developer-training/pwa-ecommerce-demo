@@ -97,7 +97,7 @@ export default class Cart {
 
   save() {
     if (this.adaptor) {
-      this.adaptor.save(this.items);
+      this.adaptor.save(this.items.map((item) => item.savedValue));
     }
   }
 
@@ -105,11 +105,8 @@ export default class Cart {
     if (!this.adaptor) return;
     this._loading = true;
     try {
-      let items = this.adaptor.load();
-      for (let item of items) {
-        let product = findProduct(item.product._sku);
-        this.add(product, item._quantity);
-      }
+      let savedItems = this.adaptor.load();
+      this.items = savedItems.map((s) => { let li = new LineItem(); li.savedValue = s; return li});
     } catch (e) {
       this.items = [];
     }
@@ -128,24 +125,26 @@ export default class Cart {
 
 export class LineItem {
   constructor(product, quantity) {
-    this.product = product;
-    this._quantity = quantity;
-  }
-
-  get title() {
-    return this.product.title;
+    if (product == null) {
+      this._sku = null;
+      this._price = this._quantity = 0;
+    } else {
+      this._sku = product.sku;
+      this._price = product.price;
+      this._quantity = quantity;
+    }
   }
 
   get sku() {
-    return this.product.sku;
+    return this._sku;
   }
 
   get price() {
-    return this.product.price;
+    return this._price;
   }
 
   get total() {
-    return this._quantity * this.product.price;
+    return this._quantity * this._price;
   }
 
   get quantity() {
@@ -155,5 +154,19 @@ export class LineItem {
   set quantity(value) {
     this._quantity = value < 0 ? 0 : value;
   }
+
+  // Only save minimal information (to conserve space & prevent spoofing)
+  get savedValue() {
+    return {sku: (this._sku), qty: (this._quantity)};
+  }
+
+  set savedValue(value) {
+    let product = findProduct(value.sku);
+    if (!product) throw new Error(`SKU not found: ${value.sku}`);
+    this._sku = value.sku;
+    this._quantity = value.qty;
+    this._price = product.price;
+  }
+
 
 }
