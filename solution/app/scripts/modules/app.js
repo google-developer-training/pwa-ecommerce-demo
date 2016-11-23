@@ -22,8 +22,8 @@ import CartView from 'cart-view';
 import ShopView from 'shop-view';
 import PaymentView from 'payment-view';
 import HeaderController from 'header-controller';
-import {products} from 'products';
 import {replaceLocationHash} from 'url-tools';
+import showToast from 'snackbar';
 
 export default class App {
 
@@ -79,15 +79,6 @@ export default class App {
     // TODO pick up delete icon, possible add icon
   }
 
-  // Pop up a user notification
-  showToast(message) {
-    var notification = document.getElementById('snackbar');
-    // This depends on the MDL script which he unit tests don't have
-    if (notification && notification.MaterialSnackbar) {
-      notification.MaterialSnackbar.showSnackbar({message: (message)});
-    }
-  }
-
   // Handle hashChange, manage history (#store or #cart, maybe #pay)
   _handleHashChange(event) {
     if (!event.newURL) return;
@@ -100,7 +91,7 @@ export default class App {
   _cartChanged(details) {
     if (details.action == 'load') return; // save would be redundant
     if (details.action == 'add' || details.action == 'change') {
-      this.showToast('Cart updated');
+      showToast('Cart updated'); // TODO show that the item was added
     }
     this._updateCartCountDisplay();
     this._cart.save();
