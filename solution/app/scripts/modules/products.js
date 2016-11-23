@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-// jshint esversion:6
 import Product from 'product';
 
 //   constructor (sku, title, price, image, description='') {
@@ -37,9 +36,9 @@ export const products = [
   new Product('CPT', 'CPT Table', 100.00, 'CPT.jpg',
     'A perfect table for outdoors, has a hole for an umbrella'),
   new Product('CS1', 'CS1 Sofa', 100.00, 'CS1.jpg',
-    'A soft, stylish, and colorful sofa. Perfect for your home'),
+    'A soft, stylish, and colorful sofa. Perfect for your home')
 ];
 
-export function findProduct(sku, searchRange=products) {
+export function findProduct(sku, searchRange = products) {
   return searchRange.find(product => product.sku === sku);
 }
