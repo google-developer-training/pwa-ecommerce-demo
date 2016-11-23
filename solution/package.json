@@ -10,6 +10,7 @@
     "browser-sync": "^2.9.0",
     "browserify": "^13.1.1",
     "del": "^2.0.2",
+    "eslint": "^3.10.2",
     "eslint-config-google": "^0.3.0",
     "gens": "^1.1.0",
     "gulp": "^3.9.0",
