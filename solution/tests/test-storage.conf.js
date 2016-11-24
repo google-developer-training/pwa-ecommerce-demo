@@ -2,7 +2,7 @@
 // Generated on Sun Nov 06 2016 13:00:48 GMT-0800 (PST)
 
 module.exports = function(config) {
-  "use strict";
+  'use strict';
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -12,43 +12,29 @@ module.exports = function(config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['browserify', 'qunit'],
 
-    plugins: ['karma-qunit', 'karma-browserify', 'karma-chrome-launcher',
-              'karma-html2js-preprocessor'],
+    plugins: ['karma-qunit', 'karma-browserify',
+      'karma-chrome-launcher',
+      'karma-html2js-preprocessor'],
 
     // list of files / patterns to load in the browser
     files: [
-      'app/scripts/modules/*.js',
-      'app/test/modules/cart-tests.js',
-      'app/test/modules/cart-view-tests.js',
-      'app/test/fixtures/*.html',
-    ],
-
-    // list of files to exclude
-    exclude: [
-      'app/test/modules/payment-tests.js' /* for now */
+      '../app/scripts/modules/*.js',
+      '../app/test/modules/*storage-tests.js'
     ],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'app/test/modules/*.js': ['browserify'],
-      'app/scripts/modules/*.js': ['browserify'],
-      'app/test/fixtures/*.html': ['html2js']
+      '../app/test/modules/*.js': ['browserify'],
+      '../app/scripts/modules/*.js': ['browserify']
     },
 
     browserify: {
       debug: true,
       transform: [['babelify', {presets: ['es2015']}]],
-      paths: ['app/scripts/modules/', 'test/modules/',
-              'node_modules/sinon/pkg/']
-    },
-
-    html2JsPreprocessor: {
-      processPath: function(filePath) {
-        let filename = filePath.replace(/app\/test\/fixtures\//, '');
-        // Drop the file extension
-        return filename.replace(/\.html$/, '-fixture');
-      }
+      paths: ['../app/scripts/modules/',
+        './app/test/modules/',
+        '../node_modules/sinon/pkg/']
     },
 
     // QUnit display setup
@@ -88,6 +74,6 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity,
-  })
-}
+    concurrency: Infinity
+  });
+};
