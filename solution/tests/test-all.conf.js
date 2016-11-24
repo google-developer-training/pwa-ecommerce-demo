@@ -22,32 +22,32 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'app/scripts/modules/*.js',
-      'app/test/modules/*.js',
-      'app/test/fixtures/*.html'
+      '../app/scripts/modules/*.js',
+      '../app/test/modules/*.js',
+      '../app/test/fixtures/*.html'
     ],
 
-    // list of files to exclude
+    // list of files to exclude (for now)
     exclude: [
       /* temporary exclusions */
-      'app/test/modules/payment-tests.js'
+      '../app/test/modules/payment-tests.js'
     ],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'app/test/modules/*.js': ['browserify'],
-      'app/scripts/modules/*.js': ['browserify'],
-      '**/*.html': ['html2js']
+      '../app/test/modules/*.js': ['browserify'],
+      '../app/scripts/modules/*.js': ['browserify'],
+      '../app/test/fixtures/*.html': ['html2js']
     },
 
     browserify: {
       debug: true,
       transform: [['babelify', {presets: ['es2015']}]],
       paths: [
-        'app/scripts/modules/',
-        'test/modules/',
-        'node_modules/sinon/pkg/'
+        '../app/scripts/modules/',
+        '../app/test/modules/',
+        '../node_modules/sinon/pkg/'
       ]
     },
 
@@ -78,7 +78,7 @@ module.exports = function(config) {
     singleRun: false,
 
     // Concurrency level
-    // how many browser should be started simultaneously
+    // how many browsers should be started simultaneously
     concurrency: Infinity
   });
 };
