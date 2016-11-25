@@ -1,9 +1,8 @@
 // Karma configuration
 // Generated on Sun Nov 06 2016 13:00:48 GMT-0800 (PST)
-// TODO Put karma config files in their own folder
 
 module.exports = function(config) {
-  "use strict";
+  'use strict';
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -11,20 +10,24 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['browserify', 'qunit'],
+    frameworks: ['browserify', 'mocha'],
 
-    plugins: ['karma-qunit', 'karma-browserify', 'karma-chrome-launcher',
+    plugins: ['karma-mocha', 'karma-browserify', 'karma-chrome-launcher',
               'karma-html2js-preprocessor'],
 
     // list of files / patterns to load in the browser
     files: [
       'app/scripts/modules/*.js',
       'app/test/modules/*.js',
-      'app/test/fixtures/*.html',
+      'app/test/fixtures/*.html'
     ],
 
     // list of files to exclude
     exclude: [
+      'app/test/modules/app-tests.js',
+      'app/test/modules/url-tools-tests.js',
+      'app/test/modules/*-view-tests.js',
+      'app/test/modules/*-controller-tests.js',
       'app/test/modules/payment-tests.js' /* for now */
     ],
 
@@ -48,15 +51,6 @@ module.exports = function(config) {
         let filename = filePath.replace(/app\/test\/fixtures\//, '');
         // Drop the file extension
         return filename.replace(/\.html$/, '-fixture');
-      }
-    },
-
-    // QUnit display setup
-    client: {
-      clearContext: false,
-      qunit: {
-        showUI: true,
-        testTimeout: 5000
       }
     },
 
@@ -87,7 +81,7 @@ module.exports = function(config) {
     singleRun: false,
 
     // Concurrency level
-    // how many browser should be started simultaneous
-    concurrency: Infinity,
-  })
-}
+    // how many browser should be started simultaneously
+    concurrency: Infinity
+  });
+};
