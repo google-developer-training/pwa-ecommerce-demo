@@ -163,11 +163,10 @@ gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 // Run unit tests
 gulp.task('test', (done) => {
   new Server({
-    configFile: __dirname + '/test-all.conf.js',
+    configFile: __dirname + '/tests/test-all.conf.js',
     singleRun: true
   }, done).start();
 });
-
 
 // Build and serve the output from the dist build
 gulp.task('serve', ['default'], () =>
