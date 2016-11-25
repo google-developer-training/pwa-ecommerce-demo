@@ -14,24 +14,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//jshint esversion:6
 export default class LocalStorage {
 
-  // TODO Build a storage module using IndexedDB
-  constructor (id='mfs-cart-items') {
+  constructor(id = 'mfs-cart-items') {
     this._id = id;
   }
 
   /* Takes an array of items and writes JSON to local storage */
   save(items) {
-    if (!items || !items.length) return;
     let json = JSON.stringify(items);
     localStorage[this._id] = json;
   }
 
   load() {
     let json = localStorage[this._id];
-    if (!json) return [];
+    if (!json) {
+      return [];
+    }
     return JSON.parse(json);
   }
 

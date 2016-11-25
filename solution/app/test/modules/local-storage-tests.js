@@ -41,6 +41,17 @@ QUnit.test('reads saved values', assert => {
   assert.deepEqual(readItems, items, 'recovered');
 });
 
+QUnit.test('saving empty items clears storage', assert => {
+  const items = _makeItemList();
+  const writer = new LocalStorage(key);
+  writer.save(items);
+  writer.save([]);
+  // Now read into a new instance and compare
+  const reader = new LocalStorage(key);
+  const readItems = reader.load();
+  assert.equal(readItems.length, 0, 'cleared');
+});
+
 function _makeItemList() {
   const shop = products.slice(0, 3);
   return shop.map((item, index) => {
