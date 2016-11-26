@@ -10,10 +10,16 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['browserify', 'mocha'],
+    frameworks: ['browserify', 'mocha', 'fixture'],
 
-    plugins: ['karma-mocha', 'karma-browserify', 'karma-chrome-launcher',
-              'karma-html2js-preprocessor'],
+    plugins: [
+      'karma-mocha',
+      'karma-browserify',
+      'karma-chrome-launcher',
+      'karma-fixture',
+      'karma-html2js-preprocessor',
+      'karma-json-fixtures-preprocessor'
+    ],
 
     // list of files / patterns to load in the browser
     files: [
@@ -26,7 +32,6 @@ module.exports = function(config) {
     exclude: [
       'app/test/modules/app-tests.js',
       'app/test/modules/*-view-tests.js',
-      'app/test/modules/*-controller-tests.js',
       'app/test/modules/payment-tests.js' /* for now */
     ],
 
@@ -35,22 +40,18 @@ module.exports = function(config) {
     preprocessors: {
       'app/test/modules/*.js': ['browserify'],
       'app/scripts/modules/*.js': ['browserify'],
-      'app/test/fixtures/*.html': ['html2js']
+      '**/*.html': ['html2js'],
+      '**/*.json': ['json_fixtures']
     },
 
     browserify: {
       debug: true,
       transform: [['babelify', {presets: ['es2015']}]],
-      paths: ['app/scripts/modules/', 'test/modules/',
-              'node_modules/sinon/pkg/']
-    },
-
-    html2JsPreprocessor: {
-      processPath: function(filePath) {
-        let filename = filePath.replace(/app\/test\/fixtures\//, '');
-        // Drop the file extension
-        return filename.replace(/\.html$/, '-fixture');
-      }
+      paths: [
+        'app/scripts/modules/',
+        'test/modules/',
+        'node_modules/sinon/pkg/'
+      ]
     },
 
     // test results reporter to use
