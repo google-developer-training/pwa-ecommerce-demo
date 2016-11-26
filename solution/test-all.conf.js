@@ -17,8 +17,7 @@ module.exports = function(config) {
       'karma-browserify',
       'karma-chrome-launcher',
       'karma-fixture',
-      'karma-html2js-preprocessor',
-      'karma-json-fixtures-preprocessor'
+      'karma-html2js-preprocessor'
     ],
 
     // list of files / patterns to load in the browser
@@ -30,9 +29,10 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
+      /* temporary exclusions */
       'app/test/modules/app-tests.js',
-      'app/test/modules/*-view-tests.js',
-      'app/test/modules/payment-tests.js' /* for now */
+      'app/test/modules/shop-view-tests.js',
+      'app/test/modules/payment-tests.js'
     ],
 
     // preprocess matching files before serving them to the browser
@@ -40,8 +40,7 @@ module.exports = function(config) {
     preprocessors: {
       'app/test/modules/*.js': ['browserify'],
       'app/scripts/modules/*.js': ['browserify'],
-      '**/*.html': ['html2js'],
-      '**/*.json': ['json_fixtures']
+      '**/*.html': ['html2js']
     },
 
     browserify: {
