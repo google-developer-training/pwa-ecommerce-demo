@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-// jshint esversion: 6
+
 import IDBStorage from 'idb-storage';
 import {LineItem} from 'cart';
 import {products} from 'products';
@@ -34,37 +34,43 @@ describe('IndexedDB storage', () => {
   });
 
   afterEach(() => {
-    adaptor._close().then(() => {
+    return adaptor._close().then(() => {
       adaptor = null;
       return idb.delete(DB_NAME);
     });
   });
 
-  it('has a database', done => {
-    adaptor.storage.then(db => {
+  it('has a database', () => {
+    return adaptor.storage.then(db => {
       assert.ok(db);
-      done();
     });
   });
 
-/*
-  it('begins with an empty database', done => {
-    const adaptor = new IDBStorage(DB_NAME);
-    adaptor.count().then(ct => {
+  it('begins with an empty database', () => {
+    return adaptor.count().then(ct => {
       assert.equal(ct, 0);
-      done();
     });
   });
-*/
 
-/*
   it('should write to storage on save', () => {
     const items = _makeItemList();
-    const adaptor = new IDBStorage(DB_NAME);
-    adaptor.save(items);
-    assert.equal(adaptor.count, items.length, 'items saved');
+    return adaptor.save(items).then(() => {
+      return adaptor.count().then(ct => {
+        assert.equal(ct, items.length);
+      });
+    });
   });
-*/
+
+  it('should load the saved items, in order', () => {
+    const items = _makeItemList();
+    return adaptor.save(items).then(() => {
+      const reader = new IDBStorage(DB_NAME);
+      return reader.load().then(probe => {
+        reader._close();
+        assert.deepEqual(probe, items);
+      });
+    });
+  });
 
   function _makeItemList() {
     const shop = products.slice(0, 3);

@@ -16,8 +16,8 @@ limitations under the License.
 
 import * as idb from 'idb';
 
-const OBJECT_STORE = 'cart';
-const SEQUENCE_FIELD = 'seq';
+const CART_STORE = 'cart';
+const RW = 'readwrite';
 
 export default class IDBStorage {
 
@@ -29,22 +29,25 @@ export default class IDBStorage {
   /* Takes an array of items and writes JSON to local storage */
   save(items) {
     return this._dbPromise.then(db => {
-      const tx = db.transaction();
-      const store = tx.objectStore(OBJECT_STORE);
-      store.clear();
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        store.put({SEQUENCE_FIELD: (i), sku: (item.sku), qty: (item.qty)});
-      }
-      return tx.complete;
+      const tx = db.transaction(CART_STORE, RW);
+      const store = tx.objectStore(CART_STORE);
+      return store.clear().then(() => {
+        const addAll = items.map((item) => {
+          return store.add({sku: (item.sku), qty: (item.qty)});
+        });
+        return Promise.all(addAll);
+      }).then(() => {
+        return tx.complete;
+      });
     });
   }
 
   load() {
-//    let json = localStorage[this._id];
-//    if (!json) return [];
-//    return JSON.parse(json);
-    return [];
+    return this._dbPromise.then(db => {
+      return db.transaction(CART_STORE, RW)
+        .objectStore(CART_STORE)
+        .getAll();
+    });
   }
 
   delete() {
@@ -53,9 +56,9 @@ export default class IDBStorage {
 
   // Returns a promise with the total number of records saved
   count() {
-    return this.storage.then(db => {
-      const tx = db.transaction();
-      return tx.objectStore(OBJECT_STORE).count();
+    return this._dbPromise.then(db => {
+      const tx = db.transaction(CART_STORE);
+      return tx.objectStore(CART_STORE).count();
     });
   }
 
@@ -69,16 +72,18 @@ export default class IDBStorage {
   }
 
   _open() {
-    this._dbPromise = idb.open(this._id, 1, upgradeDB => {
-      upgradeDB.createObjectStore(OBJECT_STORE);
+    return this._dbPromise = idb.open(this._id, 1, upgradeDB => {
+      upgradeDB.createObjectStore(CART_STORE, {autoIncrement: true});
     });
-    return this._dbPromise;
   }
 
   // testing hooks so we can test w/o wrecking the stored data
   set key(value) {
-    // TODO close old, reopen as new
-    this._id = value;
+    if (value === this._id) return;
+    this._close().then(() => {
+      this._id = value;
+      this._open();
+    });
   }
 
   get key() {
