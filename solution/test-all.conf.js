@@ -30,7 +30,6 @@ module.exports = function(config) {
     // list of files to exclude
     exclude: [
       /* temporary exclusions */
-      'app/test/modules/app-tests.js',
       'app/test/modules/payment-tests.js'
     ],
 
