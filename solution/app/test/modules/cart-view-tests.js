@@ -21,12 +21,8 @@ import assert from 'assert';
 import $ from 'jquery';
 
 describe('Cart view', () => {
-  before(() => {
-    fixture.setBase('app/test/fixtures');
-  });
-
   beforeEach(() => {
-    fixture.load('cart.html');
+    fixture.load('/test/fixtures/cart.html');
   });
 
   afterEach(() => {

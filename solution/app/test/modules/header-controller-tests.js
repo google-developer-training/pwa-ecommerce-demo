@@ -21,12 +21,8 @@ import assert from 'assert';
 const CONTAINER_ID = 'headers';
 
 describe('Header controller', () => {
-  before(() => {
-    fixture.setBase('app/test/fixtures');
-  });
-
   beforeEach(() => {
-    fixture.load('headers.html');
+    fixture.load('/test/fixtures/headers.html');
   });
 
   afterEach(() => {

@@ -25,12 +25,8 @@ describe('Shop view', () => {
   const noCart = null;
   const CONTAINER_ID = 'shop';
 
-  before(() => {
-    fixture.setBase('app/test/fixtures');
-  });
-
   beforeEach(() => {
-    fixture.load('shop.html');
+    fixture.load('/test/fixtures/shop.html');
   });
 
   afterEach(() => {

@@ -19,12 +19,8 @@ import Product from 'product';
 import assert from 'assert';
 
 describe('App', () => {
-  before(() => {
-    fixture.setBase('app/test/fixtures');
-  });
-
   beforeEach(() => {
-    fixture.load('app.html');
+    fixture.load('/test/fixtures/app.html');
   });
 
   afterEach(() => {
