@@ -17,51 +17,26 @@ limitations under the License.
 import IDBStorage from 'idb-storage';
 import {LineItem} from 'cart';
 import {products} from 'products';
+import assert from 'assert';
 
-const key = 'ls-test';
+describe('IndexedDB storage', () => {
 
-QUnit.module('IndexedDB storage');
+  const key = 'ls-test';
+  // TODO clear before each test
 
-/* , {beforeEach: () => {
-  window.localStorage.removeItem(key);
-}}
-*/
-
-QUnit.test('has backing database', assert => {
-  const done = assert.async(1);
-  const storage = new IDBStorage(key).storage;
-  storage.then(db => {
-    assert.ok(db, 'exists');
-    done();
+  it('should have a database', done => {
+    const storage = new IDBStorage(key).storage;
+    storage.then(db => {
+      assert.ok(db, 'exists');
+      done();
+    });
   });
-});
 
-/*
-QUnit.test('writes to local storage on save', assert => {
-  const items = _makeItemList();
-  const storage = new IDBStorage(key);
-  storage.save(items);
-  // TODO check for actual storage
-  assert.ok(window.localStorage.getItem(key), 'saved');
+  function _makeItemList() {
+    const shop = products.slice(0, 3);
+    return shop.map((item, index) => {
+      let li = new LineItem(item, index + 1);
+      return li.savedValue;
+    });
+  }
 });
-*/
-
-/*
-QUnit.test('reads saved values', assert => {
-  const items = _makeItemList();
-  const writer = new LocalStorage(key);
-  writer.save(items);
-  // Now read into a new instance and compare
-  const reader = new LocalStorage(key);
-  const readItems = reader.load();
-  assert.deepEqual(readItems, items, 'recovered');
-});
-*/
-
-function _makeItemList() {
-  const shop = products.slice(0, 3);
-  return shop.map((item, index) => {
-    let li = new LineItem(item, index + 1);
-    return li.savedValue;
-  });
-}
