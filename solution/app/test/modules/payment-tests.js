@@ -18,6 +18,8 @@ import Cart from 'cart';
 import Product from 'product';
 import pay from 'payment';
 
+// TODO Convert to mocha, flesh out payment tests
+
 QUnit.module('Payments');
 
 QUnit.test('payment works', assert => {
