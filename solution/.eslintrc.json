@@ -6,6 +6,6 @@
     },
     "env": {
       "browser": true,
-      "qunit": true
+      "mocha": true
     }
 }
