@@ -10,40 +10,38 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['browserify', 'qunit'],
+    frameworks: ['browserify', 'mocha', 'fixture'],
 
-    plugins: ['karma-qunit', 'karma-browserify',
+    plugins: [
+      'karma-mocha',
+      'karma-browserify',
       'karma-chrome-launcher',
-      'karma-html2js-preprocessor'],
+      'karma-fixture',
+      'karma-html2js-preprocessor'
+    ],
 
     // list of files / patterns to load in the browser
     files: [
       '../app/scripts/modules/*.js',
-      '../app/test/modules/*storage-tests.js'
+      '../app/test/modules/*-storage-tests.js'
     ],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       '../app/test/modules/*.js': ['browserify'],
-      '../app/scripts/modules/*.js': ['browserify']
+      '../app/scripts/modules/*.js': ['browserify'],
+      '../app/test/fixtures/*.html': ['html2js']
     },
 
     browserify: {
       debug: true,
       transform: [['babelify', {presets: ['es2015']}]],
-      paths: ['../app/scripts/modules/',
-        './app/test/modules/',
-        '../node_modules/sinon/pkg/']
-    },
-
-    // QUnit display setup
-    client: {
-      clearContext: false,
-      qunit: {
-        showUI: true,
-        testTimeout: 5000
-      }
+      paths: [
+        '../app/scripts/modules/',
+        '../app/test/modules/',
+        '../node_modules/sinon/pkg/'
+      ]
     },
 
     // test results reporter to use
@@ -73,7 +71,7 @@ module.exports = function(config) {
     singleRun: false,
 
     // Concurrency level
-    // how many browser should be started simultaneous
+    // how many browsers should be started simultaneously
     concurrency: Infinity
   });
 };
