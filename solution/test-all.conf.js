@@ -31,7 +31,6 @@ module.exports = function(config) {
     exclude: [
       /* temporary exclusions */
       'app/test/modules/app-tests.js',
-      'app/test/modules/shop-view-tests.js',
       'app/test/modules/payment-tests.js'
     ],
 

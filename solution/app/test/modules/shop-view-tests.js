@@ -18,57 +18,60 @@ import Cart from 'cart';
 import ShopView from 'shop-view';
 import {products} from 'products';
 import sinon from 'sinon-es6';
+import assert from 'assert';
 import $ from 'jquery';
 
-const noCart = null;
-const containerID = 'shop';
+describe('Shop view', () => {
+  const noCart = null;
+  const CONTAINER_ID = 'shop';
 
-QUnit.module('Shop-view', {beforeEach: () => {
-  let fixture = document.getElementById('qunit-fixture');
-  fixture.innerHTML = window.__html__['shop-fixture'];
-}});
-
-QUnit.test('test environment is sane', assert => {
-  let fixture = document.getElementById(containerID);
-  assert.ok(fixture, 'qunit fixture exists');
-  let container = document.getElementById(containerID);
-  assert.ok(!container.hasChildNodes(), 'display template is empty');
+  before(() => {
+    fixture.setBase('app/test/fixtures');
   });
 
-QUnit.test('empty product list adds no items', assert => {
-  let container = document.getElementById(containerID);
-  let view = new ShopView(noCart, []);
-  view.render();
-  assert.ok(!container.hasChildNodes(), 'cart template is empty after render');
+  beforeEach(() => {
+    fixture.load('shop.html');
   });
 
-QUnit.test('single item renders a single row', assert => {
-  let container = document.getElementById(containerID);
-  let view = new ShopView(noCart, [products[0]]);
-  view.render();
-  let items = container.querySelectorAll(view.itemSelector);
-  assert.equal(items.length, 1, 'rows rendered');
+  afterEach(() => {
+    fixture.cleanup();
   });
 
-QUnit.test('two items', assert => {
-  let container = document.getElementById(containerID);
-  let view = new ShopView(noCart, products.slice(0, 2));
-  view.render();
-  let items = container.querySelectorAll(view.itemSelector);
-  assert.equal(items.length, 2, 'rows rendered');
+  it('should be empty for an empty product list ', () => {
+    let container = document.getElementById(CONTAINER_ID);
+    let view = new ShopView(noCart, []);
+    view.render();
+    assert.ok(!container.hasChildNodes(), 'cart template is empty after render');
   });
 
-QUnit.test('click to buy item updates cart', assert => {
-  let cart = new Cart();
-  let addStub = sinon.stub(cart, 'add');
-
-  let container = document.getElementById(containerID);
-  let view = new ShopView(cart, products.slice(0, 2));
-  view.install();
-  view.render();
-  let button = container.querySelector('button.mdl-button');
-  assert.ok(button, "click target found");
-  $(button).trigger($.Event("click"));
-  assert.ok(addStub.called, 'called add');
-  assert.ok(addStub.calledWith(products[0]), 'called with product');
+  it('should render a single row for a single item ', () => {
+    let container = document.getElementById(CONTAINER_ID);
+    let view = new ShopView(noCart, [products[0]]);
+    view.render();
+    let items = container.querySelectorAll(view.itemSelector);
+    assert.equal(items.length, 1, 'rows rendered');
   });
+
+  it('should render two rows for two items', () => {
+    let container = document.getElementById(CONTAINER_ID);
+    let view = new ShopView(noCart, products.slice(0, 2));
+    view.render();
+    let items = container.querySelectorAll(view.itemSelector);
+    assert.equal(items.length, 2, 'rows rendered');
+  });
+
+  it('should update the cart after click to buy', () => {
+    let cart = new Cart();
+    let addStub = sinon.stub(cart, 'add');
+
+    let container = document.getElementById(CONTAINER_ID);
+    let view = new ShopView(cart, products.slice(0, 2));
+    view.install();
+    view.render();
+    let button = container.querySelector('button.mdl-button');
+    assert.ok(button, "click target found");
+    $(button).trigger($.Event("click"));
+    assert.ok(addStub.called, 'called add');
+    assert.ok(addStub.calledWith(products[0]), 'called with product');
+  });
+});
