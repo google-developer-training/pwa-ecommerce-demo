@@ -23,19 +23,18 @@ export default class IDBStorage {
 
   constructor(id = 'mfs-cart-items') {
     this._id = id;
+    this._open();
   }
 
   /* Takes an array of items and writes JSON to local storage */
   save(items) {
-    return this.storage.then(db => {
+    return this._dbPromise.then(db => {
       const tx = db.transaction();
       const store = tx.objectStore(OBJECT_STORE);
       store.clear();
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
-        return store.put(
-          {SEQUENCE_FIELD: (i), sku: (item.sku), qty: (item.qty)}
-        );
+        store.put({SEQUENCE_FIELD: (i), sku: (item.sku), qty: (item.qty)});
       }
       return tx.complete;
     });
@@ -52,8 +51,33 @@ export default class IDBStorage {
 //    localStorage.removeItem(this._id);
   }
 
+  // Returns a promise with the total number of records saved
+  count() {
+    return this.storage.then(db => {
+      const tx = db.transaction();
+      return tx.objectStore(OBJECT_STORE).count();
+    });
+  }
+
+  // Testing use only, will close the dabase but renders the adaptor unusable
+  _close() {
+    return this._dbPromise.then(db => {
+      let closePromise = db.close();
+      this._dbPromise = null;
+      return closePromise;
+    });
+  }
+
+  _open() {
+    this._dbPromise = idb.open(this._id, 1, upgradeDB => {
+      upgradeDB.createObjectStore(OBJECT_STORE);
+    });
+    return this._dbPromise;
+  }
+
   // testing hooks so we can test w/o wrecking the stored data
   set key(value) {
+    // TODO close old, reopen as new
     this._id = value;
   }
 
@@ -62,9 +86,6 @@ export default class IDBStorage {
   }
 
   get storage() {
-    return idb.open(this._id, 1, upgradeDB => {
-      upgradeDB.createObjectStore(OBJECT_STORE);
-    });
+    return this._dbPromise;
   }
-
 }

@@ -17,20 +17,54 @@ limitations under the License.
 import IDBStorage from 'idb-storage';
 import {LineItem} from 'cart';
 import {products} from 'products';
+import * as idb from 'idb';
 import assert from 'assert';
 
 describe('IndexedDB storage', () => {
+  const DB_NAME = 'ls-test';
+  let adaptor;
 
-  const key = 'ls-test';
-  // TODO clear before each test
+  before(() => {
+    // in case there's a database left around
+    return idb.delete(DB_NAME);
+  });
 
-  it('should have a database', done => {
-    const storage = new IDBStorage(key).storage;
-    storage.then(db => {
-      assert.ok(db, 'exists');
+  beforeEach(() => {
+    adaptor = new IDBStorage(DB_NAME);
+  });
+
+  afterEach(() => {
+    adaptor._close().then(() => {
+      adaptor = null;
+      return idb.delete(DB_NAME);
+    });
+  });
+
+  it('has a database', done => {
+    adaptor.storage.then(db => {
+      assert.ok(db);
       done();
     });
   });
+
+/*
+  it('begins with an empty database', done => {
+    const adaptor = new IDBStorage(DB_NAME);
+    adaptor.count().then(ct => {
+      assert.equal(ct, 0);
+      done();
+    });
+  });
+*/
+
+/*
+  it('should write to storage on save', () => {
+    const items = _makeItemList();
+    const adaptor = new IDBStorage(DB_NAME);
+    adaptor.save(items);
+    assert.equal(adaptor.count, items.length, 'items saved');
+  });
+*/
 
   function _makeItemList() {
     const shop = products.slice(0, 3);
