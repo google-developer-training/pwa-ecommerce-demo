@@ -96,22 +96,21 @@ export default class Cart {
   }
 
   save() {
-    if (this.adaptor) {
-      this.adaptor.save(this.items.map((item) => item.savedValue));
-    }
+    if (!this.adaptor) return;
+    return this.adaptor.save(this.items.map((item) => item.savedValue));
   }
 
   load() {
     if (!this.adaptor) return;
     this._loading = true;
-    try {
-      let savedItems = this.adaptor.load();
-      this.items = savedItems.map((s) => { let li = new LineItem(); li.savedValue = s; return li});
-    } catch (e) {
+    this.adaptor.load().then(loadedItems => {
+      this.items = loadedItems.map((s) => { let li = new LineItem(); li.savedValue = s; return li});
+    }).catch(e => {
       this.items = [];
-    }
-    this._loading = false;
-    this._reportChange('load');
+    }).then(() => {
+      this._loading = false;
+      this._reportChange('load');
+    });
   }
 
   _reportChange(action, product, quantity) {

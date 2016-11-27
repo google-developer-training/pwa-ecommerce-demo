@@ -138,27 +138,28 @@ describe('Cart', () => {
   });
 
   describe('storage', () => {
-    it('uses the adaptor to save', () => {
+    it('should use the adaptor to save', () => {
       const adaptor = new LocalStorage();
       let saveStub = sinon.stub(adaptor, 'save');
+      saveStub.returns(Promise.resolve([]));
       const cart = new Cart(adaptor);
       cart.add(c10);
       cart.save();
       assert.ok(saveStub.called, 'items saved');
     });
 
-    it('uses the adaptor to load', () => {
+    it('should use the adaptor to load', () => {
       const adaptor = new LocalStorage();
-      let saveStub = sinon.stub(adaptor, 'load');
+      let loadStub = sinon.stub(adaptor, 'load');
+      loadStub.returns(Promise.resolve([]));
       const cart = new Cart(adaptor);
-      cart.add(c10);
       cart.load();
-      assert.ok(saveStub.called, 'items loaded');
+      assert.ok(loadStub.called, 'items loaded');
     });
   });
 
   describe('callback', () => {
-    it('is called after add', done => {
+    it('should be called after add', done => {
       const cart = new Cart(null, details => {
         assert.equal(details.action, 'add', 'action');
         assert.equal(details.sku, 'C10', 'sku');
