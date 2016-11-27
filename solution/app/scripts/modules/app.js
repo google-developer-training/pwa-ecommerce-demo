@@ -14,21 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//jshint esversion: 6
-
 import Cart from 'cart';
-import LocalStorage from 'local-storage';
+import IDBStorage from 'idb-storage';
 import CartView from 'cart-view';
 import ShopView from 'shop-view';
 import PaymentView from 'payment-view';
 import HeaderController from 'header-controller';
 import {replaceLocationHash} from 'url-tools';
-import showToast from 'snackbar';
 
 export default class App {
 
+  // TODO Add setter for the adaptor so we can stub it out for tests
+
   constructor() {
-    this._storage = new LocalStorage();
+    this._storage = new IDBStorage(); // TODO determine which storage to use progressively
     this._cart = new Cart(this._storage, this._cartChanged.bind(this));
     this._cartView = new CartView(this._cart);
     this._shopView = new ShopView(this._cart);
@@ -54,8 +53,8 @@ export default class App {
       case 'shop':
       case 'cart':
         this._header.selection = sel;
-        this._shopView.visible = sel == 'shop';
-        this._cartView.visible = sel != 'shop';
+        this._shopView.visible = sel === 'shop';
+        this._cartView.visible = sel !== 'shop';
         this._paymentView.visible = false;
         break;
 
@@ -70,7 +69,7 @@ export default class App {
 
   run() {
     replaceLocationHash('shop'); // Set window.location to end in #shop
-    this._cart.load();
+    this._cart.load();  // TODO need to use a promise here
     this._shopView.render();
     this._cartView.render();
     this._updateCartCountDisplay();
