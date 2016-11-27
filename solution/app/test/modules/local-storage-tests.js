@@ -23,34 +23,40 @@ describe('Local Storage', () => {
 
   beforeEach(() => {
     window.localStorage.removeItem(key);
-  })
+  });
 
   it('should write to local storage on save', () => {
     const items = _makeItemList();
     const storage = new LocalStorage(key);
-    storage.save(items);
-    assert.ok(window.localStorage.getItem(key), 'saved');
+    storage.save(items).then(() => {
+      assert.ok(window.localStorage.getItem(key), 'saved');
+    });
   });
 
   it('should read saved values', () => {
     const items = _makeItemList();
     const writer = new LocalStorage(key);
-    writer.save(items);
-    // Now read into a new instance and compare
-    const reader = new LocalStorage(key);
-    const readItems = reader.load();
-    assert.deepEqual(readItems, items, 'recovered');
+    writer.save(items).then(() => {
+      // Now read into a new instance and compare
+      const reader = new LocalStorage(key);
+      reader.load().then(readItems => {
+        assert.deepEqual(readItems, items, 'recovered');
+      });
+    });
   });
 
   it('should clear storage when saving empty item list', () => {
     const items = _makeItemList();
     const writer = new LocalStorage(key);
-    writer.save(items);
-    writer.save([]);
-    // Now read into a new instance and compare
-    const reader = new LocalStorage(key);
-    const readItems = reader.load();
-    assert.equal(readItems.length, 0, 'cleared');
+    return writer.save(items).then(() => {
+      writer.save([]).then(() => {
+        // Now read into a new instance and compare
+        const reader = new LocalStorage(key);
+        reader.load().then(readItems => {
+          assert.equal(readItems.length, 0, 'cleared');
+        });
+      });
+    });
   });
 
   function _makeItemList() {

@@ -15,23 +15,28 @@ limitations under the License.
 */
 
 export default class LocalStorage {
-
+  // TODO needs to be wrapped in promises for consistency w/ IDB
   constructor(id = 'mfs-cart-items') {
     this._id = id;
   }
 
   /* Takes an array of items and writes JSON to local storage */
   save(items) {
-    let json = JSON.stringify(items);
-    localStorage[this._id] = json;
+    return new Promise(resolve => {
+      let json = JSON.stringify(items);
+      localStorage[this._id] = json;
+      resolve(items);
+    });
   }
 
   load() {
-    let json = localStorage[this._id];
-    if (!json) {
-      return [];
-    }
-    return JSON.parse(json);
+    return new Promise(resolve => {
+      let json = localStorage[this._id];
+      if (!json) {
+        return [];
+      }
+      resolve(JSON.parse(json));
+    });
   }
 
   delete() {
