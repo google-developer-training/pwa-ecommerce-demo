@@ -37,9 +37,9 @@ export default class App {
 
   get hasPrerequisites() {
     const hasStorage = this._hasLocalStorage || this._hasIndexedDB;
-    // firstChildElement not in ie8
-    const hasFirstChildElement = ('firstChildElement' in document);
-    return hasStorage & hasFirstChildElement;
+    // firstElementChild not in ie8
+    const hasFirstElementChild = ('firstElementChild' in document);
+    return hasStorage & hasFirstElementChild;
   }
 
   get _hasLocalStorage() {
