@@ -24,7 +24,8 @@ import {replaceLocationHash} from 'url-tools';
 
 export default class App {
 
-  // TODO Add setter for the adaptor so we can stub it out for tests
+  // TODO Add function to test for prerequisites
+  // TODO Select the storage adaptor based on browser functionality
 
   constructor() {
     this._storage = new IDBStorage(); // TODO determine which storage to use progressively
@@ -107,6 +108,10 @@ export default class App {
 
   get storage() {
     return this._storage;
+  }
+
+  set storage(adaptor) {
+    this._storage = adaptor;
   }
 
 }

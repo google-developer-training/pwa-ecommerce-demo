@@ -17,18 +17,23 @@ import App from 'app';
 import HeaderController from 'header-controller';
 import Product from 'product';
 import assert from 'assert';
+import sinon from 'sinon-es6';
+import LocalStorage from 'local-storage';
 
 describe('App', () => {
+  let app;
+
   beforeEach(() => {
     fixture.load('/test/fixtures/app.html');
+    app = new App();
   });
 
   afterEach(() => {
     fixture.cleanup();
+    app = null;
   });
 
   it('should relay hashChange events to the header controller', () => {
-    let app = new App();
     let controller = new HeaderController();
     controller.selection = 'cart';
     app.headerController = controller;
@@ -40,19 +45,19 @@ describe('App', () => {
   });
 
   it('should detect cart changes and trigger save', () => {
-    let app = new App();
+    const adaptor = app.storage;
+    let saveStub = sinon.stub(adaptor, 'save');
+    saveStub.returns(Promise.resolve([]));
+
+    app.storage = saveStub;
     let cart = app.cart;
-    let storage = app.storage;
     const c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
     app.install();
-    storage.key = 'test-cart-storage';
-    storage.delete();
     cart.add(c10);
-    assert.ok(storage.load(), 'cart saved');
+    assert.ok(saveStub.called, 'cart saved');
   });
 
   it('should make only the shop visible when selection == shop', () => {
-    let app = new App();
     app.selection = 'shop';
     let shop = document.getElementById('shop');
     let cart = document.getElementById('cart');
@@ -61,7 +66,6 @@ describe('App', () => {
   });
 
   it('should make only the cart visible when selection == cart ', () => {
-    let app = new App();
     app.selection = 'cart';
     let shop = document.getElementById('shop');
     let cart = document.getElementById('cart');
