@@ -16,6 +16,7 @@ limitations under the License.
 
 import Cart from 'cart';
 import IDBStorage from 'idb-storage';
+import LocalStorage from 'idb-storage';
 import CartView from 'cart-view';
 import ShopView from 'shop-view';
 import PaymentView from 'payment-view';
@@ -24,11 +25,9 @@ import {replaceLocationHash} from 'url-tools';
 
 export default class App {
 
-  // TODO Add function to test for prerequisites
-  // TODO Select the storage adaptor based on browser functionality
-
   constructor() {
-    this._storage = new IDBStorage(); // TODO determine which storage to use progressively
+    // will determine storage type in install
+    this._storage = null;
     this._cart = new Cart(this._storage, this._cartChanged.bind(this));
     this._cartView = new CartView(this._cart);
     this._shopView = new ShopView(this._cart);
@@ -37,7 +36,23 @@ export default class App {
     this._hashChangeListener = this._handleHashChange.bind(this);
   }
 
+  get hasPrerequisites() {
+    const hasStorage = this._hasLocalStorage || this._hasIndexedDB;
+    // firstChildElement not in ie8
+    const hasFirstChildElement = ('firstChildElement' in document);
+    return hasStorage & hasFirstChildElement;
+  }
+
+  get _hasLocalStorage() {
+    return ('LocalStorage' in window);
+  }
+
+  get _hasIndexedDB() {
+    return ('indexedDB' in window);
+  }
+
   install() {
+    this.storage = this._hasIndexedDB ? new IDBStorage() : new LocalStorage();
     window.addEventListener('hashchange', this._hashChangeListener);
     this._shopView.install();
     this._cartView.install();
@@ -69,13 +84,13 @@ export default class App {
   }
 
   run() {
-    replaceLocationHash('shop'); // Set window.location to end in #shop
-    this._cart.load();  // TODO need to use a promise here
-    this._shopView.render();
-    this._cartView.render();
-    this._updateCartCountDisplay();
-    this.selection = 'shop';
-
+    replaceLocationHash('shop');
+    this._cart.load().then(() => {
+      this._shopView.render();
+      this._cartView.render();
+      this._updateCartCountDisplay();
+      this.selection = 'shop';
+    });
     // TODO pick up delete icon, possible add icon
   }
 

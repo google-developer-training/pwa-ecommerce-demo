@@ -76,10 +76,13 @@ import App from 'app';
     });
   }
 
-
   // Your custom JavaScript goes here
   let app = new App();
   document.addEventListener('DOMContentLoaded', e => {
+    if (!app.hasPrerequisites) {
+      window.alert('This browser is missing some required features');
+      return;
+    }
     app.install();
     app.run();
   });
