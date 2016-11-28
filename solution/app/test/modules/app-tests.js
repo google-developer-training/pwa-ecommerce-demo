@@ -45,14 +45,14 @@ describe('App', () => {
   });
 
   it('should detect cart changes and trigger save', () => {
+    app.install();
     const adaptor = app.storage;
     let saveStub = sinon.stub(adaptor, 'save');
     saveStub.returns(Promise.resolve([]));
-
     app.storage = saveStub;
+
     let cart = app.cart;
-    const c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'PUT TEXT HERE');
-    app.install();
+    const c10 = new Product('C10', 'C10 Chair', 100.00, 'C10.jpg', 'TEXT');
     cart.add(c10);
     assert.ok(saveStub.called, 'cart saved');
   });

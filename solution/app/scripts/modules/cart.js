@@ -23,7 +23,7 @@ export const CART_EVENT = "cartchange";
 export default class Cart {
   constructor (adaptor, changeCallback) {
     this.items = [];
-    this.adaptor = adaptor;
+    this._storage = adaptor;
     this._loading = false;
     this._callback = changeCallback; // used to report changes back to the app
   }
@@ -96,14 +96,14 @@ export default class Cart {
   }
 
   save() {
-    if (!this.adaptor) return;
-    return this.adaptor.save(this.items.map((item) => item.savedValue));
+    if (!this._storage) return;
+    return this._storage.save(this.items.map((item) => item.savedValue));
   }
 
   load() {
-    if (!this.adaptor) return;
+    if (!this._storage) return;
     this._loading = true;
-    this.adaptor.load().then(loadedItems => {
+    this._storage.load().then(loadedItems => {
       this.items = loadedItems.map((s) => { let li = new LineItem(); li.savedValue = s; return li});
     }).catch(e => {
       this.items = [];
@@ -167,5 +167,8 @@ export class LineItem {
     this._price = product.price;
   }
 
+  set storage(adaptor) {
+    this._storage = adaptor;
+  }
 
 }
