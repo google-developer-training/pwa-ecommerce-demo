@@ -14,20 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//jshint esversion: 6
+import View from 'view';
 import {products, findProduct} from 'products';
 import showToast from 'snackbar';
 
-export default class ShopView {
+export default class ShopView extends View {
 
-  constructor (cart, productSelection=products, containerId='shop') {
+  constructor(cart, productSelection = products, containerId = 'shop') {
+    super(containerId, true);
     this._cart = cart;
     this._products = productSelection;
-    this._containerId = containerId;
     this._element = 'div';
     this._elementClass = 'product';
     this._addHandler = null;
-    this._container = document.getElementById(this._containerId);
   }
 
   install() {
@@ -60,21 +59,6 @@ export default class ShopView {
       </div>`;
       this._container.appendChild(placeholder.firstElementChild); // WARN: no ie8
     }
-  }
-
-  set visible(vis) {
-    if (vis && !this.visible) {
-      this.render(); // redraw before reveal
-    }
-    if (vis) {
-      this._container.removeAttribute('hidden');
-    } else {
-      this._container.setAttribute('hidden', true);
-    }
-  }
-
-  get visible () {
-    return !this._container.hasAttribute('hidden');
   }
 
   _handleProductClick(event) {

@@ -14,19 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//jshint esversion: 6
+import View from 'view';
 import {pushLocationHash} from 'url-tools';
 import {findProduct} from 'products';
 
-export default class CartView {
+export default class CartView extends View {
 
-  constructor (cart, containerId='cart') {
+  constructor(cart, containerId = 'cart') {
+    super(containerId);
     this._cart = cart;
-    this._containerId = containerId;
     this._element = 'tr';
     this._elementClass = 'product';
     this._clickHandler = null;
-    this._container = document.getElementById(this._containerId);
     this._tbody = this._container.querySelector('tbody');
     this._checkoutBtn = document.getElementById('checkoutBtn');
   }
@@ -38,10 +37,10 @@ export default class CartView {
     this._checkoutBtn.addEventListener('click', this._goToPayment.bind(this));
   }
 
-  render () {
+  render() {
     // Remove existing products
     let itemRows = this._tbody.querySelectorAll(this.itemSelector);
-    for (var i=0; i < itemRows.length; i++) {
+    for (let i = 0; i < itemRows.length; i++) {
       this._tbody.removeChild(itemRows[i]);
     }
     for (let item of this._cart.cart) {
@@ -73,21 +72,6 @@ export default class CartView {
       row.parentNode.removeChild(row);
     }
     this.updateTotal();
-  }
-
-  set visible(vis) {
-    if (vis && !this.visible) {
-      this.render(); // redraw before reveal
-    }
-    if (vis) {
-      this._container.removeAttribute('hidden');
-    } else {
-      this._container.setAttribute('hidden', true);
-    }
-  }
-
-  get visible () {
-    return !this._container.hasAttribute('hidden');
   }
 
   _goToPayment() {

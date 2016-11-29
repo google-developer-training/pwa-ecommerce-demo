@@ -14,15 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import View from 'view';
 import processPayment from 'payment';
 import showToast from 'snackbar';
 import hasPaymentRequest from 'features';
 
-export default class PaymentView {
+export default class PaymentView extends View {
 
   constructor (cart, containerId='payment') {
-    this._containerId = containerId;
-    this._container = document.getElementById(this._containerId);
+    super(containerId);
     this._checkout_form = document.getElementById('checkout_form');
     this._cart = cart;
   }
@@ -68,21 +68,6 @@ export default class PaymentView {
       console.log('Payment failed due to exception: ' + e);
       showToast('Payment failed (see console)');
     });
-  }
-
-  set visible(vis) {
-    if (vis && !this.visible) {
-      //  do any setup required
-    }
-    if (vis) {
-      this._container.removeAttribute('hidden');
-    } else {
-      this._container.setAttribute('hidden', true);
-    }
-  }
-
-  get visible() {
-    return !this._container.hasAttribute('hidden');
   }
 
 }
