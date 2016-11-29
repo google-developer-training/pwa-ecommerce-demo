@@ -111,4 +111,8 @@ export default class CartView {
     return `${this._element}.${this._elementClass}[data-sku]`;
   }
 
+  set cart(cart) {
+    this._cart = cart;
+  }
+
 }

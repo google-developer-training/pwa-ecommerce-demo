@@ -103,13 +103,14 @@ export default class Cart {
   load() {
     if (!this._storage) return;
     this._loading = true;
-    this._storage.load().then(loadedItems => {
+    return this._storage.load().then(loadedItems => {
       this.items = loadedItems.map((s) => { let li = new LineItem(); li.savedValue = s; return li});
     }).catch(e => {
       this.items = [];
     }).then(() => {
       this._loading = false;
       this._reportChange('load');
+      return this.items;
     });
   }
 
