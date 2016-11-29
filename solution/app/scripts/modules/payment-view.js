@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-//jshint esversion: 6
 import processPayment from 'payment';
 import showToast from 'snackbar';
+import hasPaymentRequest from 'features';
 
 export default class PaymentView {
 
@@ -32,9 +32,9 @@ export default class PaymentView {
   }
 
   handleCheckout(event) {
-    var data = new FormData(e.target);
+    var data = new FormData(event.target);
 
-    if (!'PaymentRequest' in window) {
+    if (hasPaymentRequest()) {
       processPayment(this._cart)
       .then(result => {
         location.href = '/checkout.html';
@@ -43,14 +43,14 @@ export default class PaymentView {
         showToast('Payment failed (see console)');
       });
     } else {
-      this.processOnServer();
+      this.processOnServer(data);
     }
   }
 
   /* Alternate path using a checkout page on the server *
   /* window
    */
-  processOnServer() {
+  processOnServer(data) {
     fetch('/checkout', {
       method: 'POST',
       credentials: 'include',
@@ -81,7 +81,7 @@ export default class PaymentView {
     }
   }
 
-  get visible () {
+  get visible() {
     return !this._container.hasAttribute('hidden');
   }
 

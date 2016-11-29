@@ -28,3 +28,7 @@ export function hasLocalStorage() {
 export function hasIndexedDB() {
   return ('indexedDB' in window);
 }
+
+export function hasPaymentRequest() {
+  return ('PaymentRequest' in window);
+}
