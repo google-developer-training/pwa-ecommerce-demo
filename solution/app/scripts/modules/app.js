@@ -22,12 +22,13 @@ import ShopView from 'shop-view';
 import PaymentView from 'payment-view';
 import HeaderController from 'header-controller';
 import {replaceLocationHash} from 'url-tools';
+import * as features from 'features';
 
 export default class App {
 
   constructor() {
-    // will determine storage type in install
-    this._storage = this._cart = null;
+    this._storage = features.hasIndexedDB ? new IDBStorage() : new LocalStorage();
+    this._cart = new Cart(this._storage, this._cartChanged.bind(this));
     this._cartView = new CartView(this._cart);
     this._shopView = new ShopView(this._cart);
     this._paymentView = new PaymentView(this._cart);
@@ -35,24 +36,7 @@ export default class App {
     this._hashChangeListener = this._handleHashChange.bind(this);
   }
 
-  get hasPrerequisites() {
-    const hasStorage = this._hasLocalStorage || this._hasIndexedDB;
-    // firstElementChild not in ie8
-    const hasFirstElementChild = ('firstElementChild' in document);
-    return hasStorage & hasFirstElementChild;
-  }
-
-  get _hasLocalStorage() {
-    return ('LocalStorage' in window);
-  }
-
-  get _hasIndexedDB() {
-    return ('indexedDB' in window);
-  }
-
   install() {
-    this._storage = this._hasIndexedDB ? new IDBStorage() : new LocalStorage();
-    this._cart = new Cart(this._storage, this._cartChanged.bind(this));
     window.addEventListener('hashchange', this._hashChangeListener);
     this._shopView.install();
     this._cartView.install();

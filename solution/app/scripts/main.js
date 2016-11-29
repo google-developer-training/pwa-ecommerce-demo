@@ -20,6 +20,7 @@
 // jshint esversion: 6
 
 import App from 'app';
+import {hasPrerequisites} from 'features';
 
 (function() {
 'use strict';
@@ -79,7 +80,8 @@ import App from 'app';
   // Your custom JavaScript goes here
   let app = new App();
   document.addEventListener('DOMContentLoaded', e => {
-    if (!app.hasPrerequisites) {
+    if (!hasPrerequisites()) {
+      // TODO make this something nicer than an alert, e.g. a panel in the app
       window.alert('This browser is missing some required features');
       return;
     }
