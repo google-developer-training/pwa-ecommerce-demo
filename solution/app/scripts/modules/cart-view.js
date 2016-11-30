@@ -47,14 +47,14 @@ export default class CartView {
     for (let item of this._cart.cart) {
       let product = findProduct(item.sku);
       let placeholder = document.createElement('tbody');
-      // TODO add mdl "delete" icon
       placeholder.innerHTML = `<tr class="product" data-sku="${product.sku}">
         <td class="mdl-data-table__cell-non-numeric">${product.title}</td>
         <td>${item.quantity}</td>
         <td>$${product.price}</td>
         <td><button class="mdl-button mdl-button--colored mdl-js-button
               mdl-js-ripple-effect mdl-button--accent delete"
-              data-sku="${product.sku}" data-action="remove">remove</button>
+              data-sku="${product.sku}" data-action="remove">
+              <i class="material-icons">delete</i>remove</button>
         </td>
       </tr>`;
       this._tbody.appendChild(placeholder.firstElementChild); // WARN: no ie8

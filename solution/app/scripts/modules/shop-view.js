@@ -40,7 +40,6 @@ export default class ShopView {
     this._container.innerHTML = ''; // remove all children
     for (let product of this._products) {
       let placeholder = document.createElement('div');
-      // TODO add mdl icon
       placeholder.innerHTML = `<div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card product">
         <div class="mdl-card__media">
           <img class="article-image" src=" images/products/${product.image}" border="0" alt="">
@@ -55,7 +54,7 @@ export default class ShopView {
           <button class="mdl-button mdl-button--colored mdl-js-button
             mdl-js-ripple-effect mdl-button--accent add-to-cart"
             data-sku="${product.sku}">
-            Add to Cart
+            <i class="material-icons">add_shopping_cart</i>Add to Cart
           </button>
         </div>
       </div>`;
