@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import sendToServer from 'merchant-server';
+
 const SHIPPING_OPTIONS = {
   us: {
     standard: {
@@ -48,18 +50,29 @@ export default class PaymentAPIWrapper {
   * Returns a promise that resolves when payment is complete, this
   * has a data object you can pass to the back-end payment server.
   */
-  processPayment(cart) {
+  checkout(cart) {
     let request = this.buildPaymentRequest(cart);
+    let response;
     // Show UI then continue with user payment info
-    return request.show().then(result => {
-      // Extract just the details we want to send to the server
-      var data = this.copy(result, 'methodName', 'details', 'payerEmail',
-        'payerPhone', 'shippingOption');
-      data.address = this.copy(result.shippingAddress, 'country', 'region',
-        'city', 'dependentLocality', 'addressLine', 'postalCode', 'sortingCode',
-        'languageCode', 'organization', 'recipient', 'careOf', 'phone');
-      return data;
-    });
+    return request.show()
+      .then(r => {
+        response = r;
+        // Extract just the details we want to send to the server
+        var data = this.copy(response, 'methodName', 'details', 'payerEmail',
+          'payerPhone', 'shippingOption');
+        data.address = this.copy(response.shippingAddress, 'country', 'region',
+          'city', 'dependentLocality', 'addressLine', 'postalCode',
+          'sortingCode', 'languageCode', 'organization', 'recipient', 'careOf',
+          'phone');
+        return data;
+      })
+      .then(sendToServer)
+      .then(() => {
+        response.complete('success');
+      })
+      .catch(e => {
+        response.complete(`fail: ${e}`);
+      });
   }
 
   /*
@@ -151,7 +164,6 @@ export default class PaymentAPIWrapper {
     return details;
   }
 
-
   /**
    * Utility function to extract fields from one object and copy them into a new
    * object.
@@ -185,35 +197,3 @@ export default class PaymentAPIWrapper {
   }
 
 }
-
-/* Park this here until I find the right place for it
- * // At this point, it's all specific to your payment processing system.
-       // We'll post to a URL on a sample server that ships with this example.
-       // It returns a JSON object with success == true.
-       // Of course, you would change this to match your back-end
-       return new Promise((resolve, reject) => {
-         fetch('/checkout.html', {
-           method: 'POST',
-           credentials: 'include',
-           headers: {
-             'Content-Type': 'application/json'
-           },
-           body: JSON.stringify(data)
-         }).then(res => {
-           if (res.status !== 200) {
-             throw new Error(`Payment failure (id ${res.status})`);
-           }
-           let json = res.json();
-           if (json.success === true) {
-             result.complete('success');
-             resolve();
-           } else {
-             result.complete('fail');
-             reject('!success');
-           }
-         }).catch(e => {
-           result.complete(`fail: ${e}`);
-           reject(e);
-         });
-       });
- */

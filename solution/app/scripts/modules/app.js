@@ -19,7 +19,7 @@ import IDBStorage from 'idb-storage';
 import LocalStorage from 'idb-storage';
 import CartView from 'cart-view';
 import ShopView from 'shop-view';
-import PaymentView from 'payment-view';
+import PaymentForm from 'payment-form';
 import HeaderController from 'header-controller';
 import {replaceLocationHash} from 'url-tools';
 import * as features from 'features';
@@ -31,7 +31,7 @@ export default class App {
     this._cart = new Cart(this._storage, this._cartChanged.bind(this));
     this._cartView = new CartView(this._cart);
     this._shopView = new ShopView(this._cart);
-    this._paymentView = new PaymentView(this._cart);
+    this._paymentView = new PaymentForm(this._cart);
     this._header = new HeaderController();
     this._hashChangeListener = this._handleHashChange.bind(this);
   }
@@ -40,7 +40,6 @@ export default class App {
     window.addEventListener('hashchange', this._hashChangeListener);
     this._shopView.install();
     this._cartView.install();
-    this._paymentView.install();
   }
 
   uninstall() {
