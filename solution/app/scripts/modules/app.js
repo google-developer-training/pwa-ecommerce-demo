@@ -31,7 +31,7 @@ export default class App {
     this._cart = new Cart(this._storage, this._cartChanged.bind(this));
     this._cartView = new CartView(this._cart);
     this._shopView = new ShopView(this._cart);
-    this._paymentView = new PaymentForm(this._cart);
+    this._paymentForm = new PaymentForm(this._cart);
     this._header = new HeaderController();
     this._hashChangeListener = this._handleHashChange.bind(this);
   }
@@ -54,13 +54,13 @@ export default class App {
         this._header.selection = sel;
         this._shopView.visible = sel === 'shop';
         this._cartView.visible = sel !== 'shop';
-        this._paymentView.visible = false;
+        this._paymentForm.visible = false;
         break;
 
       case 'pay':
         this._header.selection = 'cart';
         this._cartView.visible = true;
-        this._paymentView.visible = true;
+        this._paymentForm.visible = true;
         break;
     }
     // TODO Do we need a case for the confirmation display?
