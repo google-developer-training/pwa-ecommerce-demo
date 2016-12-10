@@ -21,7 +21,7 @@ export default class PaymentForm extends View {
 
   constructor(cart, containerId = 'payment') {
     super(containerId);
-    this._checkoutForm = document.getElementById('checkout_form');
+    this._checkoutForm = document.getElementById('payment_form');
     this._cart = cart;
     this._promise = null;
   }
