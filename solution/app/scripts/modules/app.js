@@ -20,6 +20,7 @@ import LocalStorage from 'idb-storage';
 import CartView from 'cart-view';
 import ShopView from 'shop-view';
 import PaymentForm from 'payment-form';
+import ConfirmationView from 'confirmation-view';
 import HeaderController from 'header-controller';
 import {replaceLocationHash} from 'url-tools';
 import * as features from 'features';
@@ -32,6 +33,7 @@ export default class App {
     this._cartView = new CartView(this._cart);
     this._shopView = new ShopView(this._cart);
     this._paymentForm = new PaymentForm(this._cart);
+    this._confirmationView = new ConfirmationView();
     this._header = new HeaderController();
     this._hashChangeListener = this._handleHashChange.bind(this);
   }
@@ -55,15 +57,23 @@ export default class App {
         this._shopView.visible = sel === 'shop';
         this._cartView.visible = sel !== 'shop';
         this._paymentForm.visible = false;
+        this._confirmationView.visible = false;
         break;
 
       case 'pay':
         this._header.selection = 'cart';
         this._cartView.visible = true;
         this._paymentForm.visible = true;
+        this._confirmationView.visible = false;
+        break;
+
+      case 'confirm':
+        this._header.selection = 'cart';
+        this._cartView.visible = false;
+        this._paymentForm.visible = false;
+        this._confirmationView.visible = true;
         break;
     }
-    // TODO Do we need a case for the confirmation display?
   }
 
   run() {

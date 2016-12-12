@@ -104,7 +104,7 @@
                       <h2 class="mdl-card__title-text">Checkout</h2>
                   </div>
                   <div class="mdl-card__supporting-text">
-                    <form action="checkout.html" method="post" id="payment_form">
+                    <form id="payment_form">
                       <div id="form">
                           <fieldset form="payment_form">
                               <legend>Personal Information</legend>
@@ -176,11 +176,27 @@
                       </div>
                       <div class="mdl-dialog__actions"> <!-- TODO make sure this is the right class -->
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit">
-                          Place Order">
+                          Place Order
                         </button>
                       </div>
                   </form>
                 </div>
+            </div>
+            <!-- Confirmation display -->
+            <div class="mdl-grid portfolio-max-width" id="confirmation">
+              <!-- TODO decide how the user will close these -->
+              <div class="mdl-cell mdl-cell--6-col mdl-card mdl-shadow--4dp">
+                <div class="mdl-card__title">
+                  <h2 class="mdl-card__title-text">Request data</h2>
+                </div>
+                <div class="mdl-card__supporting-text" id="requestData"></div>
+              </div>
+              <div class="mdl-cell mdl-cell--6-col mdl-card mdl-shadow--4dp">
+                <div class="mdl-card__title">
+                  <h2 class="mdl-card__title-text">Response data</h2>
+                </div>
+                <div class="mdl-card__supporting-text" id="responseData"></div>
+              </div>
             </div>
         </main>
         <!-- Common bottom of screen -->
