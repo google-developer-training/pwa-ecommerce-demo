@@ -71,7 +71,7 @@ export default class PaymentAPIWrapper {
         response.complete('success');
       })
       .catch(e => {
-        response.complete(`fail: ${e}`);
+        if (response) response.complete(`fail: ${e}`);
       });
   }
 
@@ -92,7 +92,7 @@ export default class PaymentAPIWrapper {
       requestPayerPhone: true
     };
 
-    let shippingOptions = null;
+    let shippingOptions = [];
     let selectedOption = null;
 
     let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
@@ -138,8 +138,8 @@ export default class PaymentAPIWrapper {
     });
     let total = cart.total;
 
-    let displayedShippingOptions = null;
-    if (shippingOptions) {
+    let displayedShippingOptions = [];
+    if (shippingOptions.length > 0) {
       let selectedOption = shippingOptions[shippingOptionId];
       displayedShippingOptions = shippingOptions.map(option => {
         return {
@@ -149,7 +149,7 @@ export default class PaymentAPIWrapper {
           selected: option === selectedOption
         };
       });
-      total += selectedOption.price;
+      if (selectedOption) total += selectedOption.price;
     }
 
     let details = {
