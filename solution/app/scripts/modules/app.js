@@ -20,6 +20,7 @@ import LocalStorage from 'idb-storage';
 import CartView from 'cart-view';
 import ShopView from 'shop-view';
 import PaymentForm from 'payment-form';
+import PaymentAPIWrapper from 'payment-api';
 import ConfirmationView from 'confirmation-view';
 import HeaderController from 'header-controller';
 import {replaceLocationHash} from 'url-tools';
@@ -63,8 +64,19 @@ export default class App {
       case 'pay':
         this._header.selection = 'cart';
         this._cartView.visible = true;
-        this._paymentForm.visible = true;
         this._confirmationView.visible = false;
+        this._paymentForm.visible = false;
+        if (features.hasPaymentRequest()) {
+          let api = new PaymentAPIWrapper();
+          api.checkout(this._cart).then(() => {
+            this._cart.reset();
+          });
+        } else {
+          this._paymentForm.visible = true;
+          this._paymentForm.checkout(this._cart).then(() => {
+            this._cart.reset();
+          });
+        }
         break;
 
       case 'confirm':
