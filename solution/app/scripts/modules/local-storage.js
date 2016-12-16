@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 export default class LocalStorage {
-  // TODO needs to be wrapped in promises for consistency w/ IDB
   constructor(id = 'mfs-cart-items') {
     this._id = id;
   }

@@ -168,6 +168,5 @@ describe('Cart', () => {
       });
       cart.add(c10); // triggers above
     });
-    // TODO test change, remove, etc. with a stub that records details
   });
 });

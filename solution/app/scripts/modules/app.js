@@ -96,7 +96,6 @@ export default class App {
       this._updateCartCountDisplay();
       this.selection = 'shop';
     });
-    // TODO pick up delete icon, possible add icon
   }
 
   // Handle hashChange, manage history (#store or #cart, maybe #pay)
