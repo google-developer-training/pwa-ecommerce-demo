@@ -23,7 +23,7 @@ import App from 'app';
 import {hasPrerequisites} from 'features';
 
 (function() {
-'use strict';
+  'use strict';
 
   // Check to make sure service workers are supported in the current browser,
   // and that the current page is accessed from a secure origin. Using a
