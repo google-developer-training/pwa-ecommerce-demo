@@ -40,9 +40,7 @@ import browserSync from 'browser-sync';
 // TODO PRC-4.1 - import the sw-precache plugin
 
 import gulpLoadPlugins from 'gulp-load-plugins';
-
-// TODO GLP-3.1 - import PageSpeed Insights module
-
+import {output as pagespeed} from 'psi';
 import pkg from './package.json';
 
 const $ = gulpLoadPlugins();
@@ -51,9 +49,21 @@ const babelOptions = {
 	presets: ['es2015']
 };
 
-// TODO GLP-2 - write the eslint task
+gulp.task('lint', () =>
+  gulp.src('app/scripts/**/*.js')
+    .pipe($.eslint())
+    .pipe($.eslint.format())
+    .pipe($.if(!bs.active, $.eslint.failOnError()))
+);
 
-// TODO GLP-3.2 - Write the pagespeed task
+gulp.task('pagespeed', cb =>
+  // Update the below URL to the public URL of your site
+  pagespeed('example.com', {
+    strategy: 'mobile'
+    // Use a Google Developer API key if you have one
+    // key: 'YOUR_API_KEY'
+  }, cb)
+);
 
 // Optimize images
 gulp.task('images', () => {
@@ -186,6 +196,8 @@ gulp.task('default', ['clean'], cb =>
     cb
   )
 );
+
+// TODO GLP-3.2 - Write the pagespeed task
 
 // TODO PRC-3 - Copy over the sw-toolbox scripts to the dist directory
 
