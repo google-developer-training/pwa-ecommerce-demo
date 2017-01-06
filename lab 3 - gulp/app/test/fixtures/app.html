@@ -1,0 +1,59 @@
+<div id="headers">
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header mdl-layout__header--waterfall portfolio-header">
+          <div class="mdl-layout__header-row portfolio-logo-row">
+              <span class="mdl-layout__title">
+                  <div class="portfolio-logo"></div>
+                  <span class="mdl-layout__title">Modern Furniture Store</span>
+              </span>
+          </div>
+          <div class="mdl-layout__header-row portfolio-navigation-row mdl-layout--large-screen-only">
+              <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
+                <a class="mdl-navigation__link is-active" href="#shop">Shop</a>
+                <a class="mdl-navigation__link" href="#cart">Cart</a>
+                <span class="cart-count"></span>
+              </nav>
+          </div>
+      </header>
+      <div class="mdl-layout__drawer mdl-layout--small-screen-only">
+          <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
+            <a class="mdl-navigation__link is-active" href="#shop">Shop</a>
+            <a class="mdl-navigation__link" href="#cart">Cart</a>
+            <span class="cart-count"></span>
+          </nav>
+      </div>
+  </div>
+</div>
+
+<!-- Shop -->
+<div class="mdl-grid portfolio-max-width" id="shop"></div>
+
+<!-- Cart -->
+<div id="cart">
+  <table>
+    <tbody></tbody>
+  </table>
+  <div id="cart-total"></div>
+  <!-- Note: We don't test the checkout button, but the cart view needs this -->
+  <button id="checkoutBtn">
+    Checkout
+  </button>
+</div>
+
+<!-- Empty payment form -->
+<div id="payment" >
+  <form id="payment_form">
+  </form>
+</div>
+
+<!-- Confirmation view -->
+<div id="confirmation">
+  <div id="requestData"></div>
+  <div id="responseData"></div>
+</div>
+
+<!-- Message pop-ups -->
+<div id="snackbar" aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
+  <div class="mdl-snackbar__text"></div>
+  <button type="button" class="mdl-snackbar__action"></button>
+</div>
