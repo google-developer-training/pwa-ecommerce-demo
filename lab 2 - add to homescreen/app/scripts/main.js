@@ -38,7 +38,32 @@ import {hasPrerequisites} from 'features';
       )
     );
 
-  // TODO SW-2 - register the service worker
+  if ('serviceWorker' in navigator &&
+      (window.location.protocol === 'https:' || isLocalhost)) {
+    navigator.serviceWorker.register('service-worker.js')
+    .then(function(registration) {
+
+      registration.onupdatefound = function() {
+        if (navigator.serviceWorker.controller) {
+          var installingWorker = registration.installing;
+
+          installingWorker.onstatechange = function() {
+            switch (installingWorker.state) {
+              case 'installed':
+                break;
+              case 'redundant':
+                throw new Error('The installing ' +
+                                'service worker became redundant.');
+              default:
+                // Ignore
+            }
+          };
+        }
+      };
+    }).catch(function(e) {
+      console.error('Error during service worker registration:', e);
+    });
+  }
 
   // Your custom JavaScript goes here
   let app = new App();
