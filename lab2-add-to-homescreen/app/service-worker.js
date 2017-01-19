@@ -19,7 +19,7 @@ limitations under the License.
 var filesToCache = [
   '/',
   'index.html',
-  'scripts/main.js',
+  'scripts/main.min.js',
   'styles/main.css'
 ];
 
