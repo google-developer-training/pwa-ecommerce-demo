@@ -68,8 +68,10 @@ export default class ShopView extends View {
     let target = event.target;
     if (!target || target == this._container) return;
     while (target.nodeName != 'BUTTON') {
+      if (!target.parentNode) break;
       target = target.parentNode;
     }
+    if (!target.dataset) return;
     var sku = target.dataset.sku;
     if (!sku) throw new Error('could not find sku, data- attrs not supported?');
     var product = findProduct(sku, this._products);
