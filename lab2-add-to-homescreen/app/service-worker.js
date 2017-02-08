@@ -20,7 +20,26 @@ var filesToCache = [
   '/',
   'index.html',
   'scripts/main.min.js',
-  'styles/main.css'
+  'styles/main.css',
+  'images/products/BarrelChair.jpg',
+  'images/products/C10.jpg',
+  'images/products/Cl2.jpg',
+  'images/products/CP03_blue.jpg',
+  'images/products/CPC_RECYCLED.jpg',
+  'images/products/CPFS.jpg',
+  'images/products/CPO2_red.jpg',
+  'images/products/CPT.jpg',
+  'images/products/CS1.jpg',
+  'images/touch/apple-touch-icon.png',
+  'images/touch/chrome-touch-icon-192x192.png',
+  'images/touch/icon-128x128.png',
+  'images/touch/ms-touch-icon-144x144-precomposed.png',
+  'images/about-hero-image.jpg',
+  'images/delete.svg',
+  'images/footer-background.png',
+  'images/hamburger.svg',
+  'images/header-bg.jpg',
+  'images/logo.png'
 ];
 
 var staticCacheName = 'e-commerce-v1';
