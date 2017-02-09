@@ -197,7 +197,14 @@ gulp.task('default', ['clean'], cb =>
   )
 );
 
-// TODO GLP-3.2 - Write the pagespeed task
+gulp.task('pagespeed', cb =>
+  // Update the below URL to the public URL of your site
+  pagespeed('airhorner.com', {
+    strategy: 'mobile'
+    // Use a Google Developer API key if you have one
+    // key: 'YOUR_API_KEY'
+  }, cb)
+);
 
 // TODO PRC-3 - Copy over the sw-toolbox scripts to the dist directory
 
