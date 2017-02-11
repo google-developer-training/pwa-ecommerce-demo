@@ -36,6 +36,7 @@ import browserify from 'browserify';
 import babelify from 'babelify';
 import source from 'vinyl-source-stream';
 import browserSync from 'browser-sync';
+import size from 'gulp-size';
 import swPrecache from 'sw-precache';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import {output as pagespeed} from 'psi';
@@ -53,6 +54,23 @@ gulp.task('lint', () =>
     .pipe($.eslint())
     .pipe($.eslint.format())
     .pipe($.if(!bs.active, $.eslint.failOnError()))
+);
+
+// Run PageSpeed Insights
+gulp.task('pagespeed', cb =>
+  // Update the below URL to the public URL of your site
+  pagespeed('airhorner.com', {
+    strategy: 'mobile'
+    // By default we use the PageSpeed Insights free (no API key) tier.
+    // Use a Google Developer API key if you have one: http://goo.gl/RkN0vE
+    // key: 'YOUR_API_KEY'
+  }, cb)
+);
+
+gulp.task('project-size', () =>
+  gulp.src('dist/**/*')
+    .pipe(size())
+    .pipe(gulp.dest('dist'))
 );
 
 // Optimize images
@@ -183,17 +201,6 @@ gulp.task('default', ['clean'], cb =>
     'generate-service-worker',
     cb
   )
-);
-
-// Run PageSpeed Insights
-gulp.task('pagespeed', cb =>
-  // Update the below URL to the public URL of your site
-  pagespeed('airhorner.com', {
-    strategy: 'mobile'
-    // By default we use the PageSpeed Insights free (no API key) tier.
-    // Use a Google Developer API key if you have one: http://goo.gl/RkN0vE
-    // key: 'YOUR_API_KEY'
-  }, cb)
 );
 
 // Copy over the scripts that are used in importScripts as part of the generate-service-worker task.
