@@ -36,6 +36,7 @@ import browserify from 'browserify';
 import babelify from 'babelify';
 import source from 'vinyl-source-stream';
 import browserSync from 'browser-sync';
+import size from 'gulp-size';
 
 // TODO PRC-4.1 - import the sw-precache plugin
 
@@ -63,6 +64,12 @@ gulp.task('pagespeed', cb =>
     // Use a Google Developer API key if you have one
     // key: 'YOUR_API_KEY'
   }, cb)
+);
+
+gulp.task('project-size', () =>
+  gulp.src('dist/**/*')
+    .pipe(size())
+    .pipe(gulp.dest('dist'))
 );
 
 // Optimize images
@@ -195,15 +202,6 @@ gulp.task('default', ['clean'], cb =>
 
     cb
   )
-);
-
-gulp.task('pagespeed', cb =>
-  // Update the below URL to the public URL of your site
-  pagespeed('airhorner.com', {
-    strategy: 'mobile'
-    // Use a Google Developer API key if you have one
-    // key: 'YOUR_API_KEY'
-  }, cb)
 );
 
 // TODO PRC-3 - Copy over the sw-toolbox scripts to the dist directory

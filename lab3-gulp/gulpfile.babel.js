@@ -37,6 +37,8 @@ import babelify from 'babelify';
 import source from 'vinyl-source-stream';
 import browserSync from 'browser-sync';
 
+// TODO GLP-4.2 - import the gulp-size plugin
+
 // TODO PRC-4.1 - import the sw-precache plugin
 
 import gulpLoadPlugins from 'gulp-load-plugins';
@@ -54,6 +56,8 @@ const babelOptions = {
 // TODO GLP-2 - write the eslint task
 
 // TODO GLP-3.2 - Write the pagespeed task
+
+// TODO GLP-4.3 - write the project-size gulp task
 
 // Optimize images
 gulp.task('images', () => {
