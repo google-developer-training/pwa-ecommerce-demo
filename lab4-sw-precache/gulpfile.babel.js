@@ -36,12 +36,10 @@ import browserify from 'browserify';
 import babelify from 'babelify';
 import source from 'vinyl-source-stream';
 import browserSync from 'browser-sync';
-import size from 'gulp-size';
 
 // TODO PRC-4.1 - import the sw-precache plugin
 
 import gulpLoadPlugins from 'gulp-load-plugins';
-import {output as pagespeed} from 'psi';
 import pkg from './package.json';
 
 const $ = gulpLoadPlugins();
@@ -49,28 +47,6 @@ const bs = browserSync.create();
 const babelOptions = {
 	presets: ['es2015']
 };
-
-gulp.task('lint', () =>
-  gulp.src('app/scripts/**/*.js')
-    .pipe($.eslint())
-    .pipe($.eslint.format())
-    .pipe($.if(!bs.active, $.eslint.failOnError()))
-);
-
-gulp.task('pagespeed', cb =>
-  // Update the below URL to the public URL of your site
-  pagespeed('example.com', {
-    strategy: 'mobile'
-    // Use a Google Developer API key if you have one
-    // key: 'YOUR_API_KEY'
-  }, cb)
-);
-
-gulp.task('project-size', () =>
-  gulp.src('dist/**/*')
-    .pipe(size())
-    .pipe(gulp.dest('dist'))
-);
 
 // Optimize images
 gulp.task('images', () => {
