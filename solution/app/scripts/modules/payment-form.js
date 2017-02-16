@@ -33,19 +33,20 @@ export default class PaymentForm extends View {
    */
   checkout() {
     // TODO how do we handle cart abandonment?
+    var self = this;
     this.visible = true;
     this._promise = new Promise((resolve, reject) => {
-      this._checkoutForm.addEventListener('submit', event => {
+      this._checkoutForm.addEventListener('submit', function temp(event) {
         var data = new FormData(event.target);
-        this._showRequest(data);
+        self._showRequest(data);
         return Promise.resolve(data)
           .then(sendToServer)
           .then(json => {
-            this._showResponse(json);
+            self._showResponse(json);
             resolve(json);
           })
           .catch(e => reject(e))
-          .then(() => this._checkoutForm.removeEventListener('submit'));
+          .then(() => self._checkoutForm.removeEventListener('submit', temp));
       });
     });
     return this._promise;
