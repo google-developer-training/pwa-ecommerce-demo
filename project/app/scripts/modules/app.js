@@ -110,6 +110,7 @@ export default class App {
   _cartChanged(details) {
     if (details.action === 'load') return;
     this._updateCartCountDisplay();
+    this._cartView.render();
     this._cart.save();
   }
 
