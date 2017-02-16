@@ -39,8 +39,9 @@ const SHIPPING_OPTIONS = {
 };
 
 const PAYMENT_METHODS = [
-  'visa', 'mastercard', 'amex', 'discover', 'maestro',
-  'diners', 'jcb', 'unionpay', 'bitcoin'
+
+  // TODO PAY-3 - add a list of accepted payment methods
+
 ];
 
 export default class PaymentAPIWrapper {
@@ -54,25 +55,27 @@ export default class PaymentAPIWrapper {
     let request = this.buildPaymentRequest(cart);
     let response;
     // Show UI then continue with user payment info
-    return request.show()
-      .then(r => {
-        response = r;
-        // Extract just the details we want to send to the server
-        var data = this.copy(response, 'methodName', 'details', 'payerEmail',
-          'payerPhone', 'shippingOption');
-        data.address = this.copy(response.shippingAddress, 'country', 'region',
-          'city', 'dependentLocality', 'addressLine', 'postalCode',
-          'sortingCode', 'languageCode', 'organization', 'recipient', 'careOf',
-          'phone');
-        return data;
-      })
-      .then(sendToServer)
-      .then(() => {
-        response.complete('success');
-      })
-      .catch(e => {
-        if (response) response.complete(`fail: ${e}`);
-      });
+
+    return // TODO PAY-6 - display the PaymentRequest
+
+      // .then(r => {
+      //   response = r;
+      //   // Extract just the details we want to send to the server
+      //   var data = this.copy(response, 'methodName', 'details', 'payerEmail',
+      //     'payerPhone', 'shippingOption');
+      //   data.address = this.copy(response.shippingAddress, 'country', 'region',
+      //     'city', 'dependentLocality', 'addressLine', 'postalCode',
+      //     'sortingCode', 'languageCode', 'organization', 'recipient', 'careOf',
+      //     'phone');
+      //   return data;
+      // })
+      // .then(sendToServer)
+      // .then(() => {
+      //   response.complete('success');
+      // })
+      // .catch(e => {
+      //   if (response) response.complete(`fail: ${e}`);
+      // });
   }
 
   /*
@@ -87,9 +90,9 @@ export default class PaymentAPIWrapper {
 
     // Payment options
     const paymentOptions = {
-      requestShipping: true,
-      requestPayerEmail: true,
-      requestPayerPhone: true
+
+      // TODO PAY-5 - add payment options
+
     };
 
     let shippingOptions = [];
@@ -97,8 +100,7 @@ export default class PaymentAPIWrapper {
 
     let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
 
-    // Initialize
-    let request = new window.PaymentRequest(supportedInstruments, details, paymentOptions);
+    // TODO PAY-2 - initialize the PaymentRequest object
 
     // When user selects a shipping address, add shipping options to match
     request.addEventListener('shippingaddresschange', e => {
@@ -128,40 +130,14 @@ export default class PaymentAPIWrapper {
    * This can change as the user selects shipping options.
    */
   buildPaymentDetails(cart, shippingOptions, shippingOptionId) {
-    // Start with the cart items
-    let displayItems = cart.cart.map(item => {
-      return {
-        label: `${item.quantity}x ${item.title}`,
-        amount: {currency: 'USD', value: String(item.total)},
-        selected: false
-      };
-    });
+
+    // TODO PAY-4.2 - define the display items
+
     let total = cart.total;
 
-    let displayedShippingOptions = [];
-    if (shippingOptions.length > 0) {
-      let selectedOption = shippingOptions[shippingOptionId];
-      displayedShippingOptions = shippingOptions.map(option => {
-        return {
-          id: option.id,
-          label: option.label,
-          amount: {currency: 'USD', value: String(option.price)},
-          selected: option === selectedOption
-        };
-      });
-      if (selectedOption) total += selectedOption.price;
-    }
+    // TODO PAY-4.3 - define the shipping options
 
-    let details = {
-      displayItems: displayItems,
-      total: {
-        label: 'Total due',
-        amount: {currency: 'USD', value: String(total)}
-      },
-      shippingOptions: displayedShippingOptions
-    };
-
-    return details;
+    // TODO PAY-4.1 - define the details object
   }
 
   /**
