@@ -59,14 +59,7 @@ export default class PaymentAPIWrapper {
     return // TODO PAY-6 - display the PaymentRequest
 
       // .then(r => {
-      //   response = r;
-      //   // Extract just the details we want to send to the server
-      //   var data = this.copy(response, 'methodName', 'details', 'payerEmail',
-      //     'payerPhone', 'shippingOption');
-      //   data.address = this.copy(response.shippingAddress, 'country', 'region',
-      //     'city', 'dependentLocality', 'addressLine', 'postalCode',
-      //     'sortingCode', 'languageCode', 'organization', 'recipient', 'careOf',
-      //     'phone');
+      //   var data = r.toJSON();
       //   return data;
       // })
       // .then(sendToServer)
@@ -85,7 +78,10 @@ export default class PaymentAPIWrapper {
   buildPaymentRequest(cart) {
     // Supported payment instruments
     const supportedInstruments = [{
-      supportedMethods: (PAYMENT_METHODS)
+      supportedMethods: ['basic-card'],
+      data: {
+        supportedNetworks: (PAYMENT_METHODS)
+      }
     }];
 
     // Payment options
@@ -138,23 +134,6 @@ export default class PaymentAPIWrapper {
     // TODO PAY-4.3 - define the shipping options
 
     // TODO PAY-4.1 - define the details object
-  }
-
-  /**
-   * Utility function to extract fields from one object and copy them into a new
-   * object.
-   * @param {object} source copies from this object
-   * @param {...string} fields names of fields to copy
-   * @returns {object} new object with only the specified fields (copied from source)
-   */
-  copy(source, ...fields) {
-    if (source === null) return source;
-    let result = {};
-    for (let i = 0; i < fields.length; i++) {
-      const field = fields[i];
-      result[field] = source[field];
-    }
-    return result;
   }
 
   /*
