@@ -40,7 +40,7 @@ const SHIPPING_OPTIONS = {
 
 const PAYMENT_METHODS = [
 
-  // TODO PAY-3 - add a list of accepted payment methods
+  // TODO PAY-4 - add a list of accepted payment methods
 
 ];
 
@@ -56,7 +56,7 @@ export default class PaymentAPIWrapper {
     let response;
     // Show UI then continue with user payment info
 
-    return // TODO PAY-6 - display the PaymentRequest
+    return // TODO PAY-7 - display the PaymentRequest
 
       // .then(r => {
       //   var data = r.toJSON();
@@ -87,7 +87,7 @@ export default class PaymentAPIWrapper {
     // Payment options
     const paymentOptions = {
 
-      // TODO PAY-5 - add payment options
+      // TODO PAY-6 - add payment options
 
     };
 
@@ -96,7 +96,7 @@ export default class PaymentAPIWrapper {
 
     let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
 
-    // TODO PAY-2 - initialize the PaymentRequest object
+    // TODO PAY-3 - initialize the PaymentRequest object
 
     // When user selects a shipping address, add shipping options to match
     request.addEventListener('shippingaddresschange', e => {
@@ -127,13 +127,13 @@ export default class PaymentAPIWrapper {
    */
   buildPaymentDetails(cart, shippingOptions, shippingOptionId) {
 
-    // TODO PAY-4.2 - define the display items
+    // TODO PAY-5.2 - define the display items
 
     let total = cart.total;
 
-    // TODO PAY-4.3 - define the shipping options
+    // TODO PAY-5.3 - define the shipping options
 
-    // TODO PAY-4.1 - define the details object
+    // TODO PAY-5.1 - define the details object
   }
 
   /*
