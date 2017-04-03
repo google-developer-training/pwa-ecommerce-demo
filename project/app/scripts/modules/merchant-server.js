@@ -19,13 +19,26 @@ limitations under the License.
  * order. Instead, we're going to show the details on the screen.
  */
 export default function sendToServer(data) {
-  return data;
+  return fetch('/checkout/', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  }).then(res => {
+    if (res.status !== 200) {
+      throw new Error(`Payment failure (id ${res.status})`);
+    }
+    return true;
+  });
 }
 
 /*
  * Sample of sending to the back-end for processing
  * This posts to a sample server that ships with this example.
  * It returns a JSON object with success == true.
+ *
 function sendToServer(data) {
   return new Promise((resolve, reject) => {
     fetch('/checkout.html', {
@@ -50,4 +63,4 @@ function sendToServer(data) {
     });
   });
 }
-*/
+ */

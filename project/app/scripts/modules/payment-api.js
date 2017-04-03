@@ -59,6 +59,7 @@ export default class PaymentAPIWrapper {
     return // TODO PAY-7 - display the PaymentRequest
 
       // .then(r => {
+      //   response = r;
       //   var data = r.toJSON();
       //   return data;
       // })
@@ -67,7 +68,8 @@ export default class PaymentAPIWrapper {
       //   response.complete('success');
       // })
       // .catch(e => {
-      //   if (response) response.complete(`fail: ${e}`);
+      //   response.complete('fail');
+      //   console.error(e);
       // });
   }
 
@@ -80,7 +82,7 @@ export default class PaymentAPIWrapper {
     const supportedInstruments = [{
       supportedMethods: ['basic-card'],
       data: {
-        supportedNetworks: (PAYMENT_METHODS)
+        supportedNetworks: PAYMENT_METHODS
       }
     }];
 
@@ -96,7 +98,7 @@ export default class PaymentAPIWrapper {
 
     let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
 
-    // TODO PAY-3 - initialize the PaymentRequest object
+    let request = new window.PaymentRequest(supportedInstruments, details, paymentOptions);
 
     // When user selects a shipping address, add shipping options to match
     request.addEventListener('shippingaddresschange', e => {
