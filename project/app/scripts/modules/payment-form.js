@@ -37,6 +37,7 @@ export default class PaymentForm extends View {
     this.visible = true;
     this._promise = new Promise((resolve, reject) => {
       this._checkoutForm.addEventListener('submit', function temp(event) {
+        event.preventDefault();
         var data = new FormData(event.target);
         self._showRequest(data);
         return Promise.resolve(data)
