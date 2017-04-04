@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 /*
- * Normally you'd send everything through to your server to complete the
- * order. Instead, we're going to show the details on the screen.
+ * Simple server fetch function that only send a request to /checkout
+ * and returns `true` or throws an exception.
  */
 export default function sendToServer(data) {
   return fetch('/checkout/', {
@@ -33,34 +33,3 @@ export default function sendToServer(data) {
     return true;
   });
 }
-
-/*
- * Sample of sending to the back-end for processing
- * This posts to a sample server that ships with this example.
- * It returns a JSON object with success == true.
- *
-function sendToServer(data) {
-  return new Promise((resolve, reject) => {
-    fetch('/checkout.html', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    }).then(res => {
-      if (res.status !== 200) {
-        throw new Error(`Payment failure (id ${res.status})`);
-      }
-      let json = res.json();
-      if (json.success === true) {
-        resolve(json);
-      } else {
-        reject('Payment not successful');
-      }
-    }).catch(e => {
-      reject(e);
-    });
-  });
-}
- */
