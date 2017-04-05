@@ -129,7 +129,7 @@ export default class PaymentAPIWrapper {
     // Start with the cart items
     let displayItems = cart.cart.map(item => {
       return {
-        label: `${item.quantity}x ${item.title}`,
+        label: `${item.sku}: ${item.quantity}x $${item.price}`,
         amount: {currency: 'USD', value: String(item.total)},
         selected: false
       };
