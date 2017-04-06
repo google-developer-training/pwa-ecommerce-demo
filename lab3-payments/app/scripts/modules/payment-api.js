@@ -56,19 +56,8 @@ export default class PaymentAPIWrapper {
     let response;
     // Show UI then continue with user payment info
 
-    return // TODO PAY-6 - display the PaymentRequest
+    // TODO PAY-6 - display the PaymentRequest
 
-      // .then(r => {
-      //   var data = r.toJSON();
-      //   return data;
-      // })
-      // .then(sendToServer)
-      // .then(() => {
-      //   response.complete('success');
-      // })
-      // .catch(e => {
-      //   if (response) response.complete(`fail: ${e}`);
-      // });
   }
 
   /*
