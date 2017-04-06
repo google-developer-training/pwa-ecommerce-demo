@@ -17,30 +17,29 @@ limitations under the License.
 import sendToServer from 'merchant-server';
 
 const SHIPPING_OPTIONS = {
-  us: {
-    standard: {
+  us: [
+    {
       id: 'standard',
       label: 'Standard Shipping',
       price: 0
     },
-    express: {
+    {
       id: 'express',
       label: 'Express Shipping',
       price: 10
     }
-  },
-  international: {
-    international: {
+  ],
+  international: [
+    {
       id: 'international',
       label: 'International Shipping',
       price: 15
     }
-  }
+  ]
 };
 
 const PAYMENT_METHODS = [
-  'visa', 'mastercard', 'amex', 'discover', 'maestro',
-  'diners', 'jcb', 'unionpay', 'bitcoin'
+  'visa', 'mastercard', 'amex', 'jcb', 'diners', 'discover', 'mir', 'unionpay'
 ];
 
 export default class PaymentAPIWrapper {
@@ -57,13 +56,7 @@ export default class PaymentAPIWrapper {
     return request.show()
       .then(r => {
         response = r;
-        // Extract just the details we want to send to the server
-        var data = this.copy(response, 'methodName', 'details', 'payerEmail',
-          'payerPhone', 'shippingOption');
-        data.address = this.copy(response.shippingAddress, 'country', 'region',
-          'city', 'dependentLocality', 'addressLine', 'postalCode',
-          'sortingCode', 'languageCode', 'organization', 'recipient', 'careOf',
-          'phone');
+        var data = r.toJSON();
         return data;
       })
       .then(sendToServer)
@@ -71,7 +64,8 @@ export default class PaymentAPIWrapper {
         response.complete('success');
       })
       .catch(e => {
-        if (response) response.complete(`fail: ${e}`);
+        response.complete('fail');
+        console.error(e);
       });
   }
 
@@ -82,14 +76,18 @@ export default class PaymentAPIWrapper {
   buildPaymentRequest(cart) {
     // Supported payment instruments
     const supportedInstruments = [{
-      supportedMethods: (PAYMENT_METHODS)
+      supportedMethods: ['basic-card'],
+      data: {
+        supportedNetworks: PAYMENT_METHODS
+      }
     }];
 
     // Payment options
     const paymentOptions = {
       requestShipping: true,
       requestPayerEmail: true,
-      requestPayerPhone: true
+      requestPayerPhone: true,
+      requestPayerName: true
     };
 
     let shippingOptions = [];
@@ -102,22 +100,22 @@ export default class PaymentAPIWrapper {
 
     // When user selects a shipping address, add shipping options to match
     request.addEventListener('shippingaddresschange', e => {
-      e.updateWith(_ => {
+      e.updateWith((_ => {
         // Get the shipping options and select the least expensive
         shippingOptions = this.optionsForCountry(request.shippingAddress.country);
         selectedOption = shippingOptions[0].id;
         let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
         return Promise.resolve(details);
-      });
+      })());
     });
 
     // When user selects a shipping option, update cost, etc. to match
     request.addEventListener('shippingoptionchange', e => {
-      e.updateWith(_ => {
+      e.updateWith((_ => {
         selectedOption = request.shippingOption;
         let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
         return Promise.resolve(details);
-      });
+      })());
     });
 
     return request;
@@ -131,7 +129,7 @@ export default class PaymentAPIWrapper {
     // Start with the cart items
     let displayItems = cart.cart.map(item => {
       return {
-        label: `${item.quantity}x ${item.title}`,
+        label: `${item.sku}: ${item.quantity}x $${item.price}`,
         amount: {currency: 'USD', value: String(item.total)},
         selected: false
       };
@@ -140,13 +138,15 @@ export default class PaymentAPIWrapper {
 
     let displayedShippingOptions = [];
     if (shippingOptions.length > 0) {
-      let selectedOption = shippingOptions[shippingOptionId];
+      let selectedOption = shippingOptions.find(option => {
+        return option.id === shippingOptionId;
+      });
       displayedShippingOptions = shippingOptions.map(option => {
         return {
           id: option.id,
           label: option.label,
           amount: {currency: 'USD', value: String(option.price)},
-          selected: option === selectedOption
+          selected: option.id === shippingOptionId
         };
       });
       if (selectedOption) total += selectedOption.price;
@@ -164,27 +164,11 @@ export default class PaymentAPIWrapper {
     return details;
   }
 
-  /**
-   * Utility function to extract fields from one object and copy them into a new
-   * object.
-   * @param {object} source copies from this object
-   * @param {...string} fields names of fields to copy
-   * @returns {object} new object with only the specified fields (copied from source)
-   */
-  copy(source, ...fields) {
-    if (source === null) return source;
-    let result = {};
-    for (let i = 0; i < fields.length; i++) {
-      const field = fields[i];
-      result[field] = source[field];
-    }
-    return result;
-  }
-
   /*
    * Utility function to extract the correct shipping options for a country.
    */
   optionsForCountry(country) {
+    country = country.toLowerCase();
     if (!country || !SHIPPING_OPTIONS.hasOwnProperty(country)) {
       country = 'international';
     }
