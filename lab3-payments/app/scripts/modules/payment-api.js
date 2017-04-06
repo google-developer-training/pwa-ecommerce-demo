@@ -17,25 +17,25 @@ limitations under the License.
 import sendToServer from 'merchant-server';
 
 const SHIPPING_OPTIONS = {
-  us: {
-    standard: {
+  us: [
+    {
       id: 'standard',
       label: 'Standard Shipping',
       price: 0
     },
-    express: {
+    {
       id: 'express',
       label: 'Express Shipping',
       price: 10
     }
-  },
-  international: {
-    international: {
+  ],
+  international: [
+    {
       id: 'international',
       label: 'International Shipping',
       price: 15
     }
-  }
+  ]
 };
 
 const PAYMENT_METHODS = [
@@ -69,7 +69,7 @@ export default class PaymentAPIWrapper {
     const supportedInstruments = [{
       supportedMethods: ['basic-card'],
       data: {
-        supportedNetworks: (PAYMENT_METHODS)
+        supportedNetworks: PAYMENT_METHODS
       }
     }];
 
@@ -89,22 +89,22 @@ export default class PaymentAPIWrapper {
 
     // When user selects a shipping address, add shipping options to match
     request.addEventListener('shippingaddresschange', e => {
-      e.updateWith(_ => {
+      e.updateWith((_ => {
         // Get the shipping options and select the least expensive
         shippingOptions = this.optionsForCountry(request.shippingAddress.country);
         selectedOption = shippingOptions[0].id;
         let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
         return Promise.resolve(details);
-      });
+      })());
     });
 
     // When user selects a shipping option, update cost, etc. to match
     request.addEventListener('shippingoptionchange', e => {
-      e.updateWith(_ => {
+      e.updateWith((_ => {
         selectedOption = request.shippingOption;
         let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
         return Promise.resolve(details);
-      });
+      })());
     });
 
     return request;
@@ -129,6 +129,7 @@ export default class PaymentAPIWrapper {
    * Utility function to extract the correct shipping options for a country.
    */
   optionsForCountry(country) {
+    country = country.toLowerCase();
     if (!country || !SHIPPING_OPTIONS.hasOwnProperty(country)) {
       country = 'international';
     }
