@@ -83,8 +83,8 @@ export default class PaymentAPIWrapper {
     const supportedInstruments = [{
       supportedMethods: ['basic-card'],
       data: {
-        supportedNetworks: ['visa', 'mastercard', 'amex', 'jcb',
-          'diners', 'discover', 'mir', 'unionpay']
+        supportedNetworks: ['visa', 'mastercard', 'amex',
+          'jcb', 'diners', 'discover', 'mir', 'unionpay']
       }
     }];
 
@@ -136,8 +136,7 @@ export default class PaymentAPIWrapper {
     let displayItems = cart.cart.map(item => {
       return {
         label: `${item.sku}: ${item.quantity}x $${item.price}`,
-        amount: {currency: 'USD', value: String(item.total)},
-        selected: false
+        amount: {currency: 'USD', value: String(item.total)}
       };
     });
     let total = cart.total;

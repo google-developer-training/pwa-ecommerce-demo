@@ -50,7 +50,7 @@ export default class PaymentAPIWrapper {
     let response;
     // Show UI then continue with user payment info
 
-    // TODO PAY-7 - display the PaymentRequest
+    // TODO PAY-6 - display the PaymentRequest
 
   }
 
@@ -69,7 +69,7 @@ export default class PaymentAPIWrapper {
     // Payment options
     const paymentOptions = {
 
-      // TODO PAY-6 - add payment options
+      // TODO PAY-7.1 - allow shipping options
 
     };
 
@@ -78,27 +78,11 @@ export default class PaymentAPIWrapper {
 
     let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
 
-    // TODO PAY-3 - initialize the PaymentRequest object
+    // TODO PAY-3.2 - initialize the PaymentRequest object
 
-    // When user selects a shipping address, add shipping options to match
-    request.addEventListener('shippingaddresschange', e => {
-      e.updateWith((_ => {
-        // Get the shipping options and select the least expensive
-        shippingOptions = this.optionsForCountry(request.shippingAddress.country);
-        selectedOption = shippingOptions[0].id;
-        let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
-        return Promise.resolve(details);
-      })());
-    });
+    // TODO PAY-8.1 - add `shippingaddresschange` event handler
 
-    // When user selects a shipping option, update cost, etc. to match
-    request.addEventListener('shippingoptionchange', e => {
-      e.updateWith((_ => {
-        selectedOption = request.shippingOption;
-        let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
-        return Promise.resolve(details);
-      })());
-    });
+    // TODO PAY-8.2 - add `shippingoptionchange` event handler
 
     return request;
   }
@@ -113,7 +97,7 @@ export default class PaymentAPIWrapper {
 
     let total = cart.total;
 
-    // TODO PAY-5.3 - define the shipping options
+    // TODO PAY-7.3 - allow shipping options
 
     // TODO PAY-5.1 - define the details object
   }
