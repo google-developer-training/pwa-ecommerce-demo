@@ -39,7 +39,6 @@ const SHIPPING_OPTIONS = {
 };
 
 const PAYMENT_METHODS = [
-  'visa', 'mastercard', 'amex', 'jcb', 'diners', 'discover', 'mir', 'unionpay'
 ];
 
 export default class PaymentAPIWrapper {
@@ -55,15 +54,21 @@ export default class PaymentAPIWrapper {
     // Show UI then continue with user payment info
     return request.show()
       .then(r => {
+        // The UI will show a spinner to the user until
+        // `request.complete()` is called.
         response = r;
         var data = r.toJSON();
         return data;
       })
-      .then(sendToServer)
+      .then(data => {
+        return sendToServer(data);
+      })
       .then(() => {
+        // The spinner will disappear.
         response.complete('success');
       })
       .catch(e => {
+        // The spinner will disappear.
         response.complete('fail');
         console.error(e);
       });
@@ -78,7 +83,8 @@ export default class PaymentAPIWrapper {
     const supportedInstruments = [{
       supportedMethods: ['basic-card'],
       data: {
-        supportedNetworks: PAYMENT_METHODS
+        supportedNetworks: ['visa', 'mastercard', 'amex', 'jcb',
+          'diners', 'discover', 'mir', 'unionpay']
       }
     }];
 
