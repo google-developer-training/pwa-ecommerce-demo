@@ -102,7 +102,7 @@ export default class PaymentAPIWrapper {
     let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
 
     // Initialize
-    let request = new window.PaymentRequest(supportedInstruments, details, paymentOptions);
+    let request = new PaymentRequest(supportedInstruments, details, paymentOptions);
 
     // When user selects a shipping address, add shipping options to match
     request.addEventListener('shippingaddresschange', e => {
