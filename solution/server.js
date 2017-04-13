@@ -22,7 +22,7 @@ app.all('/checkout/', (req, res) => {
   res.sendStatus(200);
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 app.listen(PORT);
 
 console.log(`Started a local server at http://localhost:${PORT}`);

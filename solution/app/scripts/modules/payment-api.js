@@ -57,18 +57,17 @@ export default class PaymentAPIWrapper {
         // The UI will show a spinner to the user until
         // `request.complete()` is called.
         response = r;
-        var data = r.toJSON();
+        let data = r.toJSON();
+        console.log(data);
         return data;
       })
       .then(data => {
         return sendToServer(data);
       })
       .then(() => {
-        // The spinner will disappear.
         response.complete('success');
       })
       .catch(e => {
-        // The spinner will disappear.
         response.complete('fail');
         console.error(e);
       });

@@ -36,6 +36,7 @@ import browserify from 'browserify';
 import babelify from 'babelify';
 import source from 'vinyl-source-stream';
 import browserSync from 'browser-sync';
+import nodemon from 'gulp-nodemon';
 import swPrecache from 'sw-precache';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import pkg from './package.json';
@@ -147,21 +148,28 @@ gulp.task('test', (done) => {
   }, done).start();
 });
 
-// Build and serve the output from the dist build
-gulp.task('serve', ['default'], () =>
+gulp.task('nodemon', ['default'], cb => {
+  let started = false;
+  nodemon({
+    script: './server.js',
+    watch: ['app/scripts/**/*.js'],
+    tasks: 'default'
+  }).on('start', () => {
+    if (!started) {
+      cb();
+      started = true;
+    }
+  }).on('restart', () => {
+    bs.reload();
+  });
+});
+
+// browserSync
+gulp.task('serve', ['nodemon'], () =>
   bs.init({
-    notify: false,
-    logPrefix: 'WSK',
-    // Allow scroll syncing across breakpoints
-    scrollElementMapping: ['main', '.mdl-layout'],
-    // Run as an https by uncommenting 'https: true'
-    // Note: this uses an unsigned certificate which on first access
-    //       will present a certificate warning in the browser.
-    // https: true,
-    server: 'dist',
-    port: 3001,
-		// Implement a simple server running at /checkout.
-		// This logs the form data and returns a dummy payment response.
+    proxy: 'http://localhost:8081',
+    port: '8080',
+    open: false
   })
 );
 
@@ -171,7 +179,9 @@ gulp.task('default', ['clean'], cb =>
     'styles',
     ['html', 'scripts', 'images', 'copy'],
     // ['lint', 'html', 'scripts', 'images', 'copy'],
-    'generate-service-worker',
+
+    // 'generate-service-worker',
+
     cb
   )
 );
