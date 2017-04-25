@@ -67,7 +67,7 @@ export default class App {
         this._confirmationView.visible = false;
         this._paymentForm.visible = false;
         let _promise;
-        if ('PaymentRequest' in window) {
+        if (window.PaymentRequest) {
           let api = new PaymentAPIWrapper();
           _promise = api.checkout(this._cart);
         } else {
