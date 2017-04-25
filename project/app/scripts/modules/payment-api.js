@@ -51,6 +51,7 @@ export default class PaymentAPIWrapper {
     // Show UI then continue with user payment info
 
     // TODO PAY-6 - display the PaymentRequest
+    return request.show();
 
   }
 
@@ -93,13 +94,23 @@ export default class PaymentAPIWrapper {
    */
   buildPaymentDetails(cart, shippingOptions, shippingOptionId) {
 
-    // TODO PAY-5.2 - define the display items
+    // TODO PAY-5 - define the display items
+    let displayItems = [];
 
     let total = cart.total;
 
     // TODO PAY-7.3 - allow shipping options
 
-    // TODO PAY-5.1 - define the details object
+    let details = {
+      displayItems: displayItems,
+      total: {
+        label: 'Total due',
+        amount: {currency: 'USD', value: String(total)}
+      }
+      // TODO PAY-7.2 - allow shipping options
+    };
+
+    return details;
   }
 
   /*
