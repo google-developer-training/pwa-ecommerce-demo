@@ -66,17 +66,25 @@ export default class App {
         this._cartView.visible = true;
         this._confirmationView.visible = false;
         this._paymentForm.visible = false;
-        if (features.hasPaymentRequest()) {
+        let _promise;
+        // TODO PAY-3.1 - detect feature
+        if (false) {
           let api = new PaymentAPIWrapper();
-          api.checkout(this._cart).then(() => {
-            this._cart.reset();
-          });
+          _promise = api.checkout(this._cart);
         } else {
           this._paymentForm.visible = true;
-          this._paymentForm.checkout(this._cart).then(() => {
-            this._cart.reset();
-          });
+          _promise = this._paymentForm.checkout(this._cart);
         }
+        _promise
+          .then(() => {
+            this._cart.reset();
+            replaceLocationHash('shop');
+            this.selection = 'shop';
+            alert('Thanks for shopping! Payment successfully complete :)');
+          })
+          .catch(() => {
+            alert('Sorry, payment failed :(');
+          });
         break;
 
       case 'confirm':

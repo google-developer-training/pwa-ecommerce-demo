@@ -17,32 +17,26 @@ limitations under the License.
 import sendToServer from 'merchant-server';
 
 const SHIPPING_OPTIONS = {
-  us: {
-    standard: {
+  us: [
+    {
       id: 'standard',
       label: 'Standard Shipping',
       price: 0
     },
-    express: {
+    {
       id: 'express',
       label: 'Express Shipping',
       price: 10
     }
-  },
-  international: {
-    international: {
+  ],
+  international: [
+    {
       id: 'international',
       label: 'International Shipping',
       price: 15
     }
-  }
+  ]
 };
-
-const PAYMENT_METHODS = [
-
-  // TODO PAY-3 - add a list of accepted payment methods
-
-];
 
 export default class PaymentAPIWrapper {
 
@@ -56,26 +50,9 @@ export default class PaymentAPIWrapper {
     let response;
     // Show UI then continue with user payment info
 
-    return // TODO PAY-6 - display the PaymentRequest
+    // TODO PAY-6 - display the PaymentRequest
+    return request.show();
 
-      // .then(r => {
-      //   response = r;
-      //   // Extract just the details we want to send to the server
-      //   var data = this.copy(response, 'methodName', 'details', 'payerEmail',
-      //     'payerPhone', 'shippingOption');
-      //   data.address = this.copy(response.shippingAddress, 'country', 'region',
-      //     'city', 'dependentLocality', 'addressLine', 'postalCode',
-      //     'sortingCode', 'languageCode', 'organization', 'recipient', 'careOf',
-      //     'phone');
-      //   return data;
-      // })
-      // .then(sendToServer)
-      // .then(() => {
-      //   response.complete('success');
-      // })
-      // .catch(e => {
-      //   if (response) response.complete(`fail: ${e}`);
-      // });
   }
 
   /*
@@ -84,14 +61,16 @@ export default class PaymentAPIWrapper {
    */
   buildPaymentRequest(cart) {
     // Supported payment instruments
-    const supportedInstruments = [{
-      supportedMethods: (PAYMENT_METHODS)
-    }];
+    const supportedInstruments = [
+
+      // TODO PAY-4 - add a list of accepted payment methods
+
+    ];
 
     // Payment options
     const paymentOptions = {
 
-      // TODO PAY-5 - add payment options
+      // TODO PAY-7.1 - allow shipping options
 
     };
 
@@ -100,27 +79,11 @@ export default class PaymentAPIWrapper {
 
     let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
 
-    // TODO PAY-2 - initialize the PaymentRequest object
+    // TODO PAY-3.2 - initialize the PaymentRequest object
 
-    // When user selects a shipping address, add shipping options to match
-    request.addEventListener('shippingaddresschange', e => {
-      e.updateWith(_ => {
-        // Get the shipping options and select the least expensive
-        shippingOptions = this.optionsForCountry(request.shippingAddress.country);
-        selectedOption = shippingOptions[0].id;
-        let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
-        return Promise.resolve(details);
-      });
-    });
+    // TODO PAY-8.1 - add `shippingaddresschange` event handler
 
-    // When user selects a shipping option, update cost, etc. to match
-    request.addEventListener('shippingoptionchange', e => {
-      e.updateWith(_ => {
-        selectedOption = request.shippingOption;
-        let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
-        return Promise.resolve(details);
-      });
-    });
+    // TODO PAY-8.2 - add `shippingoptionchange` event handler
 
     return request;
   }
@@ -131,36 +94,30 @@ export default class PaymentAPIWrapper {
    */
   buildPaymentDetails(cart, shippingOptions, shippingOptionId) {
 
-    // TODO PAY-4.2 - define the display items
+    // TODO PAY-5 - define the display items
+    let displayItems = [];
 
     let total = cart.total;
 
-    // TODO PAY-4.3 - define the shipping options
+    // TODO PAY-7.3 - allow shipping options
 
-    // TODO PAY-4.1 - define the details object
-  }
+    let details = {
+      displayItems: displayItems,
+      total: {
+        label: 'Total due',
+        amount: {currency: 'USD', value: String(total)}
+      }
+      // TODO PAY-7.2 - allow shipping options
+    };
 
-  /**
-   * Utility function to extract fields from one object and copy them into a new
-   * object.
-   * @param {object} source copies from this object
-   * @param {...string} fields names of fields to copy
-   * @returns {object} new object with only the specified fields (copied from source)
-   */
-  copy(source, ...fields) {
-    if (source === null) return source;
-    let result = {};
-    for (let i = 0; i < fields.length; i++) {
-      const field = fields[i];
-      result[field] = source[field];
-    }
-    return result;
+    return details;
   }
 
   /*
    * Utility function to extract the correct shipping options for a country.
    */
   optionsForCountry(country) {
+    country = country.toLowerCase();
     if (!country || !SHIPPING_OPTIONS.hasOwnProperty(country)) {
       country = 'international';
     }
