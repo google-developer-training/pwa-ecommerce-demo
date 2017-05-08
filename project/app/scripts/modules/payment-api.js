@@ -72,6 +72,8 @@ export default class PaymentAPIWrapper {
 
       // TODO PAY-7.1 - allow shipping options
 
+      // TODO PAY-9 - Add payment options
+
     };
 
     let shippingOptions = [];
