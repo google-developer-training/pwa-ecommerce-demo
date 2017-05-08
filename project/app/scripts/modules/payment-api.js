@@ -64,6 +64,12 @@ export default class PaymentAPIWrapper {
     const supportedInstruments = [
 
       // TODO PAY-4 - add a list of accepted payment methods
+      {
+        supportedMethods: ['basic-card'],
+        data: {
+          supportedNetworks: []
+        }
+      }
 
     ];
 
@@ -71,6 +77,8 @@ export default class PaymentAPIWrapper {
     const paymentOptions = {
 
       // TODO PAY-7.1 - allow shipping options
+
+      // TODO PAY-9 - Add payment options
 
     };
 
