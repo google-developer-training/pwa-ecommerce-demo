@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - "node"
+  - "6"
+  - "7"
+install:
+  - cd project && npm install
+script:
+  - (npm run serve &) ; sleep 10 ; curl -sS -o /dev/null http://localhost:8080
