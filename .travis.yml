@@ -6,4 +6,4 @@ node_js:
 install:
   - cd project && npm install
 script:
-  - (npm run serve &) ; sleep 10 ; curl -sS -o /dev/null http://localhost:8081
+  - (npm run serve &) ; sleep 10 ; curl -sS -o /dev/null http://localhost:8080
