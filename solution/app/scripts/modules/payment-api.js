@@ -66,10 +66,18 @@ export default class PaymentAPIWrapper {
       })
       .then(() => {
         response.complete('success');
+        return response;
       })
       .catch(e => {
-        response.complete('fail');
-        console.error(e);
+        if (response) {
+          console.error(e);
+          response.complete('fail');
+        } else if (e.code !== e.ABORT_ERR) {
+          console.error(e);
+          throw e;
+        } else {
+          return null;
+        }
       });
   }
 

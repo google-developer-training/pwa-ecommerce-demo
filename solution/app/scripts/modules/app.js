@@ -75,14 +75,22 @@ export default class App {
           _promise = this._paymentForm.checkout(this._cart);
         }
         _promise
-          .then(() => {
-            this._cart.reset();
-            replaceLocationHash('shop');
-            this.selection = 'shop';
-            alert('Thanks for shopping! Payment successfully complete :)');
+          .then(result => {
+            if (result) {
+              this._cart.reset();
+              replaceLocationHash('shop');
+              this.selection = 'shop';
+              alert('Thanks for shopping! Payment successfully complete :)');
+            } else {
+              console.log('payment canceled');
+            }
           })
-          .catch(() => {
-            alert('Sorry, payment failed :(');
+          .catch(e => {
+            if (e) {
+              alert('Sorry, payment failed :(');
+            } else {
+              console.log('payment canceled');
+            }
           });
         break;
 
