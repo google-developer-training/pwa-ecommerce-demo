@@ -173,22 +173,9 @@ gulp.task('default', ['clean'], cb =>
     'styles',
     ['html', 'scripts', 'images', 'copy'],
     // ['lint', 'html', 'scripts', 'images', 'copy'],
-
-		// TODO PRC-4.3 - add the generate-service-worker task to the runSequence
-
     cb
   )
 );
-
-// TODO PRC-3 - Copy over the sw-toolbox scripts to the dist directory
-
-// See http://www.html5rocks.com/en/tutorials/service-worker/introduction/ for
-// an in-depth explanation of what service workers are and why you should care.
-// Generate a service worker file that will provide offline functionality for
-// local resources. This should only be done for the 'dist' directory, to allow
-// live reload to work as expected when serving from the 'app' directory.
-
-// TODO PRC-4.2 - write the sw-precache gulp task
 
 // Load custom tasks from the `tasks` directory
 // Run: `npm install --save-dev require-dir` from the command-line
