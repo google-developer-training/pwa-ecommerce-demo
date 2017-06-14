@@ -85,7 +85,7 @@ export default class PaymentAPIWrapper {
 
     let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
 
-    // TODO PAY-2 - initialize the PaymentRequest object
+    // TODO PAY-2.2 - initialize the PaymentRequest object
 
     // When user selects a shipping address, add shipping options to match
     request.addEventListener('shippingaddresschange', e => {
