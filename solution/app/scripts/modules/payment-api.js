@@ -38,6 +38,9 @@ const SHIPPING_OPTIONS = {
   ]
 };
 
+const PAYMENT_METHODS = [
+];
+
 export default class PaymentAPIWrapper {
 
   /*
@@ -51,17 +54,30 @@ export default class PaymentAPIWrapper {
     // Show UI then continue with user payment info
     return request.show()
       .then(r => {
+        // The UI will show a spinner to the user until
+        // `request.complete()` is called.
         response = r;
-        var data = r.toJSON();
+        let data = r.toJSON();
+        console.log(data);
         return data;
       })
-      .then(sendToServer)
+      .then(data => {
+        return sendToServer(data);
+      })
       .then(() => {
         response.complete('success');
+        return response;
       })
       .catch(e => {
-        response.complete('fail');
-        console.error(e);
+        if (response) {
+          console.error(e);
+          response.complete('fail');
+        } else if (e.code !== e.ABORT_ERR) {
+          console.error(e);
+          throw e;
+        } else {
+          return null;
+        }
       });
   }
 
@@ -74,7 +90,8 @@ export default class PaymentAPIWrapper {
     const supportedInstruments = [{
       supportedMethods: ['basic-card'],
       data: {
-        supportedNetworks: PAYMENT_METHODS
+        supportedNetworks: ['visa', 'mastercard', 'amex',
+          'jcb', 'diners', 'discover', 'mir', 'unionpay']
       }
     }];
 
@@ -92,7 +109,7 @@ export default class PaymentAPIWrapper {
     let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
 
     // Initialize
-    let request = new window.PaymentRequest(supportedInstruments, details, paymentOptions);
+    let request = new PaymentRequest(supportedInstruments, details, paymentOptions);
 
     // When user selects a shipping address, add shipping options to match
     request.addEventListener('shippingaddresschange', e => {
@@ -126,8 +143,7 @@ export default class PaymentAPIWrapper {
     let displayItems = cart.cart.map(item => {
       return {
         label: `${item.sku}: ${item.quantity}x $${item.price}`,
-        amount: {currency: 'USD', value: String(item.total)},
-        selected: false
+        amount: {currency: 'USD', value: String(item.total)}
       };
     });
     let total = cart.total;
