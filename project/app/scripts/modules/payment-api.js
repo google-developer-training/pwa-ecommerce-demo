@@ -38,12 +38,6 @@ const SHIPPING_OPTIONS = {
   ]
 };
 
-const PAYMENT_METHODS = [
-
-  // TODO PAY-3 - add a list of accepted payment methods
-
-];
-
 export default class PaymentAPIWrapper {
 
   /*
@@ -66,12 +60,15 @@ export default class PaymentAPIWrapper {
    */
   buildPaymentRequest(cart) {
     // Supported payment instruments
-    const supportedInstruments = [{
-      supportedMethods: ['basic-card'],
-      data: {
-        supportedNetworks: PAYMENT_METHODS
+    const supportedInstruments = [
+      // TODO PAY-3 - add a list of accepted payment methods
+      {
+        supportedMethods: ['basic-card'],
+        data: {
+          supportedNetworks: []
+        }
       }
-    }];
+    ];
 
     // Payment options
     const paymentOptions = {

@@ -38,10 +38,6 @@ const SHIPPING_OPTIONS = {
   ]
 };
 
-const PAYMENT_METHODS = [
-  'visa', 'mastercard', 'amex', 'jcb', 'diners', 'discover', 'mir', 'unionpay'
-];
-
 export default class PaymentAPIWrapper {
 
   /*
