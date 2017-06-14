@@ -38,12 +38,6 @@ const SHIPPING_OPTIONS = {
   ]
 };
 
-const PAYMENT_METHODS = [
-
-  // TODO PAY-3 - add a list of accepted payment methods
-
-];
-
 export default class PaymentAPIWrapper {
 
   /*
@@ -56,8 +50,8 @@ export default class PaymentAPIWrapper {
     let response;
     // Show UI then continue with user payment info
 
-    // TODO PAY-6 - display the PaymentRequest
-
+    // TODO PAY-5 - display the PaymentRequest
+    return request.show();
   }
 
   /*
@@ -66,17 +60,22 @@ export default class PaymentAPIWrapper {
    */
   buildPaymentRequest(cart) {
     // Supported payment instruments
-    const supportedInstruments = [{
-      supportedMethods: ['basic-card'],
-      data: {
-        supportedNetworks: PAYMENT_METHODS
+    const supportedInstruments = [
+      // TODO PAY-3 - add a list of accepted payment methods
+      {
+        supportedMethods: ['basic-card'],
+        data: {
+          supportedNetworks: []
+        }
       }
-    }];
+    ];
 
     // Payment options
     const paymentOptions = {
 
-      // TODO PAY-5 - add payment options
+      // TODO PAY-6.1 - allow shipping options
+
+      // TODO PAY-8 - Add payment options
 
     };
 
@@ -87,25 +86,9 @@ export default class PaymentAPIWrapper {
 
     // TODO PAY-2.2 - initialize the PaymentRequest object
 
-    // When user selects a shipping address, add shipping options to match
-    request.addEventListener('shippingaddresschange', e => {
-      e.updateWith((_ => {
-        // Get the shipping options and select the least expensive
-        shippingOptions = this.optionsForCountry(request.shippingAddress.country);
-        selectedOption = shippingOptions[0].id;
-        let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
-        return Promise.resolve(details);
-      })());
-    });
+    // TODO PAY-7.1 - add `shippingaddresschange` event handler
 
-    // When user selects a shipping option, update cost, etc. to match
-    request.addEventListener('shippingoptionchange', e => {
-      e.updateWith((_ => {
-        selectedOption = request.shippingOption;
-        let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
-        return Promise.resolve(details);
-      })());
-    });
+    // TODO PAY-7.2 - add `shippingoptionchange` event handler
 
     return request;
   }
@@ -117,12 +100,22 @@ export default class PaymentAPIWrapper {
   buildPaymentDetails(cart, shippingOptions, shippingOptionId) {
 
     // TODO PAY-4.2 - define the display items
+    let displayItems = [];
 
     let total = cart.total;
 
-    // TODO PAY-4.3 - define the shipping options
+    // TODO PAY-6.3 - allow shipping options
 
-    // TODO PAY-4.1 - define the details object
+    let details = {
+      displayItems: displayItems,
+      total: {
+        label: 'Total due',
+        amount: {currency: 'USD', value: String(total)}
+      }
+      // TODO PAY-6.2 - allow shipping options
+    };
+
+    return details;
   }
 
   /*

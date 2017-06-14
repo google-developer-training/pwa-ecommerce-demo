@@ -75,7 +75,7 @@ export default class PaymentAPIWrapper {
 
       // TODO PAY-6.1 - allow shipping options
 
-      // TODO PAY-9 - Add payment options
+      // TODO PAY-8 - Add payment options
 
     };
 
@@ -84,11 +84,11 @@ export default class PaymentAPIWrapper {
 
     let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
 
-    // TODO PAY-3.2 - initialize the PaymentRequest object
+    // TODO PAY-2.2 - initialize the PaymentRequest object
 
-    // TODO PAY-8.1 - add `shippingaddresschange` event handler
+    // TODO PAY-7.1 - add `shippingaddresschange` event handler
 
-    // TODO PAY-8.2 - add `shippingoptionchange` event handler
+    // TODO PAY-7.2 - add `shippingoptionchange` event handler
 
     return request;
   }
@@ -104,7 +104,7 @@ export default class PaymentAPIWrapper {
 
     let total = cart.total;
 
-    // TODO PAY-7.3 - allow shipping options
+    // TODO PAY-6.3 - allow shipping options
 
     let details = {
       displayItems: displayItems,
@@ -112,7 +112,7 @@ export default class PaymentAPIWrapper {
         label: 'Total due',
         amount: {currency: 'USD', value: String(total)}
       }
-      // TODO PAY-7.2 - allow shipping options
+      // TODO PAY-6.2 - allow shipping options
     };
 
     return details;
