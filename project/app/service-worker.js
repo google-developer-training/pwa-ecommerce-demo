@@ -21,4 +21,10 @@ limitations under the License.
 // TODO SW-4 - use the cache-first strategy to fetch and cache resources in the
 // fetch event listener
 
+
+
 // TODO SW-5 - delete outdated caches in the activate event listener
+
+(function() {
+    console.log('Entering ServiceWorker script');
+})();
