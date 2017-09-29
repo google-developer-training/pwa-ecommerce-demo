@@ -18,14 +18,27 @@ limitations under the License.
 
 var staticCacheName = 'e-commerce-v1';
 
-self.addEventListener('install', function(event) {
+self.addEventListener('install', event => {
   // install
 });
 
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', event => {
   // fetch
 });
 
-self.addEventListener('activate', function(event) {
-  // activate
+self.addEventListener('activate', event => {
+  let cacheList = [staticCacheName]
+
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.map(function(cacheName) {
+          // delete old versions
+          if (cacheList.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName)
+          }
+        })
+      );
+    })
+  );
 });
