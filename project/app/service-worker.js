@@ -18,15 +18,14 @@ limitations under the License.
 
 var staticCacheName = 'e-commerce-v1';
 
-// TODO SW-3 - cache the application shell
+self.addEventListener('install', function(event) {
+  // install
+});
 
-// TODO SW-4 - use the cache-first strategy to fetch and cache resources in the
-// fetch event listener
+self.addEventListener('fetch', function(event) {
+  // fetch
+});
 
-
-
-// TODO SW-5 - delete outdated caches in the activate event listener
-
-(function() {
-    console.log('Entering ServiceWorker script');
-})();
+self.addEventListener('activate', function(event) {
+  // activate
+});
