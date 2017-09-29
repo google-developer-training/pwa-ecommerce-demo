@@ -21,4 +21,41 @@ limitations under the License.
 // TODO SW-4 - use the cache-first strategy to fetch and cache resources in the
 // fetch event listener
 
+
+
 // TODO SW-5 - delete outdated caches in the activate event listener
+
+(function() {
+    console.log('Entering ServiceWorker script');
+
+
+    var staticCacheName = 'e-commerce-v1';
+
+
+    self.addEventListener('fetch', function(event) {
+        console.log('Fetch event for ', event.request.url);
+        event.respondWith(
+            caches.match(event.request).then(function(response) {
+                if (response) {
+                    console.log('Found ', event.request.url, ' in cache');
+                    return response;
+                }
+                console.log('Network request for ', event.request.url);
+                return fetch(event.request).then(function(response) {
+                    if (response.status === 404) {
+                        return caches.match('pages/404.html');
+                    }
+                    return caches.open(staticCacheName).then(function(cache) {
+                        if (event.request.url.indexOf('test') < 0) {
+                            cache.put(event.request.url, response.clone());
+                        }
+                        return response;
+                    });
+                });
+            }).catch(function(error) {
+                console.log('Error, ', error);
+                return caches.match('pages/offline.html');
+            })
+        );
+    });
+})();
