@@ -16,7 +16,7 @@ limitations under the License.
 // This file will be replaced by the generated service worker when we work with
 // the sw-precache and sw-toolbox libraries.
 
-var staticCacheName = 'candy-shop-v1';
+var staticCacheName = 'e-commerce-v1';
 
 // TODO SW-3 - cache the application shell
 
