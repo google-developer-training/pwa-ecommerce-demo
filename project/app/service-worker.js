@@ -22,3 +22,23 @@ limitations under the License.
 // fetch event listener
 
 // TODO SW-5 - delete outdated caches in the activate event listener
+(function() {
+  'use strict';
+
+  // TODO - 3.1: Add install and activate event listeners
+  self.addEventListener('install', function(event) {
+    console.log('Service worker installing...');
+    self.skipWaiting();
+  });
+
+  self.addEventListener('activate', function(event) {
+    console.log('Service worker activating...');
+  });
+  // TODO - 3.3: Add a comment to change the service worker
+  // I am a new service worker.
+
+  // TODO - 4: Add fetch listener
+  self.addEventListener('fetch', function(event) {
+    console.log('Fetching:', event.request.url);
+  });
+})();
