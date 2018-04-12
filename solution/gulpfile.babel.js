@@ -38,9 +38,28 @@ import source from 'vinyl-source-stream';
 import browserSync from 'browser-sync';
 import nodemon from 'gulp-nodemon';
 import gulpLoadPlugins from 'gulp-load-plugins';
+import workboxBuild from 'workbox-build';
 
 const $ = gulpLoadPlugins();
 const bs = browserSync.create();
+
+// Inject a precache manifest into the service worker
+gulp.task('build-sw', () => {
+  return workboxBuild.injectManifest({
+    swSrc: 'app/sw.js',
+    swDest: 'dist/sw.js',
+    globDirectory: 'dist',
+    globPatterns: [
+      '/',
+      'index.html',
+      'scripts/main.min.js',
+      'styles/main.css',
+      'images/**/*'
+    ]
+  }).catch(err => {
+    console.log('Uh oh 😬', err);
+  });
+});
 
 // Optimize images
 gulp.task('images', () => {
@@ -173,7 +192,7 @@ gulp.task('default', ['clean'], cb => {
   runSequence(
     'styles',
     ['html', 'scripts', 'images', 'copy'],
-    // ['lint', 'html', 'scripts', 'images', 'copy'],
+    'build-sw',
     cb
   );
 });
