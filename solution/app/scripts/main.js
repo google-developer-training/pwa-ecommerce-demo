@@ -22,14 +22,14 @@
 import App from 'app';
 import {hasPrerequisites} from 'features';
 
-(function() {
+(() => {
   'use strict';
 
   // Check to make sure service workers are supported in the current browser,
   // and that the current page is accessed from a secure origin. Using a
   // service worker from an insecure origin will trigger JS console errors. See
   // http://www.chromium.org/Home/chromium-security/prefer-secure-origins-for-powerful-new-features
-  var isLocalhost = Boolean(window.location.hostname === 'localhost' ||
+  const isLocalhost = Boolean(window.location.hostname === 'localhost' ||
       // [::1] is the IPv6 localhost address.
       window.location.hostname === '[::1]' ||
       // 127.0.0.1/8 is considered localhost for IPv4.
@@ -41,9 +41,9 @@ import {hasPrerequisites} from 'features';
   if ('serviceWorker' in navigator &&
       (window.location.protocol === 'https:' || isLocalhost)) {
     navigator.serviceWorker.register('sw.js')
-    .then(function(registration) {
+    .then(registration => {
       // updatefound is fired if service-worker.js changes.
-      registration.onupdatefound = function() {
+      registration.onupdatefound = () => {
         // updatefound is also fired the very first time the SW is installed,
         // and there's no need to prompt for a reload at that point.
         // So check here to see if the page is already controlled,
@@ -51,9 +51,9 @@ import {hasPrerequisites} from 'features';
         if (navigator.serviceWorker.controller) {
           // The updatefound event implies that registration.installing is set:
           // https://slightlyoff.github.io/ServiceWorker/spec/service_worker/index.html#service-worker-container-updatefound-event
-          var installingWorker = registration.installing;
+          const installingWorker = registration.installing;
 
-          installingWorker.onstatechange = function() {
+          installingWorker.onstatechange = () => {
             switch (installingWorker.state) {
               case 'installed':
                 // At this point, the old content will have been purged and the
@@ -72,14 +72,14 @@ import {hasPrerequisites} from 'features';
           };
         }
       };
-    }).catch(function(e) {
+    }).catch(e => {
       console.error('Error during service worker registration:', e);
     });
   }
 
   // Your custom JavaScript goes here
   let app = new App();
-  document.addEventListener('DOMContentLoaded', e => {
+  document.addEventListener('DOMContentLoaded', () => {
     if (!hasPrerequisites()) {
       // TODO make this something nicer than an alert, e.g. a panel in the app
       window.alert('This browser is missing some required features');
@@ -88,5 +88,4 @@ import {hasPrerequisites} from 'features';
     app.install();
     app.run();
   });
-
 })();
