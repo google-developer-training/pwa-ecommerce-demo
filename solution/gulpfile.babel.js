@@ -54,7 +54,8 @@ gulp.task('build-sw', () => {
       'index.html',
       'scripts/main.min.js',
       'styles/main.css',
-      'images/**/*'
+      'images/*',
+      'images/touch/*'
     ]
   }).catch(err => {
     console.log('Uh oh 😬', err);
