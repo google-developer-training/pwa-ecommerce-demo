@@ -37,8 +37,6 @@
     "qunitjs": "^2.0.1",
     "run-sequence": "^1.0.1",
     "sinon-es6": "0.0.3",
-    "sw-precache": "^3.2.0",
-    "sw-toolbox": "^3.0.1",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0",
     "workbox-build": "^3.1.0"
