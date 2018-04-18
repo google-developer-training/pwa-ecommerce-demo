@@ -1,7 +1,7 @@
 /*!
  *
  *  Web Starter Kit
- *  Copyright 2015 Google Inc. All rights reserved.
+ *  Copyright 2018 Google Inc. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,14 +22,14 @@
 import App from 'app';
 import {hasPrerequisites} from 'features';
 
-(function() {
-'use strict';
+(() => {
+  'use strict';
 
   // Check to make sure service workers are supported in the current browser,
   // and that the current page is accessed from a secure origin. Using a
   // service worker from an insecure origin will trigger JS console errors. See
   // http://www.chromium.org/Home/chromium-security/prefer-secure-origins-for-powerful-new-features
-  var isLocalhost = Boolean(window.location.hostname === 'localhost' ||
+  const isLocalhost = Boolean(window.location.hostname === 'localhost' ||
       // [::1] is the IPv6 localhost address.
       window.location.hostname === '[::1]' ||
       // 127.0.0.1/8 is considered localhost for IPv4.
@@ -38,11 +38,11 @@ import {hasPrerequisites} from 'features';
       )
     );
 
-  // TODO SW-2 - register the service worker
+  // register the service worker
 
   // Your custom JavaScript goes here
   let app = new App();
-  document.addEventListener('DOMContentLoaded', e => {
+  document.addEventListener('DOMContentLoaded', () => {
     if (!hasPrerequisites()) {
       // TODO make this something nicer than an alert, e.g. a panel in the app
       window.alert('This browser is missing some required features');
@@ -51,5 +51,4 @@ import {hasPrerequisites} from 'features';
     app.install();
     app.run();
   });
-
 })();

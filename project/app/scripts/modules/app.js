@@ -67,10 +67,7 @@ export default class App {
         this._confirmationView.visible = false;
         this._paymentForm.visible = false;
         let _promise;
-
-        // TODO PAY-2.1 - detect feature
-
-        if (false) {
+        if (window.PaymentRequest) {
           let api = new PaymentAPIWrapper();
           _promise = api.checkout(this._cart);
         } else {

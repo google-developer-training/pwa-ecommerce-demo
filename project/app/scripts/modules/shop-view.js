@@ -72,9 +72,9 @@ export default class ShopView extends View {
       target = target.parentNode;
     }
     if (!target.dataset) return;
-    var sku = target.dataset.sku;
+    const sku = target.dataset.sku;
     if (!sku) throw new Error('could not find sku, data- attrs not supported?');
-    var product = findProduct(sku, this._products);
+    const product = findProduct(sku, this._products);
     this._cart.add(product);
     this._showConfirmation(product);
   }

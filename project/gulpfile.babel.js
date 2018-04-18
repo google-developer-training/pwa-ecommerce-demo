@@ -1,7 +1,7 @@
 /**
  *
  *  Web Starter Kit
- *  Copyright 2015 Google Inc. All rights reserved.
+ *  Copyright 2018 Google Inc. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -37,15 +37,12 @@ import babelify from 'babelify';
 import source from 'vinyl-source-stream';
 import browserSync from 'browser-sync';
 import nodemon from 'gulp-nodemon';
-import swPrecache from 'sw-precache';
 import gulpLoadPlugins from 'gulp-load-plugins';
-import pkg from './package.json';
 
 const $ = gulpLoadPlugins();
 const bs = browserSync.create();
-const babelOptions = {
-	presets: ['es2015']
-};
+
+// Write a task that injects a precache manifest into the service worker
 
 // Optimize images
 gulp.task('images', () => {
@@ -57,19 +54,17 @@ gulp.task('images', () => {
     .pipe(gulp.dest('dist/images'))
     .pipe($.size({title: 'images'}));
 
-		gulp.src('../third_party/images/**/*')
-			.pipe($.imagemin({ // DEBUG removed $.cache( before imagemin
-				progressive: true,
-				interlaced: true
-			}))
-			.pipe(gulp.dest('dist/images'))
-			.pipe($.size({title: 'product images'}))
-}
-
-);
+  gulp.src('../third_party/images/**/*')
+    .pipe($.imagemin({ // DEBUG removed $.cache( before imagemin
+      progressive: true,
+      interlaced: true
+    }))
+    .pipe(gulp.dest('dist/images'))
+    .pipe($.size({title: 'product images'}));
+});
 
 // Copy all files at the root level (app)
-gulp.task('copy', () =>
+gulp.task('copy', () => {
   gulp.src([
     'app/*',
     '!app/*.html',
@@ -77,8 +72,8 @@ gulp.task('copy', () =>
   ], {
     dot: true
   }).pipe(gulp.dest('dist'))
-    .pipe($.size({title: 'copy'}))
-);
+    .pipe($.size({title: 'copy'}));
+});
 
 // Compile and automatically prefix stylesheets
 gulp.task('styles', () => {
@@ -116,11 +111,13 @@ gulp.task('styles', () => {
 gulp.task('scripts', () => {
   return browserify([
     './app/scripts/main.js'
-  ], { debug: true, paths: ['app/scripts/modules/'] })
-    .transform(babelify, { presets: ['es2015']  })
+  ], {debug: true, paths: ['app/scripts/modules/']})
+    .transform(babelify, {presets: ['env']})
     .bundle()
     .pipe(source('main.min.js'))
-    .on('error', err => { console.log('ERROR:', err.message); })
+    .on('error', err => {
+      console.log('ERROR:', err.message);
+    })
     .pipe(gulp.dest('dist/scripts/'));
 });
 
@@ -141,9 +138,9 @@ gulp.task('html', () => {
 gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 
 // Run unit tests
-gulp.task('test', (done) => {
+gulp.task('test', done => {
   new Server({
-    configFile: __dirname + '/test-all.conf.js',
+    configFile: path.join(__dirname, '/test-all.conf.js'),
     singleRun: true
   }, done).start();
 });
@@ -165,23 +162,23 @@ gulp.task('nodemon', ['default'], cb => {
 });
 
 // browserSync
-gulp.task('serve', ['nodemon'], () =>
+gulp.task('serve', ['nodemon'], () => {
   bs.init({
     proxy: 'http://localhost:8081',
     port: '8080',
     open: false
-  })
-);
+  });
+});
 
 // Build production files, the default task
-gulp.task('default', ['clean'], cb =>
+gulp.task('default', ['clean'], cb => {
   runSequence(
     'styles',
     ['html', 'scripts', 'images', 'copy'],
-    // ['lint', 'html', 'scripts', 'images', 'copy'],
+    // Add the build-sw task here
     cb
-  )
-);
+  );
+});
 
 // Load custom tasks from the `tasks` directory
 // Run: `npm install --save-dev require-dir` from the command-line

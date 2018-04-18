@@ -80,10 +80,10 @@ export default class CartView extends View {
 
   _handleClick(event) {
     if (event.target.dataset) {
-      var sku = event.target.dataset.sku;
-      var action = event.target.dataset.action;
+      const sku = event.target.dataset.sku;
+      const action = event.target.dataset.action;
       if (sku && action == 'remove') {
-        var product = this._cart.findItem(sku);
+        const product = this._cart.findItem(sku);
         this._cart.remove(product);
         this.removeFromView(sku);
       }
