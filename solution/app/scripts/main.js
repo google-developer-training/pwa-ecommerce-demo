@@ -38,6 +38,7 @@ import {hasPrerequisites} from 'features';
       )
     );
 
+  // Register the service worker
   if ('serviceWorker' in navigator &&
       (window.location.protocol === 'https:' || isLocalhost)) {
     window.addEventListener('load', () => {
@@ -79,11 +80,10 @@ import {hasPrerequisites} from 'features';
     });
   }
 
-  // Your custom JavaScript goes here
+  // Initialize app
   let app = new App();
   document.addEventListener('DOMContentLoaded', () => {
     if (!hasPrerequisites()) {
-      // TODO make this something nicer than an alert, e.g. a panel in the app
       window.alert('This browser is missing some required features');
       return;
     }

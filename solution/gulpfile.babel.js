@@ -50,7 +50,6 @@ gulp.task('build-sw', () => {
     swDest: 'dist/sw.js',
     globDirectory: 'dist',
     globPatterns: [
-      '/',
       'index.html',
       'scripts/main.min.js',
       'styles/main.css',
@@ -194,7 +193,3 @@ gulp.task('default', ['clean'], cb => {
     cb
   );
 });
-
-// Load custom tasks from the `tasks` directory
-// Run: `npm install --save-dev require-dir` from the command-line
-// try { require('require-dir')('tasks'); } catch (err) { console.error(err); }

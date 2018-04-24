@@ -43,6 +43,7 @@ const $ = gulpLoadPlugins();
 const bs = browserSync.create();
 
 // Write a task that injects a precache manifest into the service worker
+// TODO
 
 // Optimize images
 gulp.task('images', () => {
@@ -96,9 +97,6 @@ gulp.task('styles', () => {
   ])
     .pipe($.newer('.tmp/styles'))
     .pipe($.sourcemaps.init())
-    .pipe($.sass({
-      precision: 10
-    }).on('error', $.sass.logError))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe(gulp.dest('.tmp/styles'))
     // Concatenate and minify styles
@@ -175,11 +173,7 @@ gulp.task('default', ['clean'], cb => {
   runSequence(
     'styles',
     ['html', 'scripts', 'images', 'copy'],
-    // Add the build-sw task here
+    // TODO - Add the build-sw task here
     cb
   );
 });
-
-// Load custom tasks from the `tasks` directory
-// Run: `npm install --save-dev require-dir` from the command-line
-// try { require('require-dir')('tasks'); } catch (err) { console.error(err); }
