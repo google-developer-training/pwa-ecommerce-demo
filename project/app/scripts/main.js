@@ -38,13 +38,13 @@ import {hasPrerequisites} from 'features';
       )
     );
 
-  // register the service worker
+  // Register the service worker
+  // TODO
 
-  // Your custom JavaScript goes here
+  // Initialize app
   let app = new App();
   document.addEventListener('DOMContentLoaded', () => {
     if (!hasPrerequisites()) {
-      // TODO make this something nicer than an alert, e.g. a panel in the app
       window.alert('This browser is missing some required features');
       return;
     }

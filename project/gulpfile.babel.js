@@ -43,6 +43,7 @@ const $ = gulpLoadPlugins();
 const bs = browserSync.create();
 
 // Write a task that injects a precache manifest into the service worker
+// TODO
 
 // Optimize images
 gulp.task('images', () => {
@@ -175,11 +176,7 @@ gulp.task('default', ['clean'], cb => {
   runSequence(
     'styles',
     ['html', 'scripts', 'images', 'copy'],
-    // Add the build-sw task here
+    // TODO - Add the build-sw task here
     cb
   );
 });
-
-// Load custom tasks from the `tasks` directory
-// Run: `npm install --save-dev require-dir` from the command-line
-// try { require('require-dir')('tasks'); } catch (err) { console.error(err); }
