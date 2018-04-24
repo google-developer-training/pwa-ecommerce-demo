@@ -50,7 +50,6 @@ gulp.task('build-sw', () => {
     swDest: 'dist/sw.js',
     globDirectory: 'dist',
     globPatterns: [
-      '/',
       'index.html',
       'scripts/main.min.js',
       'styles/main.css',
