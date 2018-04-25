@@ -32,3 +32,40 @@ workbox.routing.registerRoute(/images\/products\/(.*)$/,
     ]
   })
 );
+
+// workbox.routing.registerRoute(
+//   new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
+//   workbox.strategies.staleWhileRevalidate({
+//     cacheName: 'furniture-store-fonts',
+//     plugins: [
+//       new workbox.expiration.Plugin({
+//         maxAgeSeconds: 7 * 24 * 60 * 60 // one week
+//       })
+//     ]
+//   })
+// );
+
+workbox.routing.registerRoute(
+  new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'googleapis',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxEntries: 30,
+      }),
+    ],
+  }),
+);
+
+workbox.routing.registerRoute(
+  new RegExp ('https://code.getmdl.io/(.*)'),
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'furniture-store-mdl',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 7 * 24 * 60 * 60 // one week
+      })
+    ]
+  })
+);
+
