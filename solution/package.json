@@ -32,7 +32,7 @@
     "karma-qunit": "^1.2.1",
     "mocha": "^5.2.0",
     "psi": "^3.1.0",
-    "qunit": "^0.9.1",
+    "qunit": "^2.6.2",
     "qunitjs": "^2.0.1",
     "run-sequence": "^1.0.1",
     "sinon-es6": "0.0.3",
