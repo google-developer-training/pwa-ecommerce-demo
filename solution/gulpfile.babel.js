@@ -44,7 +44,7 @@ const $ = gulpLoadPlugins();
 const bs = browserSync.create();
 
 // Inject a precache manifest into the service worker
-gulp.task('build-sw', () => {
+function buildSw() {
   return workboxBuild.injectManifest({
     swSrc: 'app/sw.js',
     swDest: 'dist/sw.js',
@@ -59,30 +59,36 @@ gulp.task('build-sw', () => {
   }).catch(err => {
     console.log('Uh oh 😬', err);
   });
-});
+}
+
+gulp.task('buildSw', buildSw);
 
 // Optimize images
-gulp.task('images', () => {
-  gulp.src('app/images/**/*')
+function images() {
+  return gulp.src('app/images/**/*')
     .pipe($.imagemin({ // DEBUG removed $.cache( before imagemin
       progressive: true,
       interlaced: true
     }))
     .pipe(gulp.dest('dist/images'))
     .pipe($.size({title: 'images'}));
+}
 
-  gulp.src('../third_party/images/**/*')
+function thirdPartyImages() {
+  return gulp.src('../third_party/images/**/*')
     .pipe($.imagemin({ // DEBUG removed $.cache( before imagemin
       progressive: true,
       interlaced: true
     }))
     .pipe(gulp.dest('dist/images'))
     .pipe($.size({title: 'product images'}));
-});
+}
+
+gulp.task('images', gulp.parallel(images, thirdPartyImages));
 
 // Copy all files at the root level (app)
-gulp.task('copy', () => {
-  gulp.src([
+function copy() {
+  return gulp.src([
     'app/*',
     '!app/*.html',
     'node_modules/apache-server-configs/dist/.htaccess'
@@ -90,10 +96,12 @@ gulp.task('copy', () => {
     dot: true
   }).pipe(gulp.dest('dist'))
     .pipe($.size({title: 'copy'}));
-});
+}
+
+gulp.task('copy', copy);
 
 // Compile and automatically prefix stylesheets
-gulp.task('styles', () => {
+function styles() {
   const AUTOPREFIXER_BROWSERS = [
     'ie >= 10',
     'ie_mob >= 10',
@@ -120,9 +128,11 @@ gulp.task('styles', () => {
     .pipe($.size({title: 'styles'}))
     .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest('dist/styles'));
-});
+}
 
-gulp.task('scripts', () => {
+gulp.task('styles', styles);
+
+function scripts() {
   return browserify([
     './app/scripts/main.js'
   ], {debug: true, paths: ['app/scripts/modules/']})
@@ -133,10 +143,12 @@ gulp.task('scripts', () => {
       console.log('ERROR:', err.message);
     })
     .pipe(gulp.dest('dist/scripts/'));
-});
+}
+
+gulp.task('scripts', scripts);
 
 // Scan your HTML for assets & optimize them
-gulp.task('html', () => {
+function html() {
   return gulp.src('app/**/*.html')
     .pipe($.useref({
       searchPath: '{.tmp,app}',
@@ -146,22 +158,26 @@ gulp.task('html', () => {
     // Output files
     .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
     .pipe(gulp.dest('dist'));
-});
+}
+
+gulp.task('html', html);
 
 // Clean output directory
 gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 
 // Run unit tests
-gulp.task('test', done => {
-  new Server({
+function test(done) {
+  return new Server({
     configFile: path.join(__dirname, '/test-all.conf.js'),
     singleRun: true
   }, done).start();
-});
+}
 
-gulp.task('nodemon', ['default'], cb => {
+gulp.task('test', test);
+
+function nodeMon(cb) {
   let started = false;
-  nodemon({
+  return nodemon({
     script: './server.js',
     watch: ['app/**/*.js'],
     tasks: 'default'
@@ -173,23 +189,26 @@ gulp.task('nodemon', ['default'], cb => {
   }).on('restart', () => {
     bs.reload();
   });
-});
+}
 
 // browserSync
-gulp.task('serve', ['nodemon'], () => {
-  bs.init({
+function serve() {
+  return bs.init({
     proxy: 'http://localhost:8081',
     port: '8080',
     open: false
   });
-});
+}
 
 // Build production files, the default task
-gulp.task('default', ['clean'], cb => {
-  runSequence(
-    'styles',
-    ['html', 'scripts', 'images', 'copy'],
-    'build-sw',
-    cb
-  );
-});
+gulp.task('default',
+  gulp.series(
+    'clean',
+    styles,
+    gulp.parallel(html, scripts, 'images', copy),
+    buildSw
+  )
+);
+
+gulp.task('nodemon', gulp.series('default', nodeMon));
+gulp.task('serve', gulp.series('nodemon', serve));

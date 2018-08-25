@@ -9,7 +9,7 @@
     "del": "^2.0.2",
     "eslint": "^3.10.2",
     "eslint-config-google": "^0.3.0",
-    "gulp": "^3.9.0",
+    "gulp": "^4.0.0",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-cssnano": "^2.0.0",
     "gulp-if": "^2.0.0",
@@ -36,7 +36,7 @@
     "qunitjs": "^2.0.1",
     "run-sequence": "^1.0.1",
     "sinon-es6": "0.0.3",
-    "vinyl-source-stream": "^1.1.0",
+    "vinyl-source-stream": "^2.0.0",
     "workbox-build": "^3.1.0"
   },
   "engines": {
