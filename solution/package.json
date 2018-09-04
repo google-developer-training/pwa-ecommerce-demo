@@ -4,7 +4,7 @@
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babelify": "^8.0.0",
-    "browser-sync": "^2.24.6",
+    "browser-sync": "^2.24.7",
     "browserify": "^13.1.1",
     "del": "^2.0.2",
     "eslint": "^3.10.2",
