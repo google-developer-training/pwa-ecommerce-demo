@@ -5,8 +5,8 @@ training. Based on Web Starter Kit (0.6.4)
 
 ## Getting Started
 
-To get started, check out the instructions in
-[GitBook](https://google-developer-training.gitbooks.io/progressive-web-apps-ilt-codelabs/content/docs/e-commerce-lab-1-create-a-service-worker.html).
+To get started, check out the instructions on
+[developers.google.com](https://developers.google.com/web/ilt/pwa/challenge-convert-an-e-commerce-site-to-a-pwa).
 
 ## Note
 
