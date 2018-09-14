@@ -1,5 +1,5 @@
 /*
-Copyright 2016 Google Inc.
+Copyright 2018 Google Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -38,6 +38,9 @@ const SHIPPING_OPTIONS = {
   ]
 };
 
+const PAYMENT_METHODS = [
+];
+
 export default class PaymentAPIWrapper {
 
   /*
@@ -49,9 +52,33 @@ export default class PaymentAPIWrapper {
     let request = this.buildPaymentRequest(cart);
     let response;
     // Show UI then continue with user payment info
-
-    // TODO PAY-5 - display the PaymentRequest
-    return request.show();
+    return request.show()
+      .then(r => {
+        // The UI will show a spinner to the user until
+        // `request.complete()` is called.
+        response = r;
+        let data = r.toJSON();
+        console.log(data);
+        return data;
+      })
+      .then(data => {
+        return sendToServer(data);
+      })
+      .then(() => {
+        response.complete('success');
+        return response;
+      })
+      .catch(e => {
+        if (response) {
+          console.error(e);
+          response.complete('fail');
+        } else if (e.code !== e.ABORT_ERR) {
+          console.error(e);
+          throw e;
+        } else {
+          return null;
+        }
+      });
   }
 
   /*
@@ -60,23 +87,20 @@ export default class PaymentAPIWrapper {
    */
   buildPaymentRequest(cart) {
     // Supported payment instruments
-    const supportedInstruments = [
-      // TODO PAY-3 - add a list of accepted payment methods
-      {
-        supportedMethods: ['basic-card'],
-        data: {
-          supportedNetworks: []
-        }
+    const supportedInstruments = [{
+      supportedMethods: ['basic-card'],
+      data: {
+        supportedNetworks: ['visa', 'mastercard', 'amex',
+          'jcb', 'diners', 'discover', 'mir', 'unionpay']
       }
-    ];
+    }];
 
     // Payment options
     const paymentOptions = {
-
-      // TODO PAY-6.1 - allow shipping options
-
-      // TODO PAY-8 - Add payment options
-
+      requestShipping: true,
+      requestPayerEmail: true,
+      requestPayerPhone: true,
+      requestPayerName: true
     };
 
     let shippingOptions = [];
@@ -84,11 +108,28 @@ export default class PaymentAPIWrapper {
 
     let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
 
-    // TODO PAY-2.2 - initialize the PaymentRequest object
+    // Initialize
+    let request = new PaymentRequest(supportedInstruments, details, paymentOptions);
 
-    // TODO PAY-7.1 - add `shippingaddresschange` event handler
+    // When user selects a shipping address, add shipping options to match
+    request.addEventListener('shippingaddresschange', e => {
+      e.updateWith((_ => {
+        // Get the shipping options and select the least expensive
+        shippingOptions = this.optionsForCountry(request.shippingAddress.country);
+        selectedOption = shippingOptions[0].id;
+        let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
+        return Promise.resolve(details);
+      })());
+    });
 
-    // TODO PAY-7.2 - add `shippingoptionchange` event handler
+    // When user selects a shipping option, update cost, etc. to match
+    request.addEventListener('shippingoptionchange', e => {
+      e.updateWith((_ => {
+        selectedOption = request.shippingOption;
+        let details = this.buildPaymentDetails(cart, shippingOptions, selectedOption);
+        return Promise.resolve(details);
+      })());
+    });
 
     return request;
   }
@@ -98,21 +139,38 @@ export default class PaymentAPIWrapper {
    * This can change as the user selects shipping options.
    */
   buildPaymentDetails(cart, shippingOptions, shippingOptionId) {
-
-    // TODO PAY-4.2 - define the display items
-    let displayItems = [];
-
+    // Start with the cart items
+    let displayItems = cart.cart.map(item => {
+      return {
+        label: `${item.sku}: ${item.quantity}x $${item.price}`,
+        amount: {currency: 'USD', value: String(item.total)}
+      };
+    });
     let total = cart.total;
 
-    // TODO PAY-6.3 - allow shipping options
+    let displayedShippingOptions = [];
+    if (shippingOptions.length > 0) {
+      let selectedOption = shippingOptions.find(option => {
+        return option.id === shippingOptionId;
+      });
+      displayedShippingOptions = shippingOptions.map(option => {
+        return {
+          id: option.id,
+          label: option.label,
+          amount: {currency: 'USD', value: String(option.price)},
+          selected: option.id === shippingOptionId
+        };
+      });
+      if (selectedOption) total += selectedOption.price;
+    }
 
     let details = {
       displayItems: displayItems,
       total: {
         label: 'Total due',
         amount: {currency: 'USD', value: String(total)}
-      }
-      // TODO PAY-6.2 - allow shipping options
+      },
+      shippingOptions: displayedShippingOptions
     };
 
     return details;

@@ -1,5 +1,5 @@
 /*
-Copyright 2016 Google Inc.
+Copyright 2018 Google Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ limitations under the License.
 
 // Pop up a user notification
 export default function showToast(message) {
-  var notification = document.getElementById('snackbar');
+  const notification = document.getElementById('snackbar');
   if (notification && ('MaterialSnackbar' in notification)) {
     notification.MaterialSnackbar.showSnackbar({message: (message)});
   }

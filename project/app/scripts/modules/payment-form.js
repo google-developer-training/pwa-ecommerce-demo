@@ -1,5 +1,5 @@
 /*
-Copyright 2016 Google Inc.
+Copyright 2018 Google Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -33,12 +33,12 @@ export default class PaymentForm extends View {
    */
   checkout() {
     // TODO how do we handle cart abandonment?
-    var self = this;
+    const self = this;
     this.visible = true;
     this._promise = new Promise((resolve, reject) => {
       this._checkoutForm.addEventListener('submit', function temp(event) {
         event.preventDefault();
-        var data = new FormData(event.target);
+        const data = new FormData(event.target);
         self._showRequest(data);
         return Promise.resolve(data)
           .then(sendToServer)

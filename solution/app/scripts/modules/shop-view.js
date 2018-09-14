@@ -1,5 +1,5 @@
 /*
-Copyright 2016 Google Inc.
+Copyright 2018 Google Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -72,9 +72,9 @@ export default class ShopView extends View {
       target = target.parentNode;
     }
     if (!target.dataset) return;
-    var sku = target.dataset.sku;
+    const sku = target.dataset.sku;
     if (!sku) throw new Error('could not find sku, data- attrs not supported?');
-    var product = findProduct(sku, this._products);
+    const product = findProduct(sku, this._products);
     this._cart.add(product);
     this._showConfirmation(product);
   }

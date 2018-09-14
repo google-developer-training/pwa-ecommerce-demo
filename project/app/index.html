@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
   Material Design Lite
-  Copyright 2015 Google Inc. All rights reserved.
+  Copyright 2018 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -20,13 +20,16 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Modern Furniture Store">
     <meta name="description" content="A simple storefront built on Material Design Lite.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <link rel="manifest" href="/manifest.json">
 
-    <!-- TODO HS-3 - Add to home screen for Safari on iOS -->
+    <!-- Add a link to manifest.json -->
 
-    <!-- TODO HS-4 - Tile icons for Windows -->
+    <!-- Write the meta tags for Add to home screen for Safari on iOS -->
+
+    <!-- Write the meta tags for tile icons for Windows -->
 
     <title>PWA Furniture Store</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
@@ -70,7 +73,7 @@
                   <div class="mdl-card__title">
                       <h2 class="mdl-card__title-text">Cart</h2>
                   </div>
-                  <div class="mdl-card__media">
+                  <div class="mdl-card__media" style="overflow: scroll;">
                     <table class="mdl-data-table md-js-data-table mdl-shadow--2dp" style="width:100%;">
                       <thead>
                           <tr>

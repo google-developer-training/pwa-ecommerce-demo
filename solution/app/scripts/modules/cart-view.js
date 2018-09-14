@@ -1,5 +1,5 @@
 /*
-Copyright 2016 Google Inc.
+Copyright 2018 Google Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -80,10 +80,10 @@ export default class CartView extends View {
 
   _handleClick(event) {
     if (event.target.dataset) {
-      var sku = event.target.dataset.sku;
-      var action = event.target.dataset.action;
+      const sku = event.target.dataset.sku;
+      const action = event.target.dataset.action;
       if (sku && action == 'remove') {
-        var product = this._cart.findItem(sku);
+        const product = this._cart.findItem(sku);
         this._cart.remove(product);
         this.removeFromView(sku);
       }

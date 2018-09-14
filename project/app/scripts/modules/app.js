@@ -1,5 +1,5 @@
 /*
-Copyright 2016 Google Inc.
+Copyright 2018 Google Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -67,10 +67,7 @@ export default class App {
         this._confirmationView.visible = false;
         this._paymentForm.visible = false;
         let _promise;
-
-        // TODO PAY-2.1 - detect feature
-
-        if (false) {
+        if (window.PaymentRequest) {
           let api = new PaymentAPIWrapper();
           _promise = api.checkout(this._cart);
         } else {

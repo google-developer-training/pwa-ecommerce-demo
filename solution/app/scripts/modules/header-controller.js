@@ -1,5 +1,5 @@
 /*
-Copyright 2016 Google Inc.
+Copyright 2018 Google Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ export default class HeaderController {
   set count(newCount) {
     if (this._count == newCount) return;
     // TODO use a badge instead
-    var label = newCount === 0 ? '' : ` (${newCount} items)`;
+    const label = newCount === 0 ? '' : ` (${newCount} items)`;
     this._count = newCount;
     let spans = document.querySelectorAll(`#${this._containerId} a[href="#cart"]`);
     for (let i=0; i < spans.length; i++) {
