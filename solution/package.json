@@ -46,7 +46,7 @@
     "extends": "google"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "material-design-icons": "^3.0.1",
     "path": "^0.12.7"
   }
